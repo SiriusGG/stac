@@ -1,0 +1,88 @@
+package com.nwawsoft.stac.ui;
+
+import com.nwawsoft.stac.model.AvailableButtons;
+import com.nwawsoft.stac.model.SettingsHandler;
+import com.nwawsoft.util.ui.ComponentFunctions;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
+public class ButtonMapper extends JFrame {
+  private final JComboBox<String> comboBoxFailed;
+  private final JComboBox<String> comboBoxSuccessful;
+
+  public ButtonMapper(final JFrame calledBy) {
+    super("Key Bindings");
+    calledBy.dispose();
+    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    int frameWidth = 300;
+    int frameHeight = 160;
+    setSize(frameWidth, frameHeight);
+    ComponentFunctions.center(this);
+    Container cp = getContentPane();
+    cp.setLayout(null);
+
+    JLabel labelFailedKey = new JLabel("Key for failed attempts: ");
+    JLabel labelSuccessfulKey = new JLabel("Key for successful attempts: ");
+
+    comboBoxFailed = new JComboBox<>();
+    comboBoxSuccessful = new JComboBox<>();
+
+    AvailableButtons ab = new AvailableButtons();
+    for (String currentButtonString : ab.getButtons()) {
+      comboBoxFailed.addItem(currentButtonString);
+    }
+    for (String currentButtonString : ab.getButtons()) {
+      comboBoxSuccessful.addItem(currentButtonString);
+    }
+
+    JButton buttonCancel = new JButton("Cancel");
+    JButton buttonSave = new JButton("Save");
+
+    int left_x = 10;
+    int upper_y = 10;
+    int right_x = 180;
+    int medium_y = 50;
+    int lower_y = 90;
+    int height = 30;
+    int leftWidth = 200;
+    int rightWidth = 100;
+    int buttonWidth = 120;
+    int leftButtonX = 20;
+    int rightButtonX = 150;
+
+    labelFailedKey.setBounds(left_x, upper_y, leftWidth, height);
+    comboBoxFailed.setBounds(right_x, upper_y, rightWidth, height);
+    labelSuccessfulKey.setBounds(left_x, medium_y, leftWidth, height);
+    comboBoxSuccessful.setBounds(right_x, medium_y, rightWidth, height);
+    buttonCancel.setBounds(leftButtonX, lower_y, buttonWidth, height);
+    buttonSave.setBounds(rightButtonX, lower_y, buttonWidth, height);
+
+    buttonCancel.addActionListener(this::buttonCancelActionPerformed);
+    buttonSave.addActionListener(this::buttonSaveActionPerformed);
+
+    String[] settings = SettingsHandler.load();
+    comboBoxFailed.setSelectedItem(settings[0]);
+    comboBoxSuccessful.setSelectedItem(settings[1]);
+
+    cp.add(labelFailedKey);
+    cp.add(labelSuccessfulKey);
+    cp.add(comboBoxFailed);
+    cp.add(comboBoxSuccessful);
+    cp.add(buttonCancel);
+    cp.add(buttonSave);
+
+    setResizable(false);
+    setVisible(true);
+  }
+
+  private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
+    new MainMenu(this);
+  }
+
+  private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
+    SettingsHandler.save((String)comboBoxFailed.getSelectedItem(), (String)comboBoxSuccessful.getSelectedItem());
+    new MainMenu(this);
+  }
+}
