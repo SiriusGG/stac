@@ -21,21 +21,21 @@ public class MainMenu extends JFrame {
   }
 
   public MainMenu() {
-    super("Siri's Trick Attempt Counter");
+    super("STAC");
     try {
       SettingsHandler.guaranteeSettings();
     } catch (IOException e) {
       e.printStackTrace();
     }
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    int frameWidth = 300;
+    int frameWidth = 200;
     int frameHeight = 132;
     setSize(frameWidth, frameHeight);
     ComponentFunctions.center(this);
     Container cp = getContentPane();
     cp.setLayout(null);
     int buttonWidth = frameWidth-7;
-    int buttonHeight = (frameHeight/3)-10;
+    int buttonHeight = (frameHeight/3)-12;
     JButton[] buttons = new JButton[3];
     JButton buttonNew = new JButton("Create New Trick File");
     buttons[0] = buttonNew;

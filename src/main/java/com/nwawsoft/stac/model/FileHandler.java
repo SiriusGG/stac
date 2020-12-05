@@ -3,9 +3,10 @@ package com.nwawsoft.stac.model;
 import java.io.*;
 
 public class FileHandler {
+
   public FileHandler() {}
 
-  public static void save(final Trick t, final String fileName) {
+  public static void save(final Trick t) {
     try {
       File d = new File(System.getProperty("user.home") + "/.stac");
       if (!d.exists()) {
@@ -13,12 +14,11 @@ public class FileHandler {
           throw new IOException();
         }
       }
-      File f = new File(System.getProperty("user.home") + "/.stac/" + fileName + ".sacf");
+      File f = new File(System.getProperty("user.home") + "/.stac/" + t.getFileName() + ".sacf");
       FileWriter fw = new FileWriter(f);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write("VERSION=" + t.getVersion() + "\n");
       bw.write("NAME=" + t.getName() + "\n");
-      bw.write("FILENAME=" + fileName + "\n");
       bw.write("ATTEMPTS=" + t.getAttempts() + "\n");
       bw.write("SUCCESSES_COUNT=" + t.getSuccesses() + "\n");
       bw.write("SUCCESSES_BACK_TO_BACK=" + t.getSuccessesBackToBack() + "\n");
@@ -30,7 +30,12 @@ public class FileHandler {
   }
 
   public static Trick load(final String fileName) {
-    Trick t = new Trick();
+    String version = null;
+    String name = null;
+    int attempts = 0;
+    int successes = 0;
+    int successesBackToBack = 0;
+    int successesHighscore = 0;
     try {
       File f = new File(System.getProperty("user.home") + "/.stac/" + fileName + ".sacf");
       FileReader fr = new FileReader(f);
@@ -38,27 +43,29 @@ public class FileHandler {
       String currentLine;
       while ((currentLine = br.readLine()) != null) {
         if (currentLine.startsWith("VERSION")) {
-          t.setVersion(currentLine.substring(currentLine.lastIndexOf("=") + 1));
+          version = currentLine.substring(currentLine.lastIndexOf("=") + 1);
         } else if (currentLine.startsWith("NAME")) {
-          t.setName(currentLine.substring(currentLine.lastIndexOf("=") + 1));
-        } else if (currentLine.startsWith("FILENAME")) {
-          t.setFileName(currentLine.substring(currentLine.lastIndexOf("=") + 1));
+          name = currentLine.substring(currentLine.lastIndexOf("=") + 1);
         } else {
           int count = Integer.parseInt(currentLine.substring(currentLine.lastIndexOf("=") + 1));
           if (currentLine.startsWith("ATTEMPTS")) {
-            t.setAttempts(count);
+            attempts = count;
           } else if (currentLine.startsWith("SUCCESSES_COUNT")) {
-            t.setSuccesses(count);
+            successes = count;
           } else if (currentLine.startsWith("SUCCESSES_BACK_TO_BACK")) {
-            t.setSuccessesBackToBack(count);
+            successesBackToBack = count;
           } else if (currentLine.startsWith("SUCCESSES_HIGHSCORE")) {
-            t.setSuccessesHighscore(count);
+            successesHighscore = count;
           }
         }
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return t;
+    return new Trick(version, name, fileName, attempts, successes, successesBackToBack, successesHighscore);
+  }
+
+  public static String trimmedFileString(final String temporaryFileName) {
+    return temporaryFileName.replaceAll("[^a-zA-Z0-9\\-_]", ""); // ToDo: Test dis black magic!
   }
 }

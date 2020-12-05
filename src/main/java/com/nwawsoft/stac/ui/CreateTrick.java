@@ -14,11 +14,9 @@ public class CreateTrick extends JFrame {
       "characters from a to z, digits from 0 to 9, - (minus) and _ (underscore)";
   private static final String TRICK_NAME_RULES = "Trick name may be almost anything except empty";
 
-  JLabel labelName;
-  JTextField textFieldName;
-  JLabel labelFileName;
-  JTextField textFieldFileName;
-  JButton buttonAddTrick;
+  private final JTextField textFieldName;
+  private final JTextField textFieldFileName;
+  private boolean defaultName = true;
 
   public CreateTrick(final JFrame calledBy) {
     super("Add new trick");
@@ -31,11 +29,11 @@ public class CreateTrick extends JFrame {
     Container cp = getContentPane();
     cp.setLayout(null);
 
-    labelName = new JLabel("Trick name: ");
+    JLabel labelName = new JLabel("Trick name: ");
     textFieldName = new JTextField("");
-    labelFileName = new JLabel("Trick file name: ");
+    JLabel labelFileName = new JLabel("Trick file name: ");
     textFieldFileName = new JTextField("");
-    buttonAddTrick = new JButton("Add Trick");
+    JButton buttonAddTrick = new JButton("Add Trick");
 
     labelName.setBounds(10, 10, 100, 20);
     textFieldName.setBounds(110, 10, 150, 20);
@@ -48,6 +46,8 @@ public class CreateTrick extends JFrame {
     labelFileName.setToolTipText(TRICK_FILE_NAME_RULES);
     textFieldFileName.setToolTipText(TRICK_FILE_NAME_RULES);
 
+    textFieldName.addActionListener(this::textFieldNameActionPerformed);
+    textFieldFileName.addActionListener(this::textFieldFileNameActionPerformed);
     buttonAddTrick.addActionListener(this::buttonAddTrickActionPerformed);
 
     cp.add(labelName);
@@ -61,10 +61,26 @@ public class CreateTrick extends JFrame {
   }
 
   private void buttonAddTrickActionPerformed(final ActionEvent actionEvent) {
-    String newName = textFieldName.getText(); // ToDo: Trim (Here or better also sooner at all save occasions)
-    String newFileName = textFieldFileName.getText(); // ToDo: Check for the required criteria and throw error dialog
-    Trick t = new Trick(BuildData.VERSION, newName, newFileName, 0, 0, 0, 0);
-    FileHandler.save(t, newFileName);
-    new ControlPanel(this, t);
+    String newName = textFieldName.getText().trim();
+    String newFileName = FileHandler.trimmedFileString(textFieldFileName.getText());
+    if (!newFileName.equals("")) {
+      Trick t = new Trick(BuildData.VERSION, newName, newFileName, 0, 0, 0, 0);
+      FileHandler.save(t);
+      new ControlPanel(this, t);
+    } else {
+      // ToDO: Give warning or something
+    }
+  }
+
+  private void textFieldNameActionPerformed(final ActionEvent actionEvent) { // ToDo: make listener trigger on every key stroke
+    if (defaultName) {
+      // ToDO: gray text
+      textFieldFileName.setText(FileHandler.trimmedFileString(textFieldName.getText()));
+    }
+  }
+
+  private void textFieldFileNameActionPerformed(final ActionEvent actionEvent) { // ToDo: make listener trigger on every key stroke
+    defaultName = false;
+    // ToDo: black text
   }
 }

@@ -45,7 +45,6 @@ public class Visualization extends JFrame {
     labelSuccessesBackToBackValue = new JLabel("" + t.getSuccessesBackToBack());
     labelSuccessesHighscoreValue = new JLabel("" + t.getSuccessesHighscore());
 
-
     int left_column_width = 120;
     int right_column_start = left_column_width + 20;
     int right_column_width = 150;

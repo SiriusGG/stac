@@ -11,16 +11,6 @@ public class Trick {
   private int successesBackToBack;
   private int successesHighscore;
 
-  public Trick() {
-    version = BuildData.VERSION;
-    name = "No trick name";
-    fileName = "unnamed_1"; // ToDo: Check directory and enumerate files
-    attempts = 0;
-    successes = 0;
-    successesBackToBack = 0;
-    successesHighscore = 0;
-  }
-
   public Trick(final String version, final String name, final String fileName, final int attempts, final int successes,
                final int successesBackToBack, final int successesHighscore) {
     if (version != null) {

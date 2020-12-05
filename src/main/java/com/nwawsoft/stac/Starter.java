@@ -11,15 +11,14 @@ import java.util.logging.Logger;
 public class Starter {
   public static void main (String[] args) {
     try {
+      LogManager.getLogManager().reset();
+      Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+      logger.setLevel(Level.OFF);
       GlobalScreen.registerNativeHook();
     }
     catch (NativeHookException e) {
       e.printStackTrace();
     }
-    LogManager.getLogManager().reset();
-    Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-    logger.setLevel(Level.OFF);
-
     new MainMenu();
   }
 }

@@ -36,6 +36,6 @@ public class ControlPanel extends JFrame {
   }
 
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
-    FileHandler.save(t, t.getFileName());
+    FileHandler.save(t);
   }
 }
