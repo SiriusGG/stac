@@ -61,7 +61,6 @@ public class AvailableButtons {
   }
 
   public static String getKeyFromKeyCode(final int keyCode) {
-    String s = "";
     switch (keyCode) {
       case 30:
         return "A";

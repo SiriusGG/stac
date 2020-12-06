@@ -4,8 +4,6 @@ import com.nwawsoft.stac.ui.Visualization;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
-import javax.swing.*;
-
 public class CounterKeyListener implements NativeKeyListener {
   private final String failedKey;
   private final String successfulKey;

@@ -66,6 +66,6 @@ public class FileHandler {
   }
 
   public static String trimmedFileString(final String temporaryFileName) {
-    return temporaryFileName.replaceAll("[^a-zA-Z0-9\\-_]", ""); // ToDo: Test dis black magic!
+    return temporaryFileName.replaceAll("[^a-zA-Z0-9\\-_]", "");
   }
 }

@@ -23,8 +23,6 @@ public class About extends JFrame {
     Container cp = getContentPane();
     cp.setLayout(null);
 
-    // ToDo
-
     JLabel labelAboutText1 = new JLabel(HTMLTagger.toHTML("Version " + BuildData.VERSION), SwingConstants.CENTER);
     labelAboutText1.setBounds(0, 0, frameWidth, 20);
     cp.add(labelAboutText1);
@@ -67,8 +65,6 @@ public class About extends JFrame {
       }
     });
     cp.add(labelAboutText6);
-
-    // END
 
     setResizable(false);
     setVisible(true);
