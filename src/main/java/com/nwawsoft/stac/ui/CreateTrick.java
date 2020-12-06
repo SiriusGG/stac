@@ -23,7 +23,7 @@ public class CreateTrick extends JFrame {
     calledBy.dispose();
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     int frameWidth = 280;
-    int frameHeight = 140;
+    int frameHeight = 150;
     setSize(frameWidth, frameHeight);
     ComponentFunctions.center(this);
     Container cp = getContentPane();

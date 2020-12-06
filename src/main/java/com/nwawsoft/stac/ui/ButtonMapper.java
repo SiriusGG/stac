@@ -17,7 +17,7 @@ public class ButtonMapper extends JFrame {
     calledBy.dispose();
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     int frameWidth = 300;
-    int frameHeight = 160;
+    int frameHeight = 170;
     setSize(frameWidth, frameHeight);
     ComponentFunctions.center(this);
     Container cp = getContentPane();

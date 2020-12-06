@@ -2,7 +2,6 @@ package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.model.CounterKeyListener;
 import com.nwawsoft.stac.model.Trick;
-import com.nwawsoft.util.ui.ComponentFunctions;
 import org.jnativehook.GlobalScreen;
 
 import javax.swing.*;
@@ -22,14 +21,22 @@ public class Visualization extends JFrame {
   private final JLabel labelSuccessesBackToBackValue;
   private final JLabel labelSuccessesHighscoreValue;
 
+  public final static int FRAME_WIDTH = 340;
+  public final static int FRAME_HEIGHT = 160;
+
   public Visualization(final Trick t) {
     super("STAC");
     this.t = t;
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // ToDo: Ask for save
-    int frameWidth = 340;
-    int frameHeight = 160;
-    setSize(frameWidth, frameHeight);
-    ComponentFunctions.center(this);
+    setSize(FRAME_WIDTH, FRAME_HEIGHT);
+
+    Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+    int width = FRAME_WIDTH + ControlPanel.FRAME_WIDTH;
+    int height = FRAME_HEIGHT + ControlPanel.FRAME_HEIGHT;
+    int x = (d.width - width) / 2;
+    int y = (d.height - height) / 2;
+    setLocation(x + ControlPanel.FRAME_WIDTH, y);
+
     Container cp = getContentPane();
     cp.setLayout(null);
 

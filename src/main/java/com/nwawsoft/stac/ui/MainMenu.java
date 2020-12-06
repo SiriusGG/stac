@@ -28,30 +28,32 @@ public class MainMenu extends JFrame {
       e.printStackTrace();
     }
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    int frameWidth = 200;
-    int frameHeight = 132;
+    int frameWidth = 240;
+    int frameHeight = 200;
+    int modules = 4;
     setSize(frameWidth, frameHeight);
     ComponentFunctions.center(this);
     Container cp = getContentPane();
     cp.setLayout(null);
-    int buttonWidth = frameWidth-7;
-    int buttonHeight = (frameHeight/3)-12;
-    JButton[] buttons = new JButton[3];
+    int buttonWidth = frameWidth-10;
+    int buttonHeight = ((frameHeight/modules)-10);
+    JButton[] buttons = new JButton[modules];
     JButton buttonNew = new JButton("Create New Trick File");
     buttons[0] = buttonNew;
     JButton buttonLoad = new JButton("Load Trick File");
     buttons[1] = buttonLoad;
-    JButton buttonSettings = new JButton("Settings");
+    JButton buttonSettings = new JButton("Key Bindings");
     buttons[2] = buttonSettings;
+    JButton buttonAbout = new JButton("About");
+    buttons[3] = buttonAbout;
     buttonNew.setBounds(0, 0, buttonWidth, buttonHeight);
     buttonLoad.setBounds(0, buttonHeight, buttonWidth, buttonHeight);
     buttonSettings.setBounds(0, (buttonHeight)*2, buttonWidth, buttonHeight);
-    buttonNew.setToolTipText("");
-    buttonLoad.setToolTipText("");
-    buttonSettings.setToolTipText("");
+    buttonAbout.setBounds(0, (buttonHeight)*3, buttonWidth, buttonHeight);
     buttonNew.addActionListener(this::buttonNewActionPerformed);
     buttonLoad.addActionListener(this::buttonLoadActionPerformed);
     buttonSettings.addActionListener(this::buttonSettingsActionPerformed);
+    buttonAbout.addActionListener(this::buttonAboutActionPerformed);
     for(JButton b : buttons) {
       b.setBackground(Color.WHITE);
       cp.add(b);
@@ -67,24 +69,30 @@ public class MainMenu extends JFrame {
   private void buttonLoadActionPerformed(final ActionEvent actionEvent) {
     JFileChooser jfc = new JFileChooser();
     jfc.setCurrentDirectory(new File
-        (System.getProperty("user.home") + System.getProperty("file.separator")+ ".stac"));
-    FileFilter filter = new FileNameExtensionFilter("Siri's Attempt Counter File", "sacf");
+        (System.getProperty("user.home") + System.getProperty("file.separator") + ".stac"));
+    FileFilter filter = new FileNameExtensionFilter("Siri's Attempt Counter File (.sacf)", "sacf");
     jfc.addChoosableFileFilter(filter);
     jfc.setFileFilter(filter);
     jfc.showOpenDialog(null);
     File trickFile = jfc.getSelectedFile();
-    String trickFileString = trickFile.getName();
-    String trickFileStringNoEnding;
-    if (trickFileString.endsWith(".sacf")) {
-      trickFileStringNoEnding = trickFileString.substring(0, trickFileString.indexOf('.'));
-    } else {
-      trickFileStringNoEnding = trickFileString;
+    if (trickFile != null && trickFile.exists()) {
+      String trickFileString = trickFile.getName();
+      String trickFileStringNoEnding;
+      if (trickFileString.endsWith(".sacf")) {
+        trickFileStringNoEnding = trickFileString.substring(0, trickFileString.indexOf('.'));
+      } else {
+        trickFileStringNoEnding = trickFileString;
+      }
+      Trick t = FileHandler.load(trickFileStringNoEnding);
+      new ControlPanel(this, t);
     }
-    Trick t = FileHandler.load(trickFileStringNoEnding);
-    new ControlPanel(this, t);
   }
 
   private void buttonSettingsActionPerformed(final ActionEvent actionEvent) {
     new ButtonMapper(this);
+  }
+
+  private void buttonAboutActionPerformed(final ActionEvent actionEvent) {
+    new About();
   }
 }
