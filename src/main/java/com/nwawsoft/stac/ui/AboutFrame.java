@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class About extends JFrame {
-  public About() {
+public class AboutFrame extends JFrame {
+  public AboutFrame() {
     super("About");
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     int frameWidth = 300;

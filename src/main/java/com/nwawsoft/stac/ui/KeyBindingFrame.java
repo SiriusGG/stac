@@ -8,11 +8,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class ButtonMapper extends JFrame {
+public class KeyBindingFrame extends JFrame {
   private final JComboBox<String> comboBoxFailed;
   private final JComboBox<String> comboBoxSuccessful;
 
-  public ButtonMapper(final JFrame calledBy) {
+  public KeyBindingFrame(final JFrame calledBy) {
     super("Key Bindings");
     calledBy.dispose();
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -78,11 +78,11 @@ public class ButtonMapper extends JFrame {
   }
 
   private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
-    new MainMenu(this);
+    new MainMenuFrame(this);
   }
 
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
     SettingsHandler.save((String)comboBoxFailed.getSelectedItem(), (String)comboBoxSuccessful.getSelectedItem());
-    new MainMenu(this);
+    new MainMenuFrame(this);
   }
 }

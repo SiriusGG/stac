@@ -3,9 +3,6 @@ package com.nwawsoft.stac.model;
 import java.io.*;
 
 public class FileHandler {
-
-  public FileHandler() {}
-
   public static void save(final Trick t) {
     try {
       File d = new File(System.getProperty("user.home") + "/.stac");

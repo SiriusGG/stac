@@ -7,7 +7,7 @@ import org.jnativehook.GlobalScreen;
 import javax.swing.*;
 import java.awt.*;
 
-public class Visualization extends JFrame {
+public class TrickVisualizationFrame extends JFrame {
   private final static String PREFIX_TRICK = "Trick: ";
   private final static String PREFIX_ATTEMPTS = "Attempts: ";
   private final static String PREFIX_SUCCESSES = "Successes: ";
@@ -24,18 +24,18 @@ public class Visualization extends JFrame {
   public final static int FRAME_WIDTH = 340;
   public final static int FRAME_HEIGHT = 160;
 
-  public Visualization(final Trick t) {
+  public TrickVisualizationFrame(final Trick t) {
     super("STAC");
     this.t = t;
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // ToDo: Ask for save
     setSize(FRAME_WIDTH, FRAME_HEIGHT);
 
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-    int width = FRAME_WIDTH + ControlPanel.FRAME_WIDTH;
-    int height = FRAME_HEIGHT + ControlPanel.FRAME_HEIGHT;
+    int width = FRAME_WIDTH + TrickControlPanelFrame.FRAME_WIDTH;
+    int height = FRAME_HEIGHT + TrickControlPanelFrame.FRAME_HEIGHT;
     int x = (d.width - width) / 2;
     int y = (d.height - height) / 2;
-    setLocation(x + ControlPanel.FRAME_WIDTH, y);
+    setLocation(x + TrickControlPanelFrame.FRAME_WIDTH, y);
 
     Container cp = getContentPane();
     cp.setLayout(null);

@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class ControlPanel extends JFrame {
+public class TrickControlPanelFrame extends JFrame {
   public final static int FRAME_WIDTH = 260;
   public final static int FRAME_HEIGHT = 140;
 
@@ -16,9 +16,9 @@ public class ControlPanel extends JFrame {
   private static final String SUCCESSFUL_PREFIX = "Key for successful attempt: ";
 
   private final Trick t;
-  private final Visualization v;
+  private final TrickVisualizationFrame tvf;
 
-  public ControlPanel(final JFrame calledBy, final Trick t) {
+  public TrickControlPanelFrame(final JFrame calledBy, final Trick t) {
     super("Control Panel");
     calledBy.dispose();
     this.t = t;
@@ -26,8 +26,8 @@ public class ControlPanel extends JFrame {
     setSize(FRAME_WIDTH, FRAME_HEIGHT);
 
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-    int width = FRAME_WIDTH + Visualization.FRAME_WIDTH;
-    int height = FRAME_HEIGHT + Visualization.FRAME_HEIGHT;
+    int width = FRAME_WIDTH + TrickVisualizationFrame.FRAME_WIDTH;
+    int height = FRAME_HEIGHT + TrickVisualizationFrame.FRAME_HEIGHT;
     int x = ((d.width - width) / 2) ;
     int y = (d.height - height) / 2;
     setLocation(x, y);
@@ -66,7 +66,7 @@ public class ControlPanel extends JFrame {
     setResizable(false);
     setVisible(true);
 
-    v = new Visualization(t);
+    tvf = new TrickVisualizationFrame(t);
   }
 
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
@@ -75,7 +75,7 @@ public class ControlPanel extends JFrame {
 
   private void buttonMenuActionPerformed(final ActionEvent actionEvent) {
     // ToDo: Ask for save
-    v.dispose();
-    new MainMenu(this);
+    tvf.dispose();
+    new MainMenuFrame(this);
   }
 }

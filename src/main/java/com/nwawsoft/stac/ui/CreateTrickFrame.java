@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class CreateTrick extends JFrame {
+public class CreateTrickFrame extends JFrame {
   private static final String TRICK_FILE_NAME_RULES = "Trick file name may only contain lower and upper case " +
       "characters from a to z, digits from 0 to 9, - (minus) and _ (underscore)";
   private static final String TRICK_NAME_RULES = "Trick name may be almost anything except empty";
@@ -18,7 +18,7 @@ public class CreateTrick extends JFrame {
   private final JTextField textFieldFileName;
   private boolean defaultName = true;
 
-  public CreateTrick(final JFrame calledBy) {
+  public CreateTrickFrame(final JFrame calledBy) {
     super("Add new trick");
     calledBy.dispose();
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -66,7 +66,7 @@ public class CreateTrick extends JFrame {
     if (!newFileName.equals("")) {
       Trick t = new Trick(BuildData.VERSION, newName, newFileName, 0, 0, 0, 0);
       FileHandler.save(t);
-      new ControlPanel(this, t);
+      new TrickControlPanelFrame(this, t);
     } else {
       // ToDO: Give warning or something
     }

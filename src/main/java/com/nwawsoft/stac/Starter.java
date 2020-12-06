@@ -1,6 +1,6 @@
 package com.nwawsoft.stac;
 
-import com.nwawsoft.stac.ui.MainMenu;
+import com.nwawsoft.stac.ui.MainMenuFrame;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
@@ -19,6 +19,6 @@ public class Starter {
     catch (NativeHookException e) {
       e.printStackTrace();
     }
-    new MainMenu();
+    new MainMenuFrame();
   }
 }

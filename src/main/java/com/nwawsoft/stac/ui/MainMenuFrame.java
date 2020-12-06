@@ -13,14 +13,14 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class MainMenu extends JFrame {
+public class MainMenuFrame extends JFrame {
 
-  public MainMenu(final JFrame calledBy) {
+  public MainMenuFrame(final JFrame calledBy) {
     calledBy.dispose();
-    new MainMenu();
+    new MainMenuFrame();
   }
 
-  public MainMenu() {
+  public MainMenuFrame() {
     super("STAC");
     try {
       SettingsHandler.guaranteeSettings();
@@ -63,7 +63,7 @@ public class MainMenu extends JFrame {
   }
 
   private void buttonNewActionPerformed(final ActionEvent actionEvent) {
-    new CreateTrick(this);
+    new CreateTrickFrame(this);
   }
 
   private void buttonLoadActionPerformed(final ActionEvent actionEvent) {
@@ -84,15 +84,15 @@ public class MainMenu extends JFrame {
         trickFileStringNoEnding = trickFileString;
       }
       Trick t = FileHandler.load(trickFileStringNoEnding);
-      new ControlPanel(this, t);
+      new TrickControlPanelFrame(this, t);
     }
   }
 
   private void buttonSettingsActionPerformed(final ActionEvent actionEvent) {
-    new ButtonMapper(this);
+    new KeyBindingFrame(this);
   }
 
   private void buttonAboutActionPerformed(final ActionEvent actionEvent) {
-    new About();
+    new AboutFrame();
   }
 }
