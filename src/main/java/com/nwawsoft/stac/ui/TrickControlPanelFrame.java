@@ -86,7 +86,10 @@ public class TrickControlPanelFrame extends JFrame {
     setResizable(false);
     setVisible(true);
 
+    LAFChanger lc = new LAFChanger();
+    lc.setMotif();
     tvf = new TrickVisualizationFrame(this);
+    lc.setDefault();
   }
 
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {

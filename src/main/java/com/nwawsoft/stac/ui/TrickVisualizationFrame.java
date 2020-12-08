@@ -15,7 +15,7 @@ public class TrickVisualizationFrame extends JFrame {
   private final static String PREFIX_TRICK = "Trick: ";
   private final static String PREFIX_ATTEMPTS = "Attempts: ";
   private final static String PREFIX_SUCCESSES = "Successes: ";
-  private final static String PREFIX_SUCCESSES_BACK_TO_BACK = "Success streak: ";
+  private final static String PREFIX_SUCCESSES_BACK_TO_BACK = "Success Streak: ";
   private final static String PREFIX_SUCCESSES_HIGHSCORE = "Success Highscore: ";
   private final static String PREFIX_SUCCESS_PERCENTAGE = "Success Rate: ";
 
