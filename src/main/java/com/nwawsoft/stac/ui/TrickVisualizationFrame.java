@@ -18,7 +18,6 @@ public class TrickVisualizationFrame extends JFrame {
   private final static String PREFIX_SUCCESSES_HIGHSCORE = "Highscore: ";
 
   private final TrickControlPanelFrame tcpf;
-  private final Trick t;
 
   private final JLabel labelAttemptsValue;
   private final JLabel labelSuccessesValue;
@@ -31,7 +30,7 @@ public class TrickVisualizationFrame extends JFrame {
   public TrickVisualizationFrame(final TrickControlPanelFrame tcpf) {
     super("Visualization");
     this.tcpf = tcpf;
-    t = tcpf.getTrick();
+    tcpf.getTrick();
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     setSize(FRAME_WIDTH, FRAME_HEIGHT);
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -61,11 +60,11 @@ public class TrickVisualizationFrame extends JFrame {
     JLabel labelSuccesses = new JLabel(PREFIX_SUCCESSES);
     JLabel labelSuccessesBackToBack = new JLabel(PREFIX_SUCCESSES_BACK_TO_BACK);
     JLabel labelSuccessesHighscore = new JLabel(PREFIX_SUCCESSES_HIGHSCORE);
-    JLabel labelTrickNameValue = new JLabel(t.getName());
-    labelAttemptsValue = new JLabel("" + t.getAttempts());
-    labelSuccessesValue = new JLabel("" + t.getSuccesses());
-    labelSuccessesBackToBackValue = new JLabel("" + t.getSuccessesBackToBack());
-    labelSuccessesHighscoreValue = new JLabel("" + t.getSuccessesHighscore());
+    JLabel labelTrickNameValue = new JLabel(tcpf.getTrick().getName());
+    labelAttemptsValue = new JLabel("" + tcpf.getTrick().getAttempts());
+    labelSuccessesValue = new JLabel("" + tcpf.getTrick().getSuccesses());
+    labelSuccessesBackToBackValue = new JLabel("" + tcpf.getTrick().getSuccessesBackToBack());
+    labelSuccessesHighscoreValue = new JLabel("" + tcpf.getTrick().getSuccessesHighscore());
     labelTrickName.setBounds(10, 10, left_column_width, 20);
     labelTrickNameValue.setBounds(right_column_start, 10, 2000, 20);
     labelAttempts.setBounds(10, 30, left_column_width, 20);
@@ -89,26 +88,26 @@ public class TrickVisualizationFrame extends JFrame {
     cp.add(labelSuccessesHighscore);
     cp.add(labelSuccessesHighscoreValue);
 
-    GlobalScreen.addNativeKeyListener(new CounterKeyListener(this, t));
+    GlobalScreen.addNativeKeyListener(new CounterKeyListener(this));
 
     setResizable(true);
     setVisible(true);
   }
 
   public void updateAttempts() {
-    labelAttemptsValue.setText("" + t.getAttempts());
+    labelAttemptsValue.setText("" + tcpf.getTrick().getAttempts());
   }
 
   public void updateSuccesses() {
-    labelSuccessesValue.setText("" + t.getSuccesses());
+    labelSuccessesValue.setText("" + tcpf.getTrick().getSuccesses());
   }
 
   public void updateSuccessesBackToBack() {
-    labelSuccessesBackToBackValue.setText("" + t.getSuccessesBackToBack());
+    labelSuccessesBackToBackValue.setText("" + tcpf.getTrick().getSuccessesBackToBack());
   }
 
   public void updateSuccessesHighscore() {
-    labelSuccessesHighscoreValue.setText("" + t.getSuccessesHighscore());
+    labelSuccessesHighscoreValue.setText("" + tcpf.getTrick().getSuccessesHighscore());
   }
 
   public void updateStats() {

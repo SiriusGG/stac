@@ -7,12 +7,10 @@ import org.jnativehook.keyboard.NativeKeyListener;
 public class CounterKeyListener implements NativeKeyListener {
   private final String failedKey;
   private final String successfulKey;
-  private final Trick t;
   private final TrickVisualizationFrame tvf;
 
-  public CounterKeyListener(final TrickVisualizationFrame tvf, final Trick t) {
+  public CounterKeyListener(final TrickVisualizationFrame tvf) {
     this.tvf = tvf;
-    this.t = t;
     String[] settings = SettingsHandler.load();
     failedKey = settings[0];
     successfulKey = settings[1];
@@ -24,10 +22,10 @@ public class CounterKeyListener implements NativeKeyListener {
   @Override
   public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
     if (AvailableButtons.getKeyFromKeyCode(nativeEvent.getKeyCode()).equals(failedKey)) {
-      t.recordFail();
+      tvf.getController().getTrick().recordFail();
       tvf.updateStats();
     } else if (AvailableButtons.getKeyFromKeyCode(nativeEvent.getKeyCode()).equals(successfulKey)) {
-      t.recordSuccess();
+      tvf.getController().getTrick().recordSuccess();
       tvf.updateStats();
     }
   }

@@ -11,13 +11,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class TrickControlPanelFrame extends JFrame {
-  public final static int FRAME_WIDTH = 260;
-  public final static int FRAME_HEIGHT = 140;
+  public final static int FRAME_WIDTH = 280;
+  public final static int FRAME_HEIGHT = 220;
 
   private static final String FAILED_PREFIX = "Key for failed attempt: ";
   private static final String SUCCESSFUL_PREFIX = "Key for successful attempt: ";
 
-  private final Trick t;
+  private Trick t;
   private final TrickVisualizationFrame tvf;
 
   public TrickControlPanelFrame(final JFrame calledBy, final Trick t) {
@@ -45,6 +45,7 @@ public class TrickControlPanelFrame extends JFrame {
       }
     });
 
+    int buttonHeight = 30;
     JLabel labelFailedKey = new JLabel();
     JLabel labelFailedKeyValue = new JLabel();
     JLabel labelSuccessfulKey = new JLabel();
@@ -57,21 +58,30 @@ public class TrickControlPanelFrame extends JFrame {
     labelFailedKeyValue.setText(SettingsHandler.load()[0]);
     labelSuccessfulKey.setText(SUCCESSFUL_PREFIX);
     labelSuccessfulKeyValue.setText(SettingsHandler.load()[1]);
+    JButton buttonMenu = new JButton("Back to Menu");
+    buttonMenu.setBounds(10, 70, 140, buttonHeight);
+    buttonMenu.addActionListener(this::buttonMenuActionPerformed);
+    JButton buttonSave = new JButton("Save");
+    buttonSave.setBounds(160, 70, 80, buttonHeight);
+    buttonSave.addActionListener(this::buttonSaveActionPerformed);
+    JButton buttonManualFail = new JButton("Manual Fail");
+    buttonManualFail.setBounds(10, 110, 100, buttonHeight);
+    buttonManualFail.addActionListener(this::buttonManualFailActionPerformed);
+    JButton buttonManualSuccess = new JButton("Manual Success");
+    buttonManualSuccess.setBounds(120, 110, 140, buttonHeight);
+    buttonManualSuccess.addActionListener(this::buttonManualSuccessActionPerformed);
+    JButton buttonReset = new JButton("Reset from file");
+    buttonReset.setBounds(10, 150, 140, buttonHeight);
+    buttonReset.addActionListener(this::buttonResetActionPerformed);
     cp.add(labelFailedKey);
     cp.add(labelFailedKeyValue);
     cp.add(labelSuccessfulKey);
     cp.add(labelSuccessfulKeyValue);
-
-    JButton buttonMenu = new JButton("Back to Menu");
-    buttonMenu.setBounds(10, 70, 140, 30);
-    buttonMenu.addActionListener(this::buttonMenuActionPerformed);
-
-    JButton buttonSave = new JButton("Save");
-    buttonSave.setBounds(160, 70, 80, 30);
-    buttonSave.addActionListener(this::buttonSaveActionPerformed);
-
     cp.add(buttonMenu);
     cp.add(buttonSave);
+    cp.add(buttonManualFail);
+    cp.add(buttonManualSuccess);
+    cp.add(buttonReset);
 
     setResizable(false);
     setVisible(true);
@@ -96,11 +106,36 @@ public class TrickControlPanelFrame extends JFrame {
     }
   }
 
+  private void buttonManualFailActionPerformed(final ActionEvent actionEvent) {
+    t.recordFail();
+    tvf.updateStats();
+  }
+
+  private void buttonManualSuccessActionPerformed(final ActionEvent actionEvent) {
+    t.recordSuccess();
+    tvf.updateStats();
+  }
+
+  private void buttonResetActionPerformed(final ActionEvent actionEvent) {
+    if (!getTrick().equals(FileHandler.load(getTrick().getFileName()))) {
+      new ResetWarningDialog(this);
+    }
+  }
+
   public TrickVisualizationFrame getVisualization() {
     return tvf;
   }
 
   public void openSaveDialogOnClose() {
     new SaveWarningDialog(this, false);
+  }
+
+  public static void main(String[] args) {
+    new TrickControlPanelFrame(new JFrame(), FileHandler.load("x"));
+  }
+
+  public void reloadTrick() {
+    t = FileHandler.load(t.getFileName());
+    tvf.updateStats();
   }
 }
