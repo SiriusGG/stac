@@ -130,10 +130,6 @@ public class TrickControlPanelFrame extends JFrame {
     new SaveWarningDialog(this, false);
   }
 
-  public static void main(String[] args) {
-    new TrickControlPanelFrame(new JFrame(), FileHandler.load("x"));
-  }
-
   public void reloadTrick() {
     t = FileHandler.load(t.getFileName());
     tvf.updateStats();
