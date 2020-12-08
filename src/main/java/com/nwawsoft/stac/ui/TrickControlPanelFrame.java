@@ -7,6 +7,8 @@ import com.nwawsoft.stac.model.Trick;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class TrickControlPanelFrame extends JFrame {
   public final static int FRAME_WIDTH = 260;
@@ -22,18 +24,26 @@ public class TrickControlPanelFrame extends JFrame {
     super("Control Panel");
     calledBy.dispose();
     this.t = t;
-    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // ToDo: Ask for save
+    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     setSize(FRAME_WIDTH, FRAME_HEIGHT);
-
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     int width = FRAME_WIDTH + TrickVisualizationFrame.FRAME_WIDTH;
     int height = FRAME_HEIGHT + TrickVisualizationFrame.FRAME_HEIGHT;
     int x = ((d.width - width) / 2) ;
     int y = (d.height - height) / 2;
     setLocation(x, y);
-
     Container cp = getContentPane();
     cp.setLayout(null);
+
+    this.addWindowListener(new WindowAdapter(){
+      public void windowClosing(WindowEvent e){
+        if (!getTrick().equals(FileHandler.load(getTrick().getFileName()))) {
+          openSaveDialogOnClose();
+        } else {
+          System.exit(0);
+        }
+      }
+    });
 
     JLabel labelFailedKey = new JLabel();
     JLabel labelFailedKeyValue = new JLabel();
@@ -66,16 +76,31 @@ public class TrickControlPanelFrame extends JFrame {
     setResizable(false);
     setVisible(true);
 
-    tvf = new TrickVisualizationFrame(t);
+    tvf = new TrickVisualizationFrame(this);
   }
 
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
     FileHandler.save(t);
   }
 
+  public Trick getTrick() {
+    return t;
+  }
+
   private void buttonMenuActionPerformed(final ActionEvent actionEvent) {
-    // ToDo: Ask for save
-    tvf.dispose();
-    new MainMenuFrame(this);
+    if (!getTrick().equals(FileHandler.load(getTrick().getFileName()))) {
+      new SaveWarningDialog(this, true);
+    } else {
+      tvf.dispose();
+      new MainMenuFrame(this);
+    }
+  }
+
+  public TrickVisualizationFrame getVisualization() {
+    return tvf;
+  }
+
+  public void openSaveDialogOnClose() {
+    new SaveWarningDialog(this, false);
   }
 }

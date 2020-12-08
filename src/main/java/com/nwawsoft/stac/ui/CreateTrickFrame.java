@@ -68,7 +68,7 @@ public class CreateTrickFrame extends JFrame {
       FileHandler.save(t);
       new TrickControlPanelFrame(this, t);
     } else {
-      // ToDO: Give warning or something
+      new FileNameDialog(this);
     }
   }
 

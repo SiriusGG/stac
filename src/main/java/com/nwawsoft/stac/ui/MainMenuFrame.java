@@ -15,13 +15,33 @@ import java.io.IOException;
 
 public class MainMenuFrame extends JFrame {
 
-  public MainMenuFrame(final JFrame calledBy) {
-    calledBy.dispose();
-    new MainMenuFrame();
-  }
-
   public MainMenuFrame() {
     super("STAC");
+    init();
+  }
+
+  public MainMenuFrame(final SaveWarningDialog calledBy) {
+    super("STAC");
+    calledBy.getCalledByController().getVisualization().dispose();
+    calledBy.getCalledByController().dispose();
+    calledBy.dispose();
+    init();
+  }
+
+  public MainMenuFrame(final TrickControlPanelFrame calledBy) {
+    super("STAC");
+    calledBy.getVisualization().dispose();
+    calledBy.dispose();
+    init();
+  }
+
+  public MainMenuFrame(final KeyBindingFrame calledBy) {
+    super("STAC");
+    calledBy.dispose();
+    init();
+  }
+
+  public void init() {
     try {
       SettingsHandler.guaranteeSettings();
     } catch (IOException e) {

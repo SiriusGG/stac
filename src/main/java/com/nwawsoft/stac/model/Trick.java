@@ -2,6 +2,8 @@ package com.nwawsoft.stac.model;
 
 import com.nwawsoft.stac.BuildData;
 
+import java.util.Objects;
+
 public class Trick {
   private String version;
   private String name;
@@ -80,5 +82,23 @@ public class Trick {
     if (successesBackToBack > successesHighscore) {
       successesHighscore = successesBackToBack;
     }
+  }
+
+  @Override
+  public boolean equals(final Object otherTrick) {
+    if (this == otherTrick) {
+      return true;
+    }
+    if (otherTrick == null || getClass() != otherTrick.getClass()) {
+      return false;
+    }
+    Trick trick = (Trick) otherTrick;
+    return version.equals(trick.version) &&
+        name.equals(trick.name) &&
+        fileName.equals(trick.fileName) &&
+        attempts == trick.attempts &&
+        successes == trick.successes &&
+        successesBackToBack == trick.successesBackToBack &&
+        successesHighscore == trick.successesHighscore;
   }
 }
