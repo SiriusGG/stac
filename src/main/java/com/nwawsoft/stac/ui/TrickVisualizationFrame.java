@@ -2,35 +2,43 @@ package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.model.CounterKeyListener;
 import com.nwawsoft.stac.model.FileHandler;
-import com.nwawsoft.stac.model.Trick;
 import org.jnativehook.GlobalScreen;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 public class TrickVisualizationFrame extends JFrame {
   private final static String PREFIX_TRICK = "Trick: ";
   private final static String PREFIX_ATTEMPTS = "Attempts: ";
   private final static String PREFIX_SUCCESSES = "Successes: ";
-  private final static String PREFIX_SUCCESSES_BACK_TO_BACK = "Successes in a row: ";
-  private final static String PREFIX_SUCCESSES_HIGHSCORE = "Highscore: ";
+  private final static String PREFIX_SUCCESSES_BACK_TO_BACK = "Success streak: ";
+  private final static String PREFIX_SUCCESSES_HIGHSCORE = "Success Highscore: ";
+  private final static String PREFIX_SUCCESS_PERCENTAGE = "Success Rate: ";
 
   private final TrickControlPanelFrame tcpf;
 
-  private final JLabel labelAttemptsValue;
-  private final JLabel labelSuccessesValue;
-  private final JLabel labelSuccessesBackToBackValue;
-  private final JLabel labelSuccessesHighscoreValue;
-
   public final static int FRAME_WIDTH = 340;
-  public final static int FRAME_HEIGHT = 160;
+  public final static int FRAME_HEIGHT = 180;
+
+  private JLabel labelAttempts;
+  private JLabel labelSuccesses;
+  private JLabel labelSuccessesBackToBack;
+  private JLabel labelSuccessesHighscore;
+  private JLabel labelSuccessPercentage;
+
+  private final DecimalFormat df = new DecimalFormat("#.##");
 
   public TrickVisualizationFrame(final TrickControlPanelFrame tcpf) {
     super("Visualization");
     this.tcpf = tcpf;
-    tcpf.getTrick();
+    init();
+  }
+
+  public void init() {
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     setSize(FRAME_WIDTH, FRAME_HEIGHT);
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -42,8 +50,8 @@ public class TrickVisualizationFrame extends JFrame {
     Container cp = getContentPane();
     cp.setLayout(null);
 
-    this.addWindowListener(new WindowAdapter(){
-      public void windowClosing(WindowEvent e){
+    this.addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
         if (!tcpf.getTrick().equals(FileHandler.load(tcpf.getTrick().getFileName()))) {
           openSaveDialog();
         } else {
@@ -52,41 +60,27 @@ public class TrickVisualizationFrame extends JFrame {
       }
     });
 
-    int left_column_width = 120;
-    int right_column_start = left_column_width + 20;
-    int right_column_width = 150;
-    JLabel labelTrickName = new JLabel(PREFIX_TRICK);
-    JLabel labelAttempts = new JLabel(PREFIX_ATTEMPTS);
-    JLabel labelSuccesses = new JLabel(PREFIX_SUCCESSES);
-    JLabel labelSuccessesBackToBack = new JLabel(PREFIX_SUCCESSES_BACK_TO_BACK);
-    JLabel labelSuccessesHighscore = new JLabel(PREFIX_SUCCESSES_HIGHSCORE);
-    JLabel labelTrickNameValue = new JLabel(tcpf.getTrick().getName());
-    labelAttemptsValue = new JLabel("" + tcpf.getTrick().getAttempts());
-    labelSuccessesValue = new JLabel("" + tcpf.getTrick().getSuccesses());
-    labelSuccessesBackToBackValue = new JLabel("" + tcpf.getTrick().getSuccessesBackToBack());
-    labelSuccessesHighscoreValue = new JLabel("" + tcpf.getTrick().getSuccessesHighscore());
-    labelTrickName.setBounds(10, 10, left_column_width, 20);
-    labelTrickNameValue.setBounds(right_column_start, 10, 2000, 20);
-    labelAttempts.setBounds(10, 30, left_column_width, 20);
-    labelAttemptsValue.setBounds(right_column_start, 30, right_column_width, 20);
-    labelSuccesses.setBounds(10, 50, left_column_width, 20);
-    labelSuccessesValue.setBounds(right_column_start, 50, right_column_width, 20);
-    labelSuccessesBackToBack.setBounds(10, 70, left_column_width, 20);
-    labelSuccessesBackToBackValue.setBounds(right_column_start, 70, right_column_width, 20);
-    labelSuccessesHighscore.setBounds(10, 90, left_column_width, 20);
-    labelSuccessesHighscoreValue.setBounds(right_column_start, 90, right_column_width, 20);
+    JLabel labelTrickName = new JLabel(PREFIX_TRICK + tcpf.getTrick().getName());
+    labelAttempts = new JLabel(PREFIX_ATTEMPTS + tcpf.getTrick().getAttempts());
+    labelSuccesses = new JLabel(PREFIX_SUCCESSES + tcpf.getTrick().getSuccesses());
+    labelSuccessesBackToBack = new JLabel(PREFIX_SUCCESSES_BACK_TO_BACK + tcpf.getTrick().getSuccessesBackToBack());
+    labelSuccessesHighscore = new JLabel(PREFIX_SUCCESSES_HIGHSCORE + tcpf.getTrick().getSuccessesHighscore());
+    df.setRoundingMode(RoundingMode.HALF_UP);
+    labelSuccessPercentage = new JLabel(PREFIX_SUCCESS_PERCENTAGE + getSuccessPercentage());
+    labelTrickName.setBounds(10, 10, 4096, 20);
+    labelAttempts.setBounds(10, 30, FRAME_WIDTH-20, 20);
+    labelSuccesses.setBounds(10, 50, FRAME_WIDTH-20, 20);
+    labelSuccessesBackToBack.setBounds(10, 70, FRAME_WIDTH-20, 20);
+    labelSuccessesHighscore.setBounds(10, 90, FRAME_WIDTH-20, 20);
+    labelSuccessPercentage.setBounds(10, 110, FRAME_WIDTH-20, 20);
 
     cp.setBackground(Color.WHITE);
     cp.add(labelTrickName);
-    cp.add(labelTrickNameValue);
     cp.add(labelAttempts);
-    cp.add(labelAttemptsValue);
     cp.add(labelSuccesses);
-    cp.add(labelSuccessesValue);
     cp.add(labelSuccessesBackToBack);
-    cp.add(labelSuccessesBackToBackValue);
     cp.add(labelSuccessesHighscore);
-    cp.add(labelSuccessesHighscoreValue);
+    cp.add(labelSuccessPercentage);
 
     GlobalScreen.addNativeKeyListener(new CounterKeyListener(this));
 
@@ -95,19 +89,23 @@ public class TrickVisualizationFrame extends JFrame {
   }
 
   public void updateAttempts() {
-    labelAttemptsValue.setText("" + tcpf.getTrick().getAttempts());
+    labelAttempts.setText(PREFIX_ATTEMPTS + tcpf.getTrick().getAttempts());
   }
 
   public void updateSuccesses() {
-    labelSuccessesValue.setText("" + tcpf.getTrick().getSuccesses());
+    labelSuccesses.setText(PREFIX_SUCCESSES + tcpf.getTrick().getSuccesses());
   }
 
   public void updateSuccessesBackToBack() {
-    labelSuccessesBackToBackValue.setText("" + tcpf.getTrick().getSuccessesBackToBack());
+    labelSuccessesBackToBack.setText(PREFIX_SUCCESSES_BACK_TO_BACK + tcpf.getTrick().getSuccessesBackToBack());
   }
 
   public void updateSuccessesHighscore() {
-    labelSuccessesHighscoreValue.setText("" + tcpf.getTrick().getSuccessesHighscore());
+    labelSuccessesHighscore.setText(PREFIX_SUCCESSES_HIGHSCORE + tcpf.getTrick().getSuccessesHighscore());
+  }
+
+  public void updateSuccessPercentage() {
+    labelSuccessPercentage.setText(PREFIX_SUCCESS_PERCENTAGE + getSuccessPercentage());
   }
 
   public void updateStats() {
@@ -115,6 +113,7 @@ public class TrickVisualizationFrame extends JFrame {
     updateSuccesses();
     updateSuccessesBackToBack();
     updateSuccessesHighscore();
+    updateSuccessPercentage();
   }
 
   public void openSaveDialog() {
@@ -123,5 +122,13 @@ public class TrickVisualizationFrame extends JFrame {
 
   public TrickControlPanelFrame getController() {
     return tcpf;
+  }
+
+  public String getSuccessPercentage() {
+    if (tcpf.getTrick().getAttempts() != 0) {
+      return df.format(((double) tcpf.getTrick().getSuccesses() * 100) / tcpf.getTrick().getAttempts()) + "%";
+    } else {
+      return "undefined";
+    }
   }
 }
