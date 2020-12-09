@@ -3,15 +3,12 @@ A lightweight utility for counting attempts and success rates.
 
 This software is built with Java and runs on all Windows, Linux and MacOS machines.
 
+<img src="https://www.siriusgg.com/res/graphics/stac/portal_ingame_obs.png" alt="Usage example in Portal 2 in upper left corner" width="752"/>
+
 ## Download
 
 [Get the latest release here](https://github.com/JGC-Sirius/siris-trick-attempt-counter/releases/latest)
 
-## Dependencies:
+## Quick start
 
-- The [Java Runtime Environment](https://www.java.com/de/download/manual.jsp)
-
-## Libraries used:
-
-- [jnativehook](https://github.com/kwhat/jnativehook)
-- [nwawsoft-java-util](https://github.com/nwawrzyniak/nwawsoft-java-util)
+[Here is all you need to know about getting STAC to run and using it](./HOW_TO.md)
