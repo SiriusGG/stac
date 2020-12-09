@@ -12,8 +12,3 @@ This software is built with Java and runs on all Windows, Linux and MacOS machin
 ## Quick start
 
 [Here is some information about starting and using STAC](./HOW_TO.md)
-
-## Libraries used:
-
-- [jnativehook](https://github.com/kwhat/jnativehook)
-- [nwawsoft-java-util](https://github.com/nwawrzyniak/nwawsoft-java-util)
