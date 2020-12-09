@@ -7,9 +7,9 @@ This software is built with Java and runs on all Windows, Linux and MacOS machin
 
 [Get the latest release here](https://github.com/JGC-Sirius/siris-trick-attempt-counter/releases/latest)
 
-## Dependencies:
+## Quick start
 
-- The [Java Runtime Environment](https://www.java.com/de/download/manual.jsp)
+[Here is some information about starting and using STAC](./HOWTO.md)
 
 ## Libraries used:
 
