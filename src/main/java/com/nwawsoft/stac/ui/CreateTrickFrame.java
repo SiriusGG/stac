@@ -1,13 +1,12 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.BuildData;
+import com.nwawsoft.stac.controller.UIController;
 import com.nwawsoft.stac.model.FileHandler;
-import com.nwawsoft.stac.model.Trick;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 
 public class CreateTrickFrame extends JFrame {
   private static final String TRICK_FILE_NAME_RULES = "Trick file name may only contain lower and upper case " +
@@ -46,9 +45,39 @@ public class CreateTrickFrame extends JFrame {
     labelFileName.setToolTipText(TRICK_FILE_NAME_RULES);
     textFieldFileName.setToolTipText(TRICK_FILE_NAME_RULES);
 
-    textFieldName.addActionListener(this::textFieldNameActionPerformed);
-    textFieldFileName.addActionListener(this::textFieldFileNameActionPerformed);
+    textFieldFileName.setForeground(Color.GRAY);
+
     buttonAddTrick.addActionListener(this::buttonAddTrickActionPerformed);
+
+    KeyListener nameListener = new KeyListener() {
+      public void keyTyped(KeyEvent e) {}
+      public void keyPressed(KeyEvent e) {}
+      public void keyReleased(KeyEvent e) {
+        if (defaultName) {
+          textFieldFileName.setText(FileHandler.trimmedFileString(textFieldName.getText()));
+        }
+      }
+    };
+    textFieldName.addKeyListener(nameListener);
+
+    KeyListener fileNameListener = new KeyListener() {
+      public void keyTyped(KeyEvent e) {}
+      public void keyPressed(KeyEvent e) {}
+      public void keyReleased(KeyEvent e) {
+        defaultName = false;
+      }
+    };
+    textFieldFileName.addKeyListener(fileNameListener);
+
+    textFieldFileName.addMouseListener(new MouseAdapter(){
+      @Override
+      public void mouseClicked(MouseEvent e){
+        if (defaultName) {
+          textFieldFileName.selectAll();
+          textFieldFileName.setForeground(Color.BLACK);
+        }
+      }
+    });
 
     cp.add(labelName);
     cp.add(textFieldName);
@@ -61,26 +90,7 @@ public class CreateTrickFrame extends JFrame {
   }
 
   private void buttonAddTrickActionPerformed(final ActionEvent actionEvent) {
-    String newName = textFieldName.getText().trim();
-    String newFileName = FileHandler.trimmedFileString(textFieldFileName.getText());
-    if (!newFileName.equals("")) {
-      Trick t = new Trick(BuildData.VERSION, newName, newFileName, 0, 0, 0, 0);
-      FileHandler.save(t);
-      new TrickControlPanelFrame(this, t);
-    } else {
-      new FileNameDialog(this);
-    }
-  }
-
-  private void textFieldNameActionPerformed(final ActionEvent actionEvent) { // ToDo: make listener trigger on every key stroke
-    if (defaultName) {
-      // ToDO: gray text
-      textFieldFileName.setText(FileHandler.trimmedFileString(textFieldName.getText()));
-    }
-  }
-
-  private void textFieldFileNameActionPerformed(final ActionEvent actionEvent) { // ToDo: make listener trigger on every key stroke
-    defaultName = false;
-    // ToDo: black text
+    UIController.addTrick(textFieldName.getText().trim(),
+        FileHandler.trimmedFileString(textFieldFileName.getText()), this);
   }
 }

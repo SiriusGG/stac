@@ -1,5 +1,6 @@
 package com.nwawsoft.stac.ui;
 
+import com.nwawsoft.stac.controller.LAFChanger;
 import com.nwawsoft.stac.model.FileHandler;
 import com.nwawsoft.stac.model.SettingsHandler;
 import com.nwawsoft.stac.model.Trick;
