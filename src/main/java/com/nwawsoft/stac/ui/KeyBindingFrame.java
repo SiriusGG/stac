@@ -1,7 +1,7 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.model.AvailableButtons;
-import com.nwawsoft.stac.model.SettingsHandler;
+import com.nwawsoft.stac.model.SettingsFileHandler;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
@@ -62,7 +62,7 @@ public class KeyBindingFrame extends JFrame {
     buttonCancel.addActionListener(this::buttonCancelActionPerformed);
     buttonSave.addActionListener(this::buttonSaveActionPerformed);
 
-    String[] settings = SettingsHandler.load();
+    String[] settings = SettingsFileHandler.load();
     comboBoxFailed.setSelectedItem(settings[0]);
     comboBoxSuccessful.setSelectedItem(settings[1]);
 
@@ -82,7 +82,7 @@ public class KeyBindingFrame extends JFrame {
   }
 
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
-    SettingsHandler.save((String)comboBoxFailed.getSelectedItem(), (String)comboBoxSuccessful.getSelectedItem());
+    SettingsFileHandler.save((String)comboBoxFailed.getSelectedItem(), (String)comboBoxSuccessful.getSelectedItem());
     new MainMenuFrame(this);
   }
 }

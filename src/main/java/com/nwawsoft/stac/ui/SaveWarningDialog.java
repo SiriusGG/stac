@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.model.FileHandler;
+import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.util.html.HTMLTagger;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
@@ -73,18 +73,18 @@ public class SaveWarningDialog extends JDialog {
   public void buttonYes_ActionPerformed(final ActionEvent evt) {
     switch (mode) {
       case "controller, close":
-        FileHandler.save(calledByController.getTrick());
+        TrickFileHandler.save(calledByController.getTrick());
         System.exit(0);
         break;
       case "controller, menu":
-        FileHandler.save(calledByController.getTrick());
+        TrickFileHandler.save(calledByController.getTrick());
         calledByController.getVisualization().dispose();
         calledByController.dispose();
         new MainMenuFrame(this);
         dispose();
         break;
       case "visualization, close":
-        FileHandler.save(calledByVisualization.getController().getTrick());
+        TrickFileHandler.save(calledByVisualization.getController().getTrick());
         System.exit(0);
         break;
     }

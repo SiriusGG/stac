@@ -1,7 +1,7 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.controller.UIController;
-import com.nwawsoft.stac.model.FileHandler;
+import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
@@ -50,32 +50,48 @@ public class CreateTrickFrame extends JFrame {
     buttonAddTrick.addActionListener(this::buttonAddTrickActionPerformed);
 
     KeyListener nameListener = new KeyListener() {
-      public void keyTyped(KeyEvent e) {}
-      public void keyPressed(KeyEvent e) {}
+      public void keyTyped(KeyEvent e) {
+      }
+
+      public void keyPressed(KeyEvent e) {
+      }
+
       public void keyReleased(KeyEvent e) {
         if (defaultName) {
-          textFieldFileName.setText(FileHandler.trimmedFileString(textFieldName.getText()));
+          textFieldFileName.setText(TrickFileHandler.trimmedFileString(textFieldName.getText()));
         }
       }
     };
     textFieldName.addKeyListener(nameListener);
 
     KeyListener fileNameListener = new KeyListener() {
-      public void keyTyped(KeyEvent e) {}
-      public void keyPressed(KeyEvent e) {}
+      public void keyTyped(KeyEvent e) {
+      }
+
+      public void keyPressed(KeyEvent e) {
+      }
+
       public void keyReleased(KeyEvent e) {
         defaultName = false;
       }
     };
     textFieldFileName.addKeyListener(fileNameListener);
 
-    textFieldFileName.addMouseListener(new MouseAdapter(){
+    textFieldFileName.addMouseListener(new MouseAdapter() {
       @Override
-      public void mouseClicked(MouseEvent e){
+      public void mouseClicked(MouseEvent e) {
         if (defaultName) {
           textFieldFileName.selectAll();
           textFieldFileName.setForeground(Color.BLACK);
         }
+      }
+    });
+
+    textFieldFileName.addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        super.focusGained(e);
+        textFieldFileName.setForeground(Color.BLACK);
       }
     });
 
@@ -91,6 +107,6 @@ public class CreateTrickFrame extends JFrame {
 
   private void buttonAddTrickActionPerformed(final ActionEvent actionEvent) {
     UIController.addTrick(textFieldName.getText().trim(),
-        FileHandler.trimmedFileString(textFieldFileName.getText()), this);
+        TrickFileHandler.trimmedFileString(textFieldFileName.getText()), this);
   }
 }

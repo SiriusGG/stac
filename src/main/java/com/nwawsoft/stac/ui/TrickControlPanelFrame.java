@@ -1,8 +1,8 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.controller.LAFChanger;
-import com.nwawsoft.stac.model.FileHandler;
-import com.nwawsoft.stac.model.SettingsHandler;
+import com.nwawsoft.stac.model.TrickFileHandler;
+import com.nwawsoft.stac.model.SettingsFileHandler;
 import com.nwawsoft.stac.model.Trick;
 
 import javax.swing.*;
@@ -13,7 +13,7 @@ import java.awt.event.WindowEvent;
 
 public class TrickControlPanelFrame extends JFrame {
   public final static int FRAME_WIDTH = 280;
-  public final static int FRAME_HEIGHT = 220;
+  public final static int FRAME_HEIGHT = 230;
 
   private static final String FAILED_PREFIX = "Key for failed attempt: ";
   private static final String SUCCESSFUL_PREFIX = "Key for successful attempt: ";
@@ -38,7 +38,7 @@ public class TrickControlPanelFrame extends JFrame {
 
     this.addWindowListener(new WindowAdapter(){
       public void windowClosing(WindowEvent e){
-        if (!getTrick().equals(FileHandler.load(getTrick().getFileName()))) {
+        if (!getTrick().equals(TrickFileHandler.load(getTrick().getFileName()))) {
           openSaveDialogOnClose();
         } else {
           System.exit(0);
@@ -56,9 +56,9 @@ public class TrickControlPanelFrame extends JFrame {
     labelSuccessfulKey.setBounds(10, 40, 170, 20);
     labelSuccessfulKeyValue.setBounds(180, 40, 30, 20);
     labelFailedKey.setText(FAILED_PREFIX);
-    labelFailedKeyValue.setText(SettingsHandler.load()[0]);
+    labelFailedKeyValue.setText(SettingsFileHandler.load()[0]);
     labelSuccessfulKey.setText(SUCCESSFUL_PREFIX);
-    labelSuccessfulKeyValue.setText(SettingsHandler.load()[1]);
+    labelSuccessfulKeyValue.setText(SettingsFileHandler.load()[1]);
     JButton buttonMenu = new JButton("Back to Menu");
     buttonMenu.setBounds(10, 70, 140, buttonHeight);
     buttonMenu.addActionListener(this::buttonMenuActionPerformed);
@@ -94,7 +94,7 @@ public class TrickControlPanelFrame extends JFrame {
   }
 
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
-    FileHandler.save(t);
+    TrickFileHandler.save(t);
   }
 
   public Trick getTrick() {
@@ -102,7 +102,7 @@ public class TrickControlPanelFrame extends JFrame {
   }
 
   private void buttonMenuActionPerformed(final ActionEvent actionEvent) {
-    if (!getTrick().equals(FileHandler.load(getTrick().getFileName()))) {
+    if (!getTrick().equals(TrickFileHandler.load(getTrick().getFileName()))) {
       new SaveWarningDialog(this, true);
     } else {
       tvf.dispose();
@@ -121,7 +121,7 @@ public class TrickControlPanelFrame extends JFrame {
   }
 
   private void buttonResetActionPerformed(final ActionEvent actionEvent) {
-    if (!getTrick().equals(FileHandler.load(getTrick().getFileName()))) {
+    if (!getTrick().equals(TrickFileHandler.load(getTrick().getFileName()))) {
       new ResetWarningDialog(this);
     }
   }
@@ -135,7 +135,7 @@ public class TrickControlPanelFrame extends JFrame {
   }
 
   public void reloadTrick() {
-    t = FileHandler.load(t.getFileName());
+    t = TrickFileHandler.load(t.getFileName());
     tvf.updateStats();
   }
 }

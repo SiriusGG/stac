@@ -1,7 +1,7 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.model.FileHandler;
-import com.nwawsoft.stac.model.SettingsHandler;
+import com.nwawsoft.stac.model.TrickFileHandler;
+import com.nwawsoft.stac.model.SettingsFileHandler;
 import com.nwawsoft.stac.model.Trick;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
@@ -43,7 +43,7 @@ public class MainMenuFrame extends JFrame {
 
   public void init() {
     try {
-      SettingsHandler.guaranteeSettings();
+      SettingsFileHandler.guaranteeSettings();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -103,7 +103,7 @@ public class MainMenuFrame extends JFrame {
       } else {
         trickFileStringNoEnding = trickFileString;
       }
-      Trick t = FileHandler.load(trickFileStringNoEnding);
+      Trick t = TrickFileHandler.load(trickFileStringNoEnding);
       new TrickControlPanelFrame(this, t);
     }
   }

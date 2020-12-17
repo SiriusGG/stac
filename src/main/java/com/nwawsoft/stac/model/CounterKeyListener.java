@@ -11,7 +11,7 @@ public class CounterKeyListener implements NativeKeyListener {
 
   public CounterKeyListener(final TrickVisualizationFrame tvf) {
     this.tvf = tvf;
-    String[] settings = SettingsHandler.load();
+    String[] settings = SettingsFileHandler.load();
     failedKey = settings[0];
     successfulKey = settings[1];
   }
