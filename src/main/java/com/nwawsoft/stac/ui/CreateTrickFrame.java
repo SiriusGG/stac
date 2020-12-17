@@ -66,9 +66,11 @@ public class CreateTrickFrame extends JFrame {
 
     KeyListener fileNameListener = new KeyListener() {
       public void keyTyped(KeyEvent e) {
+        defaultName = false;
       }
 
       public void keyPressed(KeyEvent e) {
+        defaultName = false;
       }
 
       public void keyReleased(KeyEvent e) {
@@ -91,7 +93,10 @@ public class CreateTrickFrame extends JFrame {
       @Override
       public void focusGained(FocusEvent e) {
         super.focusGained(e);
-        textFieldFileName.setForeground(Color.BLACK);
+        if (defaultName) {
+          textFieldFileName.selectAll();
+          textFieldFileName.setForeground(Color.BLACK);
+        }
       }
     });
 
