@@ -1,5 +1,7 @@
 package com.nwawsoft.stac.model;
 
+import com.nwawsoft.stac.BuildData;
+
 import java.io.*;
 
 public class TrickFileHandler {
@@ -11,10 +13,11 @@ public class TrickFileHandler {
           throw new IOException();
         }
       }
-      File f = new File(System.getProperty("user.home") + "/.stac/" + t.getFileName() + ".sacf");
+      File f = new File(System.getProperty("user.home") + "/.stac/" + t.getFileName() + "." +
+          BuildData.TRICK_FILE_FORMAT);
       FileWriter fw = new FileWriter(f);
       BufferedWriter bw = new BufferedWriter(fw);
-      bw.write("VERSION=" + t.getVersion() + "\n");
+      bw.write("VERSION=" + BuildData.VERSION + "\n");
       bw.write("NAME=" + t.getName() + "\n");
       bw.write("ATTEMPTS=" + t.getAttempts() + "\n");
       bw.write("SUCCESSES_COUNT=" + t.getSuccesses() + "\n");
@@ -34,7 +37,7 @@ public class TrickFileHandler {
     int successesBackToBack = 0;
     int successesHighscore = 0;
     try {
-      File f = new File(System.getProperty("user.home") + "/.stac/" + fileName + ".sacf");
+      File f = new File(System.getProperty("user.home") + "/.stac/" + fileName + "." + BuildData.TRICK_FILE_FORMAT);
       FileReader fr = new FileReader(f);
       BufferedReader br = new BufferedReader(fr);
       String currentLine;

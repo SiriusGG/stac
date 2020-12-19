@@ -13,7 +13,7 @@ import java.awt.event.WindowEvent;
 
 public class TrickControlPanelFrame extends JFrame {
   public final static int FRAME_WIDTH = 280;
-  public final static int FRAME_HEIGHT = 230;
+  public final static int FRAME_HEIGHT = 270;
 
   private static final String FAILED_PREFIX = "Key for failed attempt: ";
   private static final String SUCCESSFUL_PREFIX = "Key for successful attempt: ";
@@ -74,6 +74,9 @@ public class TrickControlPanelFrame extends JFrame {
     JButton buttonReset = new JButton("Reset from file");
     buttonReset.setBounds(10, 150, 140, buttonHeight);
     buttonReset.addActionListener(this::buttonResetActionPerformed);
+    JButton buttonVisualizationSettings = new JButton("Visualization Settings");
+    buttonVisualizationSettings.setBounds(10, 190, 170, buttonHeight);
+    buttonVisualizationSettings.addActionListener(this::buttonVisualizationSettingsActionPerformed);
     cp.add(labelFailedKey);
     cp.add(labelFailedKeyValue);
     cp.add(labelSuccessfulKey);
@@ -83,6 +86,7 @@ public class TrickControlPanelFrame extends JFrame {
     cp.add(buttonManualFail);
     cp.add(buttonManualSuccess);
     cp.add(buttonReset);
+    cp.add(buttonVisualizationSettings);
 
     setResizable(false);
     setVisible(true);
@@ -102,8 +106,8 @@ public class TrickControlPanelFrame extends JFrame {
   }
 
   private void buttonMenuActionPerformed(final ActionEvent actionEvent) {
-    if (!getTrick().equals(TrickFileHandler.load(getTrick().getFileName()))) {
-      new SaveWarningDialog(this, true);
+    if (!t.equals(TrickFileHandler.load(t.getFileName()))) {
+      new SaveWarningDialog(this, "controlpanel", "menu");
     } else {
       tvf.dispose();
       new MainMenuFrame(this);
@@ -121,8 +125,18 @@ public class TrickControlPanelFrame extends JFrame {
   }
 
   private void buttonResetActionPerformed(final ActionEvent actionEvent) {
-    if (!getTrick().equals(TrickFileHandler.load(getTrick().getFileName()))) {
+    if (!t.equals(TrickFileHandler.load(t.getFileName()))) {
       new ResetWarningDialog(this);
+    }
+  }
+
+  private void buttonVisualizationSettingsActionPerformed(final ActionEvent actionEvent) {
+    if (!t.equals(TrickFileHandler.load(t.getFileName()))) {
+      new SaveWarningDialog(this, "controlpanel", "visualization settings");
+    } else {
+      tvf.dispose();
+      new VisualizationSettingsFrame(this);
+      dispose();
     }
   }
 
@@ -131,11 +145,15 @@ public class TrickControlPanelFrame extends JFrame {
   }
 
   public void openSaveDialogOnClose() {
-    new SaveWarningDialog(this, false);
+    new SaveWarningDialog(this, "controlpanel", "close");
   }
 
   public void reloadTrick() {
     t = TrickFileHandler.load(t.getFileName());
     tvf.updateStats();
+  }
+
+  public Trick getT() {
+    return t;
   }
 }

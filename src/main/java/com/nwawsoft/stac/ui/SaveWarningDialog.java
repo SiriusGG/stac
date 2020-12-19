@@ -3,31 +3,20 @@ package com.nwawsoft.stac.ui;
 import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.util.html.HTMLTagger;
 import com.nwawsoft.util.ui.ComponentFunctions;
+import org.jnativehook.GlobalScreen;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class SaveWarningDialog extends JDialog {
-  private TrickControlPanelFrame calledByController;
-  private TrickVisualizationFrame calledByVisualization;
+  private final JFrame calledBy;
   private final String mode;
 
-  public SaveWarningDialog(final TrickControlPanelFrame calledBy, final boolean toMenu) {
+  public SaveWarningDialog(final JFrame calledBy, final String caller, final String destination) {
     super(calledBy, true);
-    this.calledByController = calledBy;
-    if (toMenu) {
-      mode = "controller, menu";
-    } else {
-      mode = "controller, close";
-    }
-    init();
-  }
-
-  public SaveWarningDialog(final TrickVisualizationFrame calledBy) {
-    super(calledBy, true);
-    this.calledByVisualization = calledBy;
-    mode = "visualization, close";
+    this.calledBy = calledBy;
+    mode = caller + ", " + destination;
     init();
   }
 
@@ -72,34 +61,71 @@ public class SaveWarningDialog extends JDialog {
 
   public void buttonYes_ActionPerformed(final ActionEvent evt) {
     switch (mode) {
-      case "controller, close":
-        TrickFileHandler.save(calledByController.getTrick());
-        System.exit(0);
+      case "controlpanel, close":
+        if (calledBy instanceof TrickControlPanelFrame) {
+          TrickFileHandler.save(((TrickControlPanelFrame)calledBy).getTrick());
+          System.exit(0);
+        }
         break;
-      case "controller, menu":
-        TrickFileHandler.save(calledByController.getTrick());
-        calledByController.getVisualization().dispose();
-        calledByController.dispose();
-        new MainMenuFrame(this);
-        dispose();
+      case "controlpanel, menu":
+        if (calledBy instanceof TrickControlPanelFrame) {
+          TrickFileHandler.save(((TrickControlPanelFrame)calledBy).getTrick());
+          ((TrickControlPanelFrame)calledBy).getVisualization().dispose();
+          new MainMenuFrame(this);
+          (calledBy).dispose();
+          dispose();
+        }
+        break;
+      case "controlpanel, visualization settings":
+        if (calledBy instanceof TrickControlPanelFrame) {
+          TrickFileHandler.save(((TrickControlPanelFrame)calledBy).getTrick());
+          ((TrickControlPanelFrame)calledBy).getVisualization().dispose();
+          new VisualizationSettingsFrame((TrickControlPanelFrame)calledBy);
+          (calledBy).dispose();
+          dispose();
+        }
         break;
       case "visualization, close":
-        TrickFileHandler.save(calledByVisualization.getController().getTrick());
-        System.exit(0);
+        if (calledBy instanceof TrickVisualizationFrame) {
+          TrickFileHandler.save(((TrickVisualizationFrame)calledBy).getController().getTrick());
+          System.exit(0);
+        }
+        break;
+      case "visualization settings, close":
+        if (calledBy instanceof VisualizationSettingsFrame) {
+          // ToDo: save
+          new TrickControlPanelFrame(calledBy, ((VisualizationSettingsFrame)calledBy).getT());
+          calledBy.dispose();
+          dispose();
+        }
         break;
     }
   }
 
   public void buttonNo_ActionPerformed(final ActionEvent evt) {
     switch (mode) {
-      case "controller, close":
+      case "controlpanel, close":
       case "visualization, close":
         System.exit(0);
         break;
-      case "controller, menu":
-        calledByController.getVisualization().dispose();
-        calledByController.dispose();
-        new MainMenuFrame(this);
+      case "controlpanel, menu":
+        if (calledBy instanceof TrickControlPanelFrame) {
+          ((TrickControlPanelFrame)calledBy).getVisualization().dispose();
+          new MainMenuFrame(this);
+          calledBy.dispose();
+          dispose();
+        }
+        break;
+      case "controlpanel, visualization settings":
+        if (calledBy instanceof TrickControlPanelFrame) {
+          ((TrickControlPanelFrame)calledBy).getVisualization().dispose();
+          new VisualizationSettingsFrame((TrickControlPanelFrame)calledBy);
+          calledBy.dispose();
+          dispose();
+        }
+        break;
+      case "visualization settings, close":
+        new TrickControlPanelFrame(calledBy, ((TrickControlPanelFrame)calledBy).getT());
         dispose();
         break;
     }
@@ -109,7 +135,7 @@ public class SaveWarningDialog extends JDialog {
     dispose();
   }
 
-  public TrickControlPanelFrame getCalledByController() {
-    return calledByController;
+  public JFrame getCalledBy() {
+    return calledBy;
   }
 }

@@ -1,5 +1,6 @@
 package com.nwawsoft.stac.ui;
 
+import com.nwawsoft.stac.BuildData;
 import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.stac.model.SettingsFileHandler;
 import com.nwawsoft.stac.model.Trick;
@@ -22,10 +23,12 @@ public class MainMenuFrame extends JFrame {
 
   public MainMenuFrame(final SaveWarningDialog calledBy) {
     super("STAC");
-    calledBy.getCalledByController().getVisualization().dispose();
-    calledBy.getCalledByController().dispose();
-    calledBy.dispose();
-    init();
+    if (calledBy.getCalledBy() instanceof TrickControlPanelFrame) {
+      ((TrickControlPanelFrame)calledBy.getCalledBy()).getVisualization().dispose();
+      calledBy.getCalledBy().dispose();
+      calledBy.dispose();
+      init();
+    }
   }
 
   public MainMenuFrame(final TrickControlPanelFrame calledBy) {
@@ -90,7 +93,8 @@ public class MainMenuFrame extends JFrame {
     JFileChooser jfc = new JFileChooser();
     jfc.setCurrentDirectory(new File
         (System.getProperty("user.home") + System.getProperty("file.separator") + ".stac"));
-    FileFilter filter = new FileNameExtensionFilter("Siri's Attempt Counter File (.sacf)", "sacf");
+    FileFilter filter = new FileNameExtensionFilter
+        ("STAC Trick File (." + BuildData.TRICK_FILE_FORMAT + ")", BuildData.TRICK_FILE_FORMAT);
     jfc.addChoosableFileFilter(filter);
     jfc.setFileFilter(filter);
     jfc.showOpenDialog(null);
@@ -98,7 +102,7 @@ public class MainMenuFrame extends JFrame {
     if (trickFile != null && trickFile.exists()) {
       String trickFileString = trickFile.getName();
       String trickFileStringNoEnding;
-      if (trickFileString.endsWith(".sacf")) {
+      if (trickFileString.endsWith("." + BuildData.TRICK_FILE_FORMAT)) {
         trickFileStringNoEnding = trickFileString.substring(0, trickFileString.indexOf('.'));
       } else {
         trickFileStringNoEnding = trickFileString;

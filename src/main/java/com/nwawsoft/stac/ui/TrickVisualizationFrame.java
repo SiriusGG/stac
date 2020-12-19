@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.model.CounterKeyListener;
+import com.nwawsoft.stac.model.CounterKeyListenerSingleton;
 import com.nwawsoft.stac.model.TrickFileHandler;
 import org.jnativehook.GlobalScreen;
 
@@ -31,6 +31,8 @@ public class TrickVisualizationFrame extends JFrame {
   private JLabel labelSuccessesBackToBack;
   private JLabel labelSuccessesHighscore;
   private JLabel labelSuccessPercentage;
+
+  CounterKeyListenerSingleton ckl;
 
   private final DecimalFormat df = new DecimalFormat("#.##");
 
@@ -97,7 +99,12 @@ public class TrickVisualizationFrame extends JFrame {
     cp.add(labelSuccessesHighscore);
     cp.add(labelSuccessPercentage);
 
-    GlobalScreen.addNativeKeyListener(new CounterKeyListener(this));
+    ckl = CounterKeyListenerSingleton.getCounterKeyListener();
+    ckl.setVisualization(this);
+    if (!CounterKeyListenerSingleton.getCounterKeyListener().isActive()) {
+      GlobalScreen.addNativeKeyListener(ckl);
+    }
+    ckl.setActive(true);
 
     setResizable(true);
     setVisible(true);
@@ -138,7 +145,7 @@ public class TrickVisualizationFrame extends JFrame {
   }
 
   public void openSaveDialog() {
-    new SaveWarningDialog(this);
+    new SaveWarningDialog(this, "visualization", "close");
   }
 
   public TrickControlPanelFrame getController() {
