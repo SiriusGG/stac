@@ -1,6 +1,7 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.model.AvailableButtons;
+import com.nwawsoft.stac.model.CounterKeyListenerSingleton;
 import com.nwawsoft.stac.model.SettingsFileHandler;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
@@ -83,6 +84,7 @@ public class KeyBindingFrame extends JFrame {
 
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
     SettingsFileHandler.save((String)comboBoxFailed.getSelectedItem(), (String)comboBoxSuccessful.getSelectedItem());
+    CounterKeyListenerSingleton.getCounterKeyListener().reset();
     new MainMenuFrame(this);
   }
 }

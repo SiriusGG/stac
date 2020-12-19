@@ -5,8 +5,8 @@ import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
 public class CounterKeyListenerSingleton implements NativeKeyListener {
-  private final String failedKey;
-  private final String successfulKey;
+  private String failedKey;
+  private String successfulKey;
   private TrickVisualizationFrame tvf = null;
   private boolean active = false;
 
@@ -51,5 +51,11 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
 
   public boolean isActive() {
     return active;
+  }
+
+  public void reset() {
+    String[] settings = SettingsFileHandler.load();
+    failedKey = settings[0];
+    successfulKey = settings[1];
   }
 }
