@@ -13,7 +13,7 @@ import java.awt.event.WindowEvent;
 
 public class TrickControlPanelFrame extends JFrame {
   public final static int FRAME_WIDTH = 280;
-  public final static int FRAME_HEIGHT = 230;
+  public final static int FRAME_HEIGHT = 270;
 
   private static final String FAILED_PREFIX = "Key for failed attempt: ";
   private static final String SUCCESSFUL_PREFIX = "Key for successful attempt: ";
@@ -86,7 +86,7 @@ public class TrickControlPanelFrame extends JFrame {
     cp.add(buttonManualFail);
     cp.add(buttonManualSuccess);
     cp.add(buttonReset);
-    //cp.add(buttonVisualizationSettings);
+    cp.add(buttonVisualizationSettings);
 
     setResizable(false);
     setVisible(true);
