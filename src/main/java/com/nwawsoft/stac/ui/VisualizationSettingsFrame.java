@@ -9,16 +9,24 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class VisualizationSettingsFrame extends JFrame {
-  private final Trick t;
+  private Trick t = null;
 
   private final static int FRAME_WIDTH = 340;
   private final static int FRAME_HEIGHT = 210;
-
+  
+  private String mode;
   private boolean somethingChanged = false; // ToDo: set to true on change
+
+  public VisualizationSettingsFrame() {
+    super("Visualization Settings");
+    mode = "default";
+    init();
+  }
 
   public VisualizationSettingsFrame(final TrickControlPanelFrame tcpf) {
     super("Visualization Settings");
     this.t = tcpf.getTrick();
+    mode = "trick";
     init();
   }
 
@@ -31,8 +39,8 @@ public class VisualizationSettingsFrame extends JFrame {
 
     // ToDo: Add elements
 
-    this.addWindowListener(new WindowAdapter(){
-      public void windowClosing(WindowEvent e){
+    this.addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
         doClose();
       }
     });
@@ -47,11 +55,20 @@ public class VisualizationSettingsFrame extends JFrame {
     if (somethingChanged) {
       new SaveWarningDialog(this, "visualization settings", "close");
     } else {
-      new TrickControlPanelFrame(this, t);
+      if (!(t == null)) {
+        new TrickControlPanelFrame(this, t);
+      } else {
+        new MainMenuFrame();
+        dispose();
+      }
     }
   }
 
   public Trick getT() {
     return t;
+  }
+  
+  public static void main(String[] args) {
+    new VisualizationSettingsFrame();
   }
 }

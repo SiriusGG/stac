@@ -36,8 +36,8 @@ public class TrickControlPanelFrame extends JFrame {
     Container cp = getContentPane();
     cp.setLayout(null);
 
-    this.addWindowListener(new WindowAdapter(){
-      public void windowClosing(WindowEvent e){
+    this.addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
         if (!getTrick().equals(TrickFileHandler.load(getTrick().getFileName()))) {
           openSaveDialogOnClose();
         } else {
