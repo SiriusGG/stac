@@ -3,7 +3,6 @@ package com.nwawsoft.stac.ui;
 import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.util.html.HTMLTagger;
 import com.nwawsoft.util.ui.ComponentFunctions;
-import org.jnativehook.GlobalScreen;
 
 import javax.swing.*;
 import java.awt.*;

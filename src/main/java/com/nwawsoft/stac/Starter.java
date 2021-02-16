@@ -1,5 +1,6 @@
 package com.nwawsoft.stac;
 
+import com.nwawsoft.stac.model.BackwardsCompatibility;
 import com.nwawsoft.stac.ui.MainMenuFrame;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -19,6 +20,14 @@ public class Starter {
     catch (NativeHookException e) {
       e.printStackTrace();
     }
+    
+    // START OF BACKWARDS COMPATIBILITY ROUTINE
+    
+    BackwardsCompatibility.convertTrickFiles(); // Introduced in v1.3.0 / 2.0.0
+    BackwardsCompatibility.convertKeyBindingsFile(); // Introduced in v1.3.0 / 2.0.0
+    
+    // END OF BACKWARDS COMPATIBILITY ROUTINE
+    
     new MainMenuFrame();
   }
 }

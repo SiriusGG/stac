@@ -2,7 +2,7 @@ package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.model.AvailableButtons;
 import com.nwawsoft.stac.model.CounterKeyListenerSingleton;
-import com.nwawsoft.stac.model.SettingsFileHandler;
+import com.nwawsoft.stac.model.KeyBindingsFileHandler;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
@@ -63,7 +63,7 @@ public class KeyBindingFrame extends JFrame {
     buttonCancel.addActionListener(this::buttonCancelActionPerformed);
     buttonSave.addActionListener(this::buttonSaveActionPerformed);
 
-    String[] settings = SettingsFileHandler.load();
+    String[] settings = KeyBindingsFileHandler.load();
     comboBoxFailed.setSelectedItem(settings[0]);
     comboBoxSuccessful.setSelectedItem(settings[1]);
 
@@ -83,7 +83,7 @@ public class KeyBindingFrame extends JFrame {
   }
 
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
-    SettingsFileHandler.save((String)comboBoxFailed.getSelectedItem(), (String)comboBoxSuccessful.getSelectedItem());
+    KeyBindingsFileHandler.save((String)comboBoxFailed.getSelectedItem(), (String)comboBoxSuccessful.getSelectedItem());
     CounterKeyListenerSingleton.getCounterKeyListener().reset();
     new MainMenuFrame(this);
   }

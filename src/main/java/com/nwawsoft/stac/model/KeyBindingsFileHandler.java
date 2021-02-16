@@ -1,8 +1,10 @@
 package com.nwawsoft.stac.model;
 
+import com.nwawsoft.stac.BuildData;
+
 import java.io.*;
 
-public class SettingsFileHandler {
+public class KeyBindingsFileHandler {
   public static void save(final String failedKey, final String successfulKey) {
     try {
       File d = new File(System.getProperty("user.home") + "/.stac");
@@ -11,7 +13,7 @@ public class SettingsFileHandler {
           throw new IOException();
         }
       }
-      File f = new File(System.getProperty("user.home") + "/.stac/settings.ini");
+      File f = new File(System.getProperty("user.home") + "/.stac/" + BuildData.KEY_BINDINGS_FILE_NAME);
       FileWriter fw = new FileWriter(f);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write("FAILED_KEY=" + failedKey + "\n");
@@ -25,7 +27,7 @@ public class SettingsFileHandler {
   public static String[] load() {
     String[] settings = new String[2];
     try {
-      File f = new File(System.getProperty("user.home") + "/.stac/settings.ini");
+      File f = new File(System.getProperty("user.home") + "/.stac/" + BuildData.KEY_BINDINGS_FILE_NAME);
       FileReader fr = new FileReader(f);
       BufferedReader br = new BufferedReader(fr);
       String currentLine;
@@ -49,7 +51,7 @@ public class SettingsFileHandler {
         throw new IOException();
       }
     }
-    File f = new File(System.getProperty("user.home") + "/.stac/settings.ini");
+    File f = new File(System.getProperty("user.home") + "/.stac/" + BuildData.KEY_BINDINGS_FILE_NAME);
     if (!f.exists()) {
       save("F7", "F8");
     }

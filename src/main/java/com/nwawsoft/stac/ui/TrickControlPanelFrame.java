@@ -2,7 +2,7 @@ package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.controller.LAFChanger;
 import com.nwawsoft.stac.model.TrickFileHandler;
-import com.nwawsoft.stac.model.SettingsFileHandler;
+import com.nwawsoft.stac.model.KeyBindingsFileHandler;
 import com.nwawsoft.stac.model.Trick;
 
 import javax.swing.*;
@@ -56,9 +56,9 @@ public class TrickControlPanelFrame extends JFrame {
     labelSuccessfulKey.setBounds(10, 40, 170, 20);
     labelSuccessfulKeyValue.setBounds(180, 40, 30, 20);
     labelFailedKey.setText(FAILED_PREFIX);
-    labelFailedKeyValue.setText(SettingsFileHandler.load()[0]);
+    labelFailedKeyValue.setText(KeyBindingsFileHandler.load()[0]);
     labelSuccessfulKey.setText(SUCCESSFUL_PREFIX);
-    labelSuccessfulKeyValue.setText(SettingsFileHandler.load()[1]);
+    labelSuccessfulKeyValue.setText(KeyBindingsFileHandler.load()[1]);
     JButton buttonMenu = new JButton("Back to Menu");
     buttonMenu.setBounds(10, 70, 140, buttonHeight);
     buttonMenu.addActionListener(this::buttonMenuActionPerformed);

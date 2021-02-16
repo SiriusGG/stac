@@ -1,0 +1,5 @@
+package com.nwawsoft.stac.model;
+
+public enum Metric {
+  ATTEMPTS, FAILS, SUCCESSES, SUCCESSESBACKTOBACK, SUCCESSESHIGHSCORE, SUCCESSPERCENTAGE
+}

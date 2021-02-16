@@ -13,7 +13,7 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
   private static final CounterKeyListenerSingleton ckl = new CounterKeyListenerSingleton();
 
   private CounterKeyListenerSingleton() {
-    String[] settings = SettingsFileHandler.load();
+    String[] settings = KeyBindingsFileHandler.load();
     failedKey = settings[0];
     successfulKey = settings[1];
   }
@@ -54,7 +54,7 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
   }
 
   public void reset() {
-    String[] settings = SettingsFileHandler.load();
+    String[] settings = KeyBindingsFileHandler.load();
     failedKey = settings[0];
     successfulKey = settings[1];
   }
