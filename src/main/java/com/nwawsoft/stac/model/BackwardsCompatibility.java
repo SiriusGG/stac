@@ -7,8 +7,8 @@ import java.util.Objects;
 
 public class BackwardsCompatibility {
   /**
-   * Converts old .staf (Siri's trick Attempt [Counter] File) files to the current trick file format .stact (Siri's
-   * Trick Attempt Counter Trick).
+   * Converts old .staf (Siri's Trick Attempt [Counter] File) files and .sacf (Siri's [Trick] Attempt Counter File)
+   * files to the current trick file format .stact (Siri's Trick Attempt Counter Trick File).
    */
   public static void convertTrickFiles() {
     File d = new File(System.getProperty("user.home") + "/.stac/");
@@ -16,6 +16,8 @@ public class BackwardsCompatibility {
       for (final File f : Objects.requireNonNull(d.listFiles())) {
         if (f.getName().endsWith(".staf")) {
           renameTrickFiles(f, ".staf");
+        } else if (f.getName().endsWith(".sacf")) {
+          renameTrickFiles(f, ".sacf");
         }
       }
     }
