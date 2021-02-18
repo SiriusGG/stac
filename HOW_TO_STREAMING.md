@@ -2,7 +2,7 @@
 
 For this section we will use OBS Studio, though for most broadcasting or streaming softwares the process is the same.
 
-1) Open the Trick Visualization Frame by loading a .sacf file or by selecting "Create New Trick File".
+1) Open the Trick Visualization Frame by loading a .stact file or by selecting "Create New Trick File".
 
 2) Add the Visualization source in OBS Studio. In OBS Studio, within the "Sources" tab:
 - select "+"
