@@ -1,19 +1,19 @@
 package com.nwawsoft.stac.model;
 
-import com.nwawsoft.stac.BuildData;
-
 import java.io.*;
+
+import static com.nwawsoft.stac.BuildData.*;
 
 public class KeyBindingsFileHandler {
   public static void save(final String failedKey, final String successfulKey) {
     try {
-      File d = new File(System.getProperty("user.home") + "/.stac");
+      File d = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME);
       if (!d.exists()) {
         if (!d.mkdir()) {
           throw new IOException();
         }
       }
-      File f = new File(System.getProperty("user.home") + "/.stac/" + BuildData.KEY_BINDINGS_FILE_NAME);
+      File f = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME + "/" + KEY_BINDINGS_FILE_NAME);
       FileWriter fw = new FileWriter(f);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write("FAILED_KEY=" + failedKey + "\n");
@@ -27,7 +27,7 @@ public class KeyBindingsFileHandler {
   public static String[] load() {
     String[] settings = new String[2];
     try {
-      File f = new File(System.getProperty("user.home") + "/.stac/" + BuildData.KEY_BINDINGS_FILE_NAME);
+      File f = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME + "/" + KEY_BINDINGS_FILE_NAME);
       FileReader fr = new FileReader(f);
       BufferedReader br = new BufferedReader(fr);
       String currentLine;
@@ -45,13 +45,13 @@ public class KeyBindingsFileHandler {
   }
 
   public static void guaranteeSettings() throws IOException {
-    File d = new File(System.getProperty("user.home") + "/.stac/");
+    File d = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME + "/");
     if (!d.exists()) {
       if (!d.mkdir()) {
         throw new IOException();
       }
     }
-    File f = new File(System.getProperty("user.home") + "/.stac/" + BuildData.KEY_BINDINGS_FILE_NAME);
+    File f = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME + "/" + KEY_BINDINGS_FILE_NAME);
     if (!f.exists()) {
       save("F7", "F8");
     }

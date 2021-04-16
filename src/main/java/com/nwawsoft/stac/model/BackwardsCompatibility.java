@@ -1,9 +1,9 @@
 package com.nwawsoft.stac.model;
 
-import com.nwawsoft.stac.BuildData;
-
 import java.io.File;
 import java.util.Objects;
+
+import static com.nwawsoft.stac.BuildData.*;
 
 public class BackwardsCompatibility {
   /**
@@ -11,7 +11,7 @@ public class BackwardsCompatibility {
    * files to the current trick file format .stact (Siri's Trick Attempt Counter Trick File).
    */
   public static void convertTrickFiles() {
-    File d = new File(System.getProperty("user.home") + "/.stac/");
+    File d = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME + "/");
     if (d.exists() && d.isDirectory()) {
       for (final File f : Objects.requireNonNull(d.listFiles())) {
         if (f.getName().endsWith(".staf")) {
@@ -33,7 +33,7 @@ public class BackwardsCompatibility {
   private static void renameTrickFiles(final File f, final String format) {
     if (f.getName().endsWith(format)) {
       String oldPath = f.getAbsolutePath();
-      String newPath = oldPath.replace(format, BuildData.TRICK_FILE_FORMAT);
+      String newPath = oldPath.replace(format, TRICK_FILE_FORMAT);
       File newFile = new File(newPath);
       if (f.renameTo(newFile)) {
         System.out.println("Renamed " + oldPath + " to " + newPath);
@@ -44,12 +44,12 @@ public class BackwardsCompatibility {
   }
   
   public static void convertKeyBindingsFile() {
-    File d = new File(System.getProperty("user.home") + "/.stac/");
+    File d = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME + "/");
     if (d.exists() && d.isDirectory()) {
       for (final File f : Objects.requireNonNull(d.listFiles())) {
         if (f.getName().endsWith("settings.ini")) {
           String oldPath = f.getAbsolutePath();
-          String newPath = oldPath.replace("settings.ini", BuildData.KEY_BINDINGS_FILE_NAME);
+          String newPath = oldPath.replace("settings.ini", KEY_BINDINGS_FILE_NAME);
           File newFile = new File(newPath);
           if (f.renameTo(newFile)) {
             System.out.println("Renamed " + oldPath + " to " + newPath);

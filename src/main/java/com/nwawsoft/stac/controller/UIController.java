@@ -1,6 +1,5 @@
 package com.nwawsoft.stac.controller;
 
-import com.nwawsoft.stac.BuildData;
 import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.stac.model.Trick;
 import com.nwawsoft.stac.ui.CreateTrickFrame;
@@ -12,12 +11,13 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
-import java.rmi.ServerError;
+
+import static com.nwawsoft.stac.BuildData.*;
 
 public class UIController {
   public static void addTrick(final String name, final String file, final CreateTrickFrame ctf) {
     if (!file.equals("")) {
-      Trick t = new Trick(BuildData.VERSION, name, file, 0, 0, 0, 0);
+      Trick t = new Trick(VERSION, name, file, 0, 0, 0, 0);
       TrickFileHandler.save(t);
       new TrickControlPanelFrame(ctf, t);
     } else {
@@ -27,7 +27,7 @@ public class UIController {
   
   public static void editTrick(final EditTrickFrame etf, final String file, final Trick t) {
     if (!file.equals("")) {
-      t.setVersion(BuildData.VERSION);
+      t.setVersion(VERSION);
       t.setName(etf.getNameFieldContent());
       t.setFileName(TrickFileHandler.trimmedFileString(etf.getFileNameFieldContent()));
       t.setAttempts(Integer.parseInt(etf.getAttemptsFieldContent()));
@@ -44,9 +44,9 @@ public class UIController {
   public static Trick createTrickFromJFileChooser() {
     JFileChooser jfc = new JFileChooser();
     jfc.setCurrentDirectory(new File
-        (System.getProperty("user.home") + System.getProperty("file.separator") + BuildData.DIRECTORY_NAME));
+        (System.getProperty("user.home") + System.getProperty("file.separator") + DIRECTORY_NAME));
     FileFilter filter = new FileNameExtensionFilter
-        ("STAC Trick File (." + BuildData.TRICK_FILE_FORMAT + ")", BuildData.TRICK_FILE_FORMAT);
+        ("STAC Trick File (." + TRICK_FILE_FORMAT + ")", TRICK_FILE_FORMAT);
     jfc.addChoosableFileFilter(filter);
     jfc.setFileFilter(filter);
     jfc.showOpenDialog(null);
@@ -54,7 +54,7 @@ public class UIController {
     String trickFileStringNoEnding = null;
     if (trickFile != null && trickFile.exists()) {
       String trickFileString = trickFile.getName();
-      if (trickFileString.endsWith("." + BuildData.TRICK_FILE_FORMAT)) {
+      if (trickFileString.endsWith("." + TRICK_FILE_FORMAT)) {
         trickFileStringNoEnding = trickFileString.substring(0, trickFileString.indexOf('.'));
       } else {
         trickFileStringNoEnding = trickFileString;

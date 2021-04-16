@@ -1,23 +1,23 @@
 package com.nwawsoft.stac.model;
 
-import com.nwawsoft.stac.BuildData;
-
 import java.io.*;
+
+import static com.nwawsoft.stac.BuildData.*;
 
 public class TrickFileHandler {
   public static void save(final Trick t) {
     try {
-      File d = new File(System.getProperty("user.home") + "/.stac");
+      File d = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME);
       if (!d.exists()) {
         if (!d.mkdir()) {
           throw new IOException();
         }
       }
-      File f = new File(System.getProperty("user.home") + "/.stac/" + t.getFileName() + "." +
-          BuildData.TRICK_FILE_FORMAT);
+      File f = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME + "/" + t.getFileName() + "." +
+          TRICK_FILE_FORMAT);
       FileWriter fw = new FileWriter(f);
       BufferedWriter bw = new BufferedWriter(fw);
-      bw.write("VERSION=" + BuildData.VERSION + "\n");
+      bw.write("VERSION=" + VERSION + "\n");
       bw.write("NAME=" + t.getName() + "\n");
       bw.write("ATTEMPTS=" + t.getAttempts() + "\n");
       bw.write("SUCCESSES_COUNT=" + t.getSuccesses() + "\n");
@@ -37,7 +37,7 @@ public class TrickFileHandler {
     int successesBackToBack = 0;
     int successesHighscore = 0;
     try {
-      File f = new File(System.getProperty("user.home") + "/.stac/" + fileName + "." + BuildData.TRICK_FILE_FORMAT);
+      File f = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME + "/" + fileName + "." + TRICK_FILE_FORMAT);
       FileReader fr = new FileReader(f);
       BufferedReader br = new BufferedReader(fr);
       String currentLine;
