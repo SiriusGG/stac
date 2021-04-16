@@ -19,6 +19,7 @@ public class KeyBindingsFileHandler {
       bw.write("FAILED_KEY=" + failedKey + "\n");
       bw.write("SUCCESSFUL_KEY=" + successfulKey + "\n");
       bw.flush();
+      bw.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -38,6 +39,7 @@ public class KeyBindingsFileHandler {
           settings[1] = currentLine.substring(currentLine.lastIndexOf("=") + 1);
         }
       }
+      br.close();
     } catch (IOException e) {
       e.printStackTrace();
     }

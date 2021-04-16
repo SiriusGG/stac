@@ -24,6 +24,7 @@ public class TrickFileHandler {
       bw.write("SUCCESSES_BACK_TO_BACK=" + t.getSuccessesBackToBack() + "\n");
       bw.write("SUCCESSES_HIGHSCORE=" + t.getSuccessesHighscore() + "\n");
       bw.flush();
+      bw.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -59,6 +60,7 @@ public class TrickFileHandler {
           }
         }
       }
+      br.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
