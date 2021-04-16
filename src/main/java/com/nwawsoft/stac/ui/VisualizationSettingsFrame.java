@@ -64,7 +64,7 @@ public class VisualizationSettingsFrame extends JFrame {
     }
   }
 
-  public Trick getT() {
+  public Trick getTrick() {
     return t;
   }
   

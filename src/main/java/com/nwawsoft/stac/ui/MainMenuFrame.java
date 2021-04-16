@@ -1,18 +1,13 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.BuildData;
 import com.nwawsoft.stac.controller.UIController;
-import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.stac.model.KeyBindingsFileHandler;
 import com.nwawsoft.stac.model.Trick;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
 
 public class MainMenuFrame extends JFrame {

@@ -86,5 +86,6 @@ public class KeyBindingFrame extends JFrame {
   
   private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
     new MainMenuFrame(this);
+    dispose();
   }
 }

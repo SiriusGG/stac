@@ -92,8 +92,8 @@ public class SaveWarningDialog extends JDialog {
         break;
       case "visualization settings, close":
         if (calledBy instanceof VisualizationSettingsFrame) {
-          // ToDo: save
-          new TrickControlPanelFrame(calledBy, ((VisualizationSettingsFrame)calledBy).getT());
+          TrickFileHandler.save(((VisualizationSettingsFrame)calledBy).getTrick());
+          new TrickControlPanelFrame(calledBy, ((VisualizationSettingsFrame)calledBy).getTrick());
           calledBy.dispose();
           dispose();
         }

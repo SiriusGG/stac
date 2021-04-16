@@ -1,6 +1,5 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.util.html.HTMLTagger;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
