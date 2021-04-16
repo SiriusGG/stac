@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="stac">
+    <output-path>$PROJECT_DIR$/out/artifacts/stac</output-path>
+    <root id="root">
+      <element id="archive" name="stac.jar">
+        <element id="module-output" name="stac" />
+      </element>
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="jnativehook" />
+      </element>
+    </root>
+  </artifact>
+</component>
