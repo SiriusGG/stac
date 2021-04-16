@@ -11,4 +11,4 @@ This software is built with Java and runs on all Windows, Linux and macOS machin
 
 ## Quick start
 
-[Here is all you need to know about using STAC](./HOW_TO.md)
+[Here is all you need to know about using STAC](./docs/HOW_TO.md)
