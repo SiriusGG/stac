@@ -14,9 +14,9 @@ Just unzip the downloaded file with any archive manager like WinZIP, WinRAR, 7-Z
 
 ## Starting STAC
 
-If your JRE is set up correctly you can simply double click the extracted ```siris-trick-attempt-counter.jar```.
+If your JRE is set up correctly you can simply double click the extracted ```stac.jar```.
 
-If for some reason this does not work, open a terminal at the path where ```siris-trick-attempt-counter.jar``` is located and start it with the call ```java -jar siris-trick-attempt-counter.jar```.
+If for some reason this does not work, open a terminal at the path where ```stac.jar``` is located and start it with the call ```java -jar stac.jar```.
 
 Alternatively, you can call stac by using ```Run -> stac``` or opening up a terminal and calling ```stac``` after following [this guide](../docs/HOW_TO_PATH.md).
 

@@ -8,17 +8,17 @@ This section will show the process for Windows users. Linux users will already k
 
 Move your STAC folder to a fitting place. The "Downloads" folder is _not_ a fitting place.
 
-In my example I will create a directory "Portable_Software" in ```C:\```.
+In my example I will create a directory "Portable_Software" in ```C:/```.
 
-You could just as well use anything like the ```C:\Program Files``` or ```C:\ProgramData``` directories or any user directory like ```C:\Users\yourname\Software```.
+You could just as well use anything like the ```C:/Program Files``` or ```C:/ProgramData``` directories or any user directory like ```C:/Users/yourname/Software```.
 
 ### 2) (Optional) Create a "Shortcuts" directory
 
 It is a generally cleaner to store shortcuts to frequently used programs in a common directory rather than scattered all over the system. Having such a directory removes all further pain from adding other programs to your PATH variable.
 
-Create a directory called "Shortcuts" or something similiar you like (maybe even "bin", though we will use it only for links to applications instead of the real binary applications themself) in a well-accessible location like your system root (e.g. ```C:\Shortcuts```).
+Create a directory called "Shortcuts" or something similar you like (maybe even "bin", though we will use it only for links to applications instead of the real binary applications themselves) in a well-accessible location like your system root (e.g. ```C:/Shortcuts```).
 
-Create a shortcut to ```siris-trick-attempt-counter.jar```, rename it to just ```stac``` and put it into your new directory.
+Create a shortcut to ```stac.jar```, make sure its name is ```stac.lnk``` and put it into your new directory.
 
 ### 3) Open the Environment Variables editor
 
@@ -30,9 +30,9 @@ Create a shortcut to ```siris-trick-attempt-counter.jar```, rename it to just ``
 
 ### 4) Choosing the correct PATH variable
 
-If you selected a user directory (anything _within_ ```C:\Users\yourname```) follow step 4a.
+If you selected a user directory (anything _within_ ```C:/Users/yourname```) follow step 4a.
 
-If you selected a system directory (anything _not_ within ```C:\Users\yourname```) follow step 4b.
+If you selected a system directory (anything _not_ within ```C:/Users/yourname```) follow step 4b.
 
 #### 4a) Choosing the user-PATH variable
 
@@ -60,18 +60,12 @@ You can now start STAC from the "Run" dialog (WIN+R) or from the terminal by cal
 
 Move your STAC folder to a fitting place. The "Downloads" folder is _not_ a fitting place.
 
-In my example I will create a directory "Portable_Software" in ```C:\```.
+In my example I will create a directory "Portable_Software" in ```C:/```.
 
-You could just as well use anything like the ```C:\Program Files``` or ```C:\ProgramData``` directories or any user directory like ```C:\Users\yourname\Software```.
+You could just as well use anything like the ```C:/Program Files``` or ```C:/ProgramData``` directories or any user directory like ```C:/Users/yourname/Software```.
 
 ### 2) Create a shortcut to the ```.jar``` file.
 
-#### 2a) As a regular link file
-
-Right-click ```siris-trick-attempt-counter.jar``` and select "Create shortcut".
+Right-click ```stac.jar``` and select "Create shortcut".
 
 Move the shortcut to any place you like, e.g. your Desktop.
-
-#### 2b) As a start menu pinned entry
-
-Right-click ```siris-trick-attempt-counter.jar``` and select "Pin to Start".
