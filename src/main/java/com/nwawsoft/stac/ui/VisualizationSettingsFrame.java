@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+// BIG TODO
+
 public class VisualizationSettingsFrame extends JFrame {
   private Trick t = null;
 
@@ -66,9 +68,5 @@ public class VisualizationSettingsFrame extends JFrame {
 
   public Trick getTrick() {
     return t;
-  }
-  
-  public static void main(String[] args) {
-    new VisualizationSettingsFrame();
   }
 }
