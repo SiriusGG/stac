@@ -1,6 +1,7 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.BuildData;
+import com.nwawsoft.stac.controller.UIController;
 import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.stac.model.KeyBindingsFileHandler;
 import com.nwawsoft.stac.model.Trick;
@@ -52,8 +53,8 @@ public class MainMenuFrame extends JFrame {
     }
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     int frameWidth = 240;
-    int frameHeight = 200;
-    int modules = 4;
+    int frameHeight = 240;
+    int modules = 5;
     setSize(frameWidth, frameHeight);
     ComponentFunctions.center(this);
     Container cp = getContentPane();
@@ -63,17 +64,21 @@ public class MainMenuFrame extends JFrame {
     JButton[] buttons = new JButton[modules];
     JButton buttonNew = new JButton("Create New Trick File");
     buttons[0] = buttonNew;
+    JButton buttonEdit = new JButton("Edit Trick File");
+    buttons[1] = buttonEdit;
     JButton buttonLoad = new JButton("Load Trick File");
-    buttons[1] = buttonLoad;
+    buttons[2] = buttonLoad;
     JButton buttonSettings = new JButton("Key Bindings");
-    buttons[2] = buttonSettings;
+    buttons[3] = buttonSettings;
     JButton buttonAbout = new JButton("About");
-    buttons[3] = buttonAbout;
+    buttons[4] = buttonAbout;
     buttonNew.setBounds(0, 0, buttonWidth, buttonHeight);
-    buttonLoad.setBounds(0, buttonHeight, buttonWidth, buttonHeight);
-    buttonSettings.setBounds(0, (buttonHeight)*2, buttonWidth, buttonHeight);
-    buttonAbout.setBounds(0, (buttonHeight)*3, buttonWidth, buttonHeight);
+    buttonEdit.setBounds(0, buttonHeight, buttonWidth, buttonHeight);
+    buttonLoad.setBounds(0, (buttonHeight)*2, buttonWidth, buttonHeight);
+    buttonSettings.setBounds(0, (buttonHeight)*3, buttonWidth, buttonHeight);
+    buttonAbout.setBounds(0, (buttonHeight)*4, buttonWidth, buttonHeight);
     buttonNew.addActionListener(this::buttonNewActionPerformed);
+    buttonEdit.addActionListener(this::buttonEditActionPerformed);
     buttonLoad.addActionListener(this::buttonLoadActionPerformed);
     buttonSettings.addActionListener(this::buttonSettingsActionPerformed);
     buttonAbout.addActionListener(this::buttonAboutActionPerformed);
@@ -84,30 +89,20 @@ public class MainMenuFrame extends JFrame {
     setResizable(false);
     setVisible(true);
   }
-
+  
   private void buttonNewActionPerformed(final ActionEvent actionEvent) {
     new CreateTrickFrame(this);
   }
+  
+  private void buttonEditActionPerformed(final ActionEvent actionEvent) {
+    // ToDo
+    Trick t = UIController.createTrickFromJFileChooser();
+    new EditTrickFrame(this, t);
+  }
 
   private void buttonLoadActionPerformed(final ActionEvent actionEvent) {
-    JFileChooser jfc = new JFileChooser();
-    jfc.setCurrentDirectory(new File
-        (System.getProperty("user.home") + System.getProperty("file.separator") + ".stac"));
-    FileFilter filter = new FileNameExtensionFilter
-        ("STAC Trick File (." + BuildData.TRICK_FILE_FORMAT + ")", BuildData.TRICK_FILE_FORMAT);
-    jfc.addChoosableFileFilter(filter);
-    jfc.setFileFilter(filter);
-    jfc.showOpenDialog(null);
-    File trickFile = jfc.getSelectedFile();
-    if (trickFile != null && trickFile.exists()) {
-      String trickFileString = trickFile.getName();
-      String trickFileStringNoEnding;
-      if (trickFileString.endsWith("." + BuildData.TRICK_FILE_FORMAT)) {
-        trickFileStringNoEnding = trickFileString.substring(0, trickFileString.indexOf('.'));
-      } else {
-        trickFileStringNoEnding = trickFileString;
-      }
-      Trick t = TrickFileHandler.load(trickFileStringNoEnding);
+    Trick t = UIController.createTrickFromJFileChooser();
+    if (t != null) {
       new TrickControlPanelFrame(this, t);
     }
   }

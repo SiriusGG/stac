@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.model.AvailableButtons;
+import com.nwawsoft.stac.model.AvailableKeys;
 import com.nwawsoft.stac.model.CounterKeyListenerSingleton;
 import com.nwawsoft.stac.model.KeyBindingsFileHandler;
 import com.nwawsoft.util.ui.ComponentFunctions;
@@ -30,12 +30,12 @@ public class KeyBindingFrame extends JFrame {
     comboBoxFailed = new JComboBox<>();
     comboBoxSuccessful = new JComboBox<>();
 
-    AvailableButtons ab = new AvailableButtons();
-    for (String currentButtonString : ab.getButtons()) {
-      comboBoxFailed.addItem(currentButtonString);
+    AvailableKeys ak = new AvailableKeys();
+    for (String currentKeyString : ak.getKeys()) {
+      comboBoxFailed.addItem(currentKeyString);
     }
-    for (String currentButtonString : ab.getButtons()) {
-      comboBoxSuccessful.addItem(currentButtonString);
+    for (String currentKeyString : ak.getKeys()) {
+      comboBoxSuccessful.addItem(currentKeyString);
     }
 
     JButton buttonCancel = new JButton("Cancel");

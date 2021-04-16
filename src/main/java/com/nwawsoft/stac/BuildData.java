@@ -6,6 +6,7 @@ public class BuildData {
   public static final String GITHUB_LINK = "https://github.com/JGC-Sirius/siris-trick-attempt-counter";
   public static final String WEBSITE = "siriusgg.com";
   public static final String WEBSITE_LINK = "https://stac.siriusgg.com";
+  public static final String DIRECTORY_NAME = ".stac";
   public static final String TRICK_FILE_FORMAT = "stact";
   public static final String VISUALIZATION_FILE_FORMAT = "stacv";
   public static final String TRICK_VISUALIZATION_FILE_FORMAT = "stactv";

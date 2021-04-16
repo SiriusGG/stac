@@ -11,14 +11,9 @@ import java.awt.event.WindowEvent;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import static com.nwawsoft.stac.ui.TrickInformationStrings.*;
+
 public class TrickVisualizationFrame extends JFrame {
-  private final static String PREFIX_TRICK = "Trick: ";
-  private final static String PREFIX_ATTEMPTS = "Attempts: ";
-  private final static String PREFIX_FAILS = "Fails: ";
-  private final static String PREFIX_SUCCESSES = "Successes: ";
-  private final static String PREFIX_SUCCESSES_BACK_TO_BACK = "Success Streak: ";
-  private final static String PREFIX_SUCCESSES_HIGHSCORE = "Success Highscore: ";
-  private final static String PREFIX_SUCCESS_PERCENTAGE = "Success Rate: ";
 
   private final TrickControlPanelFrame tcpf;
 

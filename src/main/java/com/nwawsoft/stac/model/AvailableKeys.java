@@ -2,62 +2,62 @@ package com.nwawsoft.stac.model;
 
 import java.util.ArrayList;
 
-public class AvailableButtons {
-  private final ArrayList<String> buttons = new ArrayList<>();
+public class AvailableKeys {
+  private final ArrayList<String> keys = new ArrayList<>();
 
-  public AvailableButtons() {
-    buttons.add("A");
-    buttons.add("B");
-    buttons.add("C");
-    buttons.add("D");
-    buttons.add("E");
-    buttons.add("F");
-    buttons.add("G");
-    buttons.add("H");
-    buttons.add("I");
-    buttons.add("J");
-    buttons.add("K");
-    buttons.add("L");
-    buttons.add("M");
-    buttons.add("N");
-    buttons.add("O");
-    buttons.add("P");
-    buttons.add("Q");
-    buttons.add("R");
-    buttons.add("S");
-    buttons.add("T");
-    buttons.add("U");
-    buttons.add("V");
-    buttons.add("W");
-    buttons.add("X");
-    buttons.add("Y");
-    buttons.add("Z");
-    buttons.add("0");
-    buttons.add("1");
-    buttons.add("2");
-    buttons.add("3");
-    buttons.add("4");
-    buttons.add("5");
-    buttons.add("6");
-    buttons.add("7");
-    buttons.add("8");
-    buttons.add("9");
-    buttons.add("F1");
-    buttons.add("F2");
-    buttons.add("F3");
-    buttons.add("F4");
-    buttons.add("F5");
-    buttons.add("F6");
-    buttons.add("F7");
-    buttons.add("F8");
-    buttons.add("F9");
-    buttons.add("F10");
-    buttons.add("F11");
-    buttons.add("F12");
+  public AvailableKeys() {
+    keys.add("A");
+    keys.add("B");
+    keys.add("C");
+    keys.add("D");
+    keys.add("E");
+    keys.add("F");
+    keys.add("G");
+    keys.add("H");
+    keys.add("I");
+    keys.add("J");
+    keys.add("K");
+    keys.add("L");
+    keys.add("M");
+    keys.add("N");
+    keys.add("O");
+    keys.add("P");
+    keys.add("Q");
+    keys.add("R");
+    keys.add("S");
+    keys.add("T");
+    keys.add("U");
+    keys.add("V");
+    keys.add("W");
+    keys.add("X");
+    keys.add("Y");
+    keys.add("Z");
+    keys.add("0");
+    keys.add("1");
+    keys.add("2");
+    keys.add("3");
+    keys.add("4");
+    keys.add("5");
+    keys.add("6");
+    keys.add("7");
+    keys.add("8");
+    keys.add("9");
+    keys.add("F1");
+    keys.add("F2");
+    keys.add("F3");
+    keys.add("F4");
+    keys.add("F5");
+    keys.add("F6");
+    keys.add("F7");
+    keys.add("F8");
+    keys.add("F9");
+    keys.add("F10");
+    keys.add("F11");
+    keys.add("F12");
   }
 
-  public ArrayList<String> getButtons() {
-    return buttons;
+  public ArrayList<String> getKeys() {
+    return keys;
   }
 
   public static String getKeyFromKeyCode(final int keyCode) {

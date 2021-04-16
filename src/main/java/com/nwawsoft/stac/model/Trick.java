@@ -5,7 +5,7 @@ import com.nwawsoft.stac.BuildData;
 public class Trick {
   private String version;
   private String name;
-  private final String fileName;
+  private String fileName;
   private int attempts;
   private int successes;
   private int successesBackToBack;
@@ -26,12 +26,32 @@ public class Trick {
     this.successesHighscore = successesHighscore;
   }
 
-  public void setVersion(String version) {
+  public void setVersion(final String version) {
     this.version = version;
   }
 
   public void setName(final String name) {
     this.name = name;
+  }
+  
+  public void setFileName(final String fileName) {
+    this.fileName = fileName;
+  }
+  
+  public void setAttempts(final int attempts) {
+    this.attempts = attempts;
+  }
+  
+  public void setSuccesses(final int successes) {
+    this.successes = successes;
+  }
+  
+  public void setSuccessesBackToBack(final int successesBackToBack) {
+    this.successesBackToBack = successesBackToBack;
+  }
+  
+  public void setSuccessesHighscore(final int successesHighscore) {
+    this.successesHighscore = successesHighscore;
   }
 
   public String getVersion() {

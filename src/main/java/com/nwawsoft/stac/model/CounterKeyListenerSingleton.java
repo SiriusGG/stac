@@ -28,10 +28,10 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
   @Override
   public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
     if (!(tvf == null)) {
-      if (AvailableButtons.getKeyFromKeyCode(nativeEvent.getKeyCode()).equals(failedKey)) {
+      if (AvailableKeys.getKeyFromKeyCode(nativeEvent.getKeyCode()).equals(failedKey)) {
         tvf.getController().getTrick().recordFail();
         tvf.updateStats();
-      } else if (AvailableButtons.getKeyFromKeyCode(nativeEvent.getKeyCode()).equals(successfulKey)) {
+      } else if (AvailableKeys.getKeyFromKeyCode(nativeEvent.getKeyCode()).equals(successfulKey)) {
         tvf.getController().getTrick().recordSuccess();
         tvf.updateStats();
       }
