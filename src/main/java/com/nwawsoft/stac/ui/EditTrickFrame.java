@@ -43,7 +43,6 @@ public class EditTrickFrame extends JFrame {
     JLabel labelFileName = new JLabel("Trick file name: ");
     textFieldFileName = new JTextField(t.getFileName());
     JLabel labelAttempts = new JLabel(PREFIX_ATTEMPTS);
-    System.out.println(t.getAttempts());
     textFieldAttempts = new JTextField("" + t.getAttempts());
     JLabel labelSuccesses = new JLabel(PREFIX_SUCCESSES);
     textFieldSuccesses = new JTextField("" + t.getSuccesses());

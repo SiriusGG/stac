@@ -26,7 +26,6 @@ public class UIController {
   }
   
   public static void editTrick(final EditTrickFrame etf, final String file, final Trick t) {
-    // ToDo
     if (!file.equals("")) {
       t.setVersion(BuildData.VERSION);
       t.setName(etf.getNameFieldContent());

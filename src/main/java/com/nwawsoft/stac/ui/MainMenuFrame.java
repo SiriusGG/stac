@@ -95,9 +95,10 @@ public class MainMenuFrame extends JFrame {
   }
   
   private void buttonEditActionPerformed(final ActionEvent actionEvent) {
-    // ToDo
     Trick t = UIController.createTrickFromJFileChooser();
-    new EditTrickFrame(this, t);
+    if (t != null) {
+      new EditTrickFrame(this, t);
+    }
   }
 
   private void buttonLoadActionPerformed(final ActionEvent actionEvent) {

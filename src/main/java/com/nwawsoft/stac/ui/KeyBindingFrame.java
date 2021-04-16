@@ -37,9 +37,9 @@ public class KeyBindingFrame extends JFrame {
     for (String currentKeyString : ak.getKeys()) {
       comboBoxSuccessful.addItem(currentKeyString);
     }
-
-    JButton buttonCancel = new JButton("Cancel");
+  
     JButton buttonSave = new JButton("Save");
+    JButton buttonCancel = new JButton("Cancel");
 
     int left_x = 10;
     int upper_y = 10;
@@ -57,11 +57,11 @@ public class KeyBindingFrame extends JFrame {
     comboBoxFailed.setBounds(right_x, upper_y, rightWidth, height);
     labelSuccessfulKey.setBounds(left_x, medium_y, leftWidth, height);
     comboBoxSuccessful.setBounds(right_x, medium_y, rightWidth, height);
-    buttonCancel.setBounds(leftButtonX, lower_y, buttonWidth, height);
-    buttonSave.setBounds(rightButtonX, lower_y, buttonWidth, height);
-
-    buttonCancel.addActionListener(this::buttonCancelActionPerformed);
+    buttonSave.setBounds(leftButtonX, lower_y, buttonWidth, height);
+    buttonCancel.setBounds(rightButtonX, lower_y, buttonWidth, height);
+  
     buttonSave.addActionListener(this::buttonSaveActionPerformed);
+    buttonCancel.addActionListener(this::buttonCancelActionPerformed);
 
     String[] settings = KeyBindingsFileHandler.load();
     comboBoxFailed.setSelectedItem(settings[0]);
@@ -71,20 +71,20 @@ public class KeyBindingFrame extends JFrame {
     cp.add(labelSuccessfulKey);
     cp.add(comboBoxFailed);
     cp.add(comboBoxSuccessful);
-    cp.add(buttonCancel);
     cp.add(buttonSave);
+    cp.add(buttonCancel);
 
     setResizable(false);
     setVisible(true);
   }
-
-  private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
-    new MainMenuFrame(this);
-  }
-
+  
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
     KeyBindingsFileHandler.save((String)comboBoxFailed.getSelectedItem(), (String)comboBoxSuccessful.getSelectedItem());
     CounterKeyListenerSingleton.getCounterKeyListener().reset();
+    new MainMenuFrame(this);
+  }
+  
+  private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
     new MainMenuFrame(this);
   }
 }

@@ -33,12 +33,14 @@ public class CreateTrickFrame extends JFrame {
     JLabel labelFileName = new JLabel("Trick file name: ");
     textFieldFileName = new JTextField("");
     JButton buttonAddTrick = new JButton("Add Trick");
+    JButton buttonCancel = new JButton("Cancel");
 
     labelName.setBounds(10, 10, 100, 20);
     textFieldName.setBounds(110, 10, 150, 20);
     labelFileName.setBounds(10, 40, 100, 20);
     textFieldFileName.setBounds(110, 40, 150, 20);
-    buttonAddTrick.setBounds(50, 70, 170, 30);
+    buttonAddTrick.setBounds(10, 70, 110, 30);
+    buttonCancel.setBounds(130, 70, 110, 30);
 
     labelName.setToolTipText(TRICK_NAME_RULES);
     textFieldName.setToolTipText(TRICK_NAME_RULES);
@@ -46,8 +48,9 @@ public class CreateTrickFrame extends JFrame {
     textFieldFileName.setToolTipText(TRICK_FILE_NAME_RULES);
 
     textFieldFileName.setForeground(Color.GRAY);
-
+  
     buttonAddTrick.addActionListener(this::buttonAddTrickActionPerformed);
+    buttonCancel.addActionListener(this::buttonCancelActionPerformed);
 
     KeyListener nameListener = new KeyListener() {
       public void keyTyped(KeyEvent e) {
@@ -105,13 +108,19 @@ public class CreateTrickFrame extends JFrame {
     cp.add(labelFileName);
     cp.add(textFieldFileName);
     cp.add(buttonAddTrick);
+    cp.add(buttonCancel);
 
     setResizable(false);
     setVisible(true);
   }
-
+  
   private void buttonAddTrickActionPerformed(final ActionEvent actionEvent) {
     UIController.addTrick(textFieldName.getText().trim(),
         TrickFileHandler.trimmedFileString(textFieldFileName.getText()), this);
+  }
+  
+  private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
+    new MainMenuFrame();
+    dispose();
   }
 }
