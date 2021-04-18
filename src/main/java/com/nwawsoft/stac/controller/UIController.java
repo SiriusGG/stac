@@ -44,7 +44,7 @@ public class UIController {
   public static Trick createTrickFromJFileChooser() {
     JFileChooser jfc = new JFileChooser();
     jfc.setCurrentDirectory(new File
-        (System.getProperty("user.home") + System.getProperty("file.separator") + DIRECTORY_NAME));
+        (USER_HOME + System.getProperty("file.separator") + DIRECTORY_NAME));
     FileFilter filter = new FileNameExtensionFilter
         ("STAC Trick File (." + TRICK_FILE_FORMAT + ")", TRICK_FILE_FORMAT);
     jfc.addChoosableFileFilter(filter);

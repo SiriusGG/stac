@@ -4,6 +4,7 @@ import com.nwawsoft.stac.BuildData;
 import com.nwawsoft.stac.controller.UIController;
 import com.nwawsoft.stac.model.KeyBindingsFileHandler;
 import com.nwawsoft.stac.model.Trick;
+import com.nwawsoft.stac.model.VisualizationSettingsFileHandler;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
@@ -47,6 +48,7 @@ public class MainMenuFrame extends JFrame {
   public void init() {
     try {
       KeyBindingsFileHandler.guaranteeSettings();
+      VisualizationSettingsFileHandler.guaranteeSettings();
     } catch (IOException e) {
       e.printStackTrace();
     }

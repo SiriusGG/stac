@@ -1,9 +1,11 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.controller.LAFChanger;
+import com.nwawsoft.stac.model.CounterKeyListenerSingleton;
 import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.stac.model.KeyBindingsFileHandler;
 import com.nwawsoft.stac.model.Trick;
+import org.jnativehook.GlobalScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +22,7 @@ public class TrickControlPanelFrame extends JFrame {
 
   private Trick t;
   private final TrickVisualizationFrame tvf;
-
+  
   public TrickControlPanelFrame(final JFrame calledBy, final Trick t) {
     super("Control Panel");
     calledBy.dispose();
@@ -90,11 +92,18 @@ public class TrickControlPanelFrame extends JFrame {
 
     setResizable(false);
     setVisible(true);
-
+    
     LAFChanger lc = new LAFChanger();
     lc.setMotif();
     tvf = new TrickVisualizationFrame(this);
     lc.setDefault();
+  
+    CounterKeyListenerSingleton ckl = CounterKeyListenerSingleton.getCounterKeyListener();
+    ckl.setVisualization(tvf);
+    if (!CounterKeyListenerSingleton.getCounterKeyListener().isActive()) {
+      GlobalScreen.addNativeKeyListener(ckl);
+    }
+    ckl.setActive(true);
   }
 
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {

@@ -7,13 +7,13 @@ import static com.nwawsoft.stac.BuildData.*;
 public class TrickFileHandler {
   public static void save(final Trick t) {
     try {
-      File d = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME);
+      File d = new File(USER_HOME + "/" + DIRECTORY_NAME);
       if (!d.exists()) {
         if (!d.mkdir()) {
           throw new IOException();
         }
       }
-      File f = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME + "/" + t.getFileName() + "." +
+      File f = new File(USER_HOME + "/" + DIRECTORY_NAME + "/" + t.getFileName() + "." +
           TRICK_FILE_FORMAT);
       FileWriter fw = new FileWriter(f);
       BufferedWriter bw = new BufferedWriter(fw);
@@ -38,7 +38,7 @@ public class TrickFileHandler {
     int successesBackToBack = 0;
     int successesHighscore = 0;
     try {
-      File f = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME + "/" + fileName + "." + TRICK_FILE_FORMAT);
+      File f = new File(USER_HOME + "/" + DIRECTORY_NAME + "/" + fileName + "." + TRICK_FILE_FORMAT);
       FileReader fr = new FileReader(f);
       BufferedReader br = new BufferedReader(fr);
       String currentLine;

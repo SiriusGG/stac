@@ -49,7 +49,7 @@ public class BackwardsCompatibility {
       for (final File f : Objects.requireNonNull(d.listFiles())) {
         if (f.getName().endsWith("settings.ini")) {
           String oldPath = f.getAbsolutePath();
-          String newPath = oldPath.replace("settings.ini", KEY_BINDINGS_FILE_NAME);
+          String newPath = oldPath.replace("settings.ini", KEY_BINDINGS_FILE_FULL_NAME);
           File newFile = new File(newPath);
           if (f.renameTo(newFile)) {
             System.out.println("Renamed " + oldPath + " to " + newPath);

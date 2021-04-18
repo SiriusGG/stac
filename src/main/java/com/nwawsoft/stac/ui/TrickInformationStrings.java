@@ -1,6 +1,7 @@
 package com.nwawsoft.stac.ui;
 
 public class TrickInformationStrings {
+  // TODO: Remove this class! Use values loaded from visualization.stacv instead!
   public final static String PREFIX_TRICK = "Trick: ";
   public final static String PREFIX_ATTEMPTS = "Attempts: ";
   public final static String PREFIX_FAILS = "Fails: ";

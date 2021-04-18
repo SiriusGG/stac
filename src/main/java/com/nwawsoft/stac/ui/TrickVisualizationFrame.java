@@ -2,15 +2,20 @@ package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.model.CounterKeyListenerSingleton;
 import com.nwawsoft.stac.model.TrickFileHandler;
+import com.nwawsoft.stac.model.VisualizationSettings;
+import com.nwawsoft.stac.model.VisualizationSettingsFileHandler;
 import org.jnativehook.GlobalScreen;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import static com.nwawsoft.stac.BuildData.*;
 import static com.nwawsoft.stac.ui.TrickInformationStrings.*;
 
 public class TrickVisualizationFrame extends JFrame {
@@ -26,8 +31,8 @@ public class TrickVisualizationFrame extends JFrame {
   private JLabel labelSuccessesBackToBack;
   private JLabel labelSuccessesHighscore;
   private JLabel labelSuccessPercentage;
-
-  CounterKeyListenerSingleton ckl;
+  
+  private VisualizationSettings vs;
 
   private final DecimalFormat df = new DecimalFormat("#.##");
 
@@ -48,7 +53,15 @@ public class TrickVisualizationFrame extends JFrame {
     setLocation(x + TrickControlPanelFrame.FRAME_WIDTH, y);
     Container cp = getContentPane();
     cp.setLayout(null);
-
+  
+    String fileName = tcpf.getTrick().getFileName() + "." + TRICK_VISUALIZATION_FILE_FORMAT;
+    if (new File(fileName).exists()) {
+      vs = VisualizationSettingsFileHandler.load(fileName);
+    } else {
+      // ToDo: Create copy of defaults and rename to name.extension instead of just using defaults.
+      vs = VisualizationSettingsFileHandler.load(VISUALIZATION_FILE_FULL_NAME);
+      // end of ToDo
+    }
     this.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         if (!tcpf.getTrick().equals(TrickFileHandler.load(tcpf.getTrick().getFileName()))) {
@@ -58,9 +71,9 @@ public class TrickVisualizationFrame extends JFrame {
         }
       }
     });
-
+    
+    // TODO: Load from visualization file instead
     int rowSpacing = 20;
-
     int trickNameLabelIndex = 0;
     int attemptsLabelIndex = 1;
     int failsLabelIndex = 2;
@@ -68,7 +81,7 @@ public class TrickVisualizationFrame extends JFrame {
     int successesBackToBackLabelIndex = 4;
     int successesHighscoreLabelIndex = 5;
     int successPercentageLabelIndex = 6;
-
+  
     JLabel labelTrickName = new JLabel(PREFIX_TRICK + tcpf.getTrick().getName());
     labelAttempts = new JLabel(PREFIX_ATTEMPTS + tcpf.getTrick().getAttempts());
     labelFails = new JLabel(PREFIX_FAILS + (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
@@ -77,14 +90,14 @@ public class TrickVisualizationFrame extends JFrame {
     labelSuccessesHighscore = new JLabel(PREFIX_SUCCESSES_HIGHSCORE + tcpf.getTrick().getSuccessesHighscore());
     df.setRoundingMode(RoundingMode.HALF_UP);
     labelSuccessPercentage = new JLabel(PREFIX_SUCCESS_PERCENTAGE + getSuccessPercentage());
-    labelTrickName.setBounds(10, 10 + (trickNameLabelIndex*rowSpacing), 4096, 20);
-    labelAttempts.setBounds(10, 10 + (attemptsLabelIndex*rowSpacing), FRAME_WIDTH-20, 20);
-    labelFails.setBounds(10, 10 + (failsLabelIndex*rowSpacing), FRAME_WIDTH-20, 20);
-    labelSuccesses.setBounds(10, 10 + (successesLabelIndex*rowSpacing), FRAME_WIDTH-20, 20);
-    labelSuccessesBackToBack.setBounds(10, 10 + (successesBackToBackLabelIndex*rowSpacing), FRAME_WIDTH-20, 20);
-    labelSuccessesHighscore.setBounds(10, 10 + (successesHighscoreLabelIndex*rowSpacing), FRAME_WIDTH-20, 20);
-    labelSuccessPercentage.setBounds(10, 10 + (successPercentageLabelIndex*rowSpacing), FRAME_WIDTH-20, 20);
-
+    labelTrickName.setBounds(10, 10 + (trickNameLabelIndex * rowSpacing), 4096, 20);
+    labelAttempts.setBounds(10, 10 + (attemptsLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
+    labelFails.setBounds(10, 10 + (failsLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
+    labelSuccesses.setBounds(10, 10 + (successesLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
+    labelSuccessesBackToBack.setBounds(10, 10 + (successesBackToBackLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
+    labelSuccessesHighscore.setBounds(10, 10 + (successesHighscoreLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
+    labelSuccessPercentage.setBounds(10, 10 + (successPercentageLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
+    
     cp.setBackground(Color.WHITE);
     cp.add(labelTrickName);
     cp.add(labelAttempts);
@@ -93,14 +106,7 @@ public class TrickVisualizationFrame extends JFrame {
     cp.add(labelSuccessesBackToBack);
     cp.add(labelSuccessesHighscore);
     cp.add(labelSuccessPercentage);
-
-    ckl = CounterKeyListenerSingleton.getCounterKeyListener();
-    ckl.setVisualization(this);
-    if (!CounterKeyListenerSingleton.getCounterKeyListener().isActive()) {
-      GlobalScreen.addNativeKeyListener(ckl);
-    }
-    ckl.setActive(true);
-
+  
     setResizable(true);
     setVisible(true);
   }
