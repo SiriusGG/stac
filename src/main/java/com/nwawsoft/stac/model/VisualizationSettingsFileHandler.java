@@ -72,7 +72,7 @@ public class VisualizationSettingsFileHandler {
       tupelsString = tupelsString.trim();
       visualizationTupels = parseTupels(tupelsString);
     } catch (IOException e) {
-      System.err.println("Something went whoopsie at:\nVisualizationSettings.load(" + fileName + ")");
+      System.err.println("Something went wrong at:\nVisualizationSettings.load(" + fileName + ")");
       e.printStackTrace();
       System.err.println("Continuing with new VisualizationSettings(null, 0, null)");
       return new VisualizationSettings(null, 0, null);
