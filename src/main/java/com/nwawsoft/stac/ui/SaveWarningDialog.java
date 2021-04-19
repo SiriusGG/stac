@@ -1,12 +1,15 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.model.TrickFileHandler;
+import com.nwawsoft.stac.model.VisualizationSettingsFileHandler;
 import com.nwawsoft.util.html.HTMLTagger;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+
+import static com.nwawsoft.stac.BuildData.*;
 
 public class SaveWarningDialog extends JDialog {
   private final JFrame calledBy;
@@ -92,9 +95,20 @@ public class SaveWarningDialog extends JDialog {
         break;
       case "visualization settings, close":
         if (calledBy instanceof VisualizationSettingsFrame) {
-          TrickFileHandler.save(((VisualizationSettingsFrame)calledBy).getTrick());
-          new TrickControlPanelFrame(calledBy, ((VisualizationSettingsFrame)calledBy).getTrick());
+          VisualizationSettingsFileHandler.save(
+              ((VisualizationSettingsFrame) calledBy).getVisualizationSettings(),
+              VISUALIZATION_FILE_FULL_NAME);
+          new MainMenuFrame();
           calledBy.dispose();
+          dispose();
+        }
+        break;
+      case "trick visualization settings, close":
+        if (calledBy instanceof VisualizationSettingsFrame) {
+          String fileName = ((VisualizationSettingsFrame) calledBy).getTrick().getFileName();
+          VisualizationSettingsFileHandler.save(
+              ((VisualizationSettingsFrame) calledBy).getVisualizationSettings(), fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
+          new TrickControlPanelFrame(calledBy, ((VisualizationSettingsFrame) calledBy).getTrick());
           dispose();
         }
         break;
@@ -124,7 +138,13 @@ public class SaveWarningDialog extends JDialog {
         }
         break;
       case "visualization settings, close":
+        new MainMenuFrame();
+        calledBy.dispose();
+        dispose();
+        break;
+      case "trick visualization settings, close":
         new TrickControlPanelFrame(calledBy, ((TrickControlPanelFrame)calledBy).getT());
+        calledBy.dispose();
         dispose();
         break;
     }

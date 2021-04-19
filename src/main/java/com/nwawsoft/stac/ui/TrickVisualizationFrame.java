@@ -1,17 +1,14 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.model.CounterKeyListenerSingleton;
 import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.stac.model.VisualizationSettings;
 import com.nwawsoft.stac.model.VisualizationSettingsFileHandler;
-import org.jnativehook.GlobalScreen;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
@@ -54,14 +51,18 @@ public class TrickVisualizationFrame extends JFrame {
     Container cp = getContentPane();
     cp.setLayout(null);
   
-    String fileName = tcpf.getTrick().getFileName() + "." + TRICK_VISUALIZATION_FILE_FORMAT;
-    if (new File(fileName).exists()) {
-      vs = VisualizationSettingsFileHandler.load(fileName);
-    } else {
-      // ToDo: Create copy of defaults and rename to name.extension instead of just using defaults.
-      vs = VisualizationSettingsFileHandler.load(VISUALIZATION_FILE_FULL_NAME);
-      // end of ToDo
+    System.out.println("---");
+    String fileName = tcpf.getTrick().getFileName();
+    System.out.println(fileName);
+    String path = USER_HOME + "/" + DIRECTORY_NAME + "/" + fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT;
+    File f = new File(path);
+    System.out.println(path);
+    System.out.println("---");
+    if (!f.exists()) {
+      VisualizationSettings mainVisualizationSettings = VisualizationSettingsFileHandler.load(VISUALIZATION_FILE_FULL_NAME);
+      VisualizationSettingsFileHandler.save(mainVisualizationSettings, fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
     }
+    vs = VisualizationSettingsFileHandler.load(fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
     this.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         if (!tcpf.getTrick().equals(TrickFileHandler.load(tcpf.getTrick().getFileName()))) {
@@ -73,7 +74,7 @@ public class TrickVisualizationFrame extends JFrame {
     });
     
     // TODO: Load from visualization file instead
-    int rowSpacing = 20;
+    int rowSpacing = vs.getSpacing();
     int trickNameLabelIndex = 0;
     int attemptsLabelIndex = 1;
     int failsLabelIndex = 2;

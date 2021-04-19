@@ -1,10 +1,7 @@
 package com.nwawsoft.stac.model;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 import static com.nwawsoft.stac.BuildData.*;
@@ -17,13 +14,35 @@ public class VisualizationSettingsFileHandler {
    * The file extension will be set accordingly.
    * ".stacv" for the default visualization file and ".stactv" for trick visualization files.
    *
-   * @param mode either "default" or "trick".
-   * @param vs any VisualizationSettings object.
+   * @param vs       any VisualizationSettings object.
    * @param fileName the name of the visualization file to be saved.
    */
-  public static void save(final String mode, final VisualizationSettings vs, final String fileName) {
-    // ToDo
-    System.out.println(fileName);
+  public static void save(final VisualizationSettings vs, final String fileName) {
+    File d;
+    File f;
+    try {
+      d = new File(USER_HOME + "/" + DIRECTORY_NAME);
+      if (!d.exists()) {
+        if (!d.mkdir()) {
+          throw new IOException();
+        }
+      }
+      f = new File(USER_HOME + "/" + DIRECTORY_NAME + "/" + fileName);
+      FileWriter fw = new FileWriter(f);
+      BufferedWriter bw = new BufferedWriter(fw);
+      bw.write("SPACING=" + vs.getSpacing() + "\n");
+      bw.write("FONT=" + toFontString(vs.getFont()) + "\n");
+      bw.write("#TUPELS_START\n");
+      for (VisualizationTupel vt : vs.getVisualizationTupels()) {
+        bw.write(toTupelString(vt) + "\n");
+      }
+      bw.write("#TUPELS_END\n");
+      bw.flush();
+      bw.close();
+    } catch (IOException e) {
+      System.err.println("Error in save(\"default\", {VisualizationSettings}, \"" + fileName + "\"): ");
+      e.printStackTrace();
+    }
   }
   
   public static VisualizationSettings load(final String fileName) {
@@ -43,7 +62,7 @@ public class VisualizationSettingsFileHandler {
           font = parseFont(currentLine.substring(currentLine.lastIndexOf("=") + 1));
         } else if (currentLine.contains("TUPELS_START")) {
           tupelsString = tupelsString + currentLine + "\n";
-          while(!(currentLine = br.readLine()).contains("TUPELS_END")) {
+          while (!(currentLine = br.readLine()).contains("TUPELS_END")) {
             tupelsString = tupelsString + currentLine + "\n";
           }
         }
@@ -65,16 +84,26 @@ public class VisualizationSettingsFileHandler {
     String name;
     int style;
     int size;
-    name = fontString.substring(0, fontString.indexOf(","));
-    style = Integer.parseInt(fontString.substring(fontString.indexOf(",") + 1, fontString.lastIndexOf(",")));
-    size = Integer.parseInt(fontString.substring(fontString.lastIndexOf(",") + 1));
+    name = fontString.substring(0, fontString.indexOf(";"));
+    style = Integer.parseInt(fontString.substring(fontString.indexOf(";") + 1, fontString.lastIndexOf(";")));
+    size = Integer.parseInt(fontString.substring(fontString.lastIndexOf(";") + 1));
     return new Font(name, style, size);
+  }
+  
+  public static String toFontString(final Font font) {
+    String name;
+    int style;
+    int size;
+    name = font.getName();
+    style = font.getStyle();
+    size = font.getSize();
+    return name + ";" + style + ";" + size;
   }
   
   public static ArrayList<VisualizationTupel> parseTupels(final String tupelsString) {
     String[] tupelStrings = tupelsString.split("\n");
     ArrayList<VisualizationTupel> visualizationTupels = new ArrayList<>();
-    for(String s : tupelStrings) {
+    for (String s : tupelStrings) {
       visualizationTupels.add(parseTupel(s));
     }
     return visualizationTupels;
@@ -96,6 +125,13 @@ public class VisualizationSettingsFileHandler {
     return new VisualizationTupel(index, name, metric, active);
   }
   
+  public static String toTupelString(final VisualizationTupel visualizationTupel) {
+    return visualizationTupel.getIndex() + ";" +
+        visualizationTupel.getName() + ";" +
+        visualizationTupel.getMetric() + ";" +
+        visualizationTupel.isActive();
+  }
+  
   public static void guaranteeSettings() throws IOException {
     File d = new File(USER_HOME + "/" + DIRECTORY_NAME + "/");
     if (!d.exists()) {
@@ -105,7 +141,7 @@ public class VisualizationSettingsFileHandler {
     }
     File f = new File(USER_HOME + "/" + DIRECTORY_NAME + "/" + VISUALIZATION_FILE_FULL_NAME);
     if (!f.exists()) {
-      save("default", createDefaults(), VISUALIZATION_FILE_NAME);
+      save(createDefaults(), VISUALIZATION_FILE_FULL_NAME);
     }
   }
   
@@ -126,7 +162,7 @@ public class VisualizationSettingsFileHandler {
   }
   
   private static int getDefaultSpacing() {
-    return 10;
+    return 20;
   }
   
   private static Font getDefaultFont() {

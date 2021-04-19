@@ -102,7 +102,11 @@ public class VisualizationSettingsFrame extends JFrame {
       buttons[0][i] = new JButton();
       buttons[0][i].setBounds(0, 50 * i, 50, 50);
       buttons[0][i].setText("H" + i);
-      buttons[0][i].setIcon(iiOn); // ToDo: Set correct icon on first load from file
+      if (visualizationTupels.get(i).isActive()) {
+        buttons[0][i].setIcon(iiOn);
+      } else {
+        buttons[0][i].setIcon(iiOff);
+      }
       buttons[0][i].setToolTipText("Show/Hide metric on slot " + i);
       buttons[0][i].addActionListener(this::showButtonActionPerformed);
       buttons[1][i] = new JButton();
@@ -167,6 +171,7 @@ public class VisualizationSettingsFrame extends JFrame {
     } else {
       activeButton.setIcon(iiOff);
     }
+    System.out.println(visualizationTupels.get(i).isActive());
     somethingChanged = true;
   }
   
@@ -185,7 +190,14 @@ public class VisualizationSettingsFrame extends JFrame {
   }
   
   private void saveButtonActionPerformed(ActionEvent actionEvent) {
-    // ToDo
+    if (mode.equals("default")) {
+      VisualizationSettingsFileHandler.save(vs, VISUALIZATION_FILE_FULL_NAME);
+      new MainMenuFrame();
+    } else if (mode.equals("trick")) {
+      VisualizationSettingsFileHandler.save(vs, t.getFileName() + "." + TRICK_VISUALIZATION_FILE_FORMAT);
+      new TrickControlPanelFrame(this, t);
+    }
+    dispose();
   }
   
   private void cancelButtonActionPerformed(ActionEvent actionEvent) {
@@ -200,18 +212,33 @@ public class VisualizationSettingsFrame extends JFrame {
   
   public void doClose() {
     if (somethingChanged) {
-      new SaveWarningDialog(this, "visualization settings", "close");
+      if (mode.equals("default")) {
+        new SaveWarningDialog(this, "visualization settings", "close");
+      } else if (mode.equals("trick")) {
+        new SaveWarningDialog(this, "trick visualization settings", "close");
+      }
     } else {
-      if (!(t == null)) {
-        new TrickControlPanelFrame(this, t);
-      } else {
+      if (mode.equals("default")) {
         new MainMenuFrame();
+        dispose();
+      } else if (mode.equals("trick")) {
+        new TrickControlPanelFrame(this, t);
         dispose();
       }
     }
+    // ToDo? Directly to Menu/ControlPanel?
+    
   }
   
   public Trick getTrick() {
     return t;
+  }
+  
+  public String getMode() {
+    return mode;
+  }
+  
+  public VisualizationSettings getVisualizationSettings() {
+    return vs;
   }
 }
