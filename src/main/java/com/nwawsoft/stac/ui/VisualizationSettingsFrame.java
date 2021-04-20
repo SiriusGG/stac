@@ -15,8 +15,6 @@ import java.util.ArrayList;
 
 import static com.nwawsoft.stac.BuildData.*;
 
-// BIG TODO
-
 public class VisualizationSettingsFrame extends JFrame {
   private Trick t = null;
   
@@ -27,10 +25,16 @@ public class VisualizationSettingsFrame extends JFrame {
   private boolean somethingChanged = false;
   
   private final VisualizationSettings vs;
-  private ArrayList<VisualizationTupel> visualizationTupels = new ArrayList<>();
+  private ArrayList<VisualizationTupel> visualizationTupels;
   
   private ImageIcon iiOn;
   private ImageIcon iiOff;
+  
+  private JTextField[] textFields;
+  
+  private int rows;
+  
+  private JButton[][] buttons;
   
   public VisualizationSettingsFrame() {
     super("Visualization Settings");
@@ -95,29 +99,25 @@ public class VisualizationSettingsFrame extends JFrame {
     }
   
     int buttonColumns = 3;
-    int rows = Metric.values().length;
+    rows = Metric.values().length;
     
-    JButton[][] buttons = new JButton[buttonColumns][rows];
+    // ToDo: Fix non-centered button graphics, especially up/down (probably because of text?)
+    buttons = new JButton[buttonColumns][rows];
     for (int i = 0; i < rows; i++) {
       buttons[0][i] = new JButton();
       buttons[0][i].setBounds(0, 50 * i, 50, 50);
-      buttons[0][i].setText("H" + i);
-      if (visualizationTupels.get(i).isActive()) {
-        buttons[0][i].setIcon(iiOn);
-      } else {
-        buttons[0][i].setIcon(iiOff);
-      }
+      buttons[0][i].setText("H" + i); // Currently needed for event recognition
       buttons[0][i].setToolTipText("Show/Hide metric on slot " + i);
       buttons[0][i].addActionListener(this::showButtonActionPerformed);
       buttons[1][i] = new JButton();
       buttons[1][i].setBounds(250, 50 * i, 50, 50);
-      buttons[1][i].setText("D" + i);
+      buttons[1][i].setText("D" + i); // Currently needed for event recognition
       buttons[1][i].setIcon(iiDown);
       buttons[1][i].setToolTipText("Move metric from slot " + i + " down to " + (i+1));
       buttons[1][i].addActionListener(this::downButtonActionPerformed);
       buttons[2][i] = new JButton();
       buttons[2][i].setBounds(300, 50 * i, 50, 50);
-      buttons[2][i].setText("U" + i);
+      buttons[2][i].setText("U" + i); // Currently needed for event recognition
       buttons[2][i].setIcon(iiUp);
       buttons[2][i].setToolTipText("Move metric from slot " + i + " up to " + (i-1));
       buttons[2][i].addActionListener(this::upButtonActionPerformed);
@@ -125,16 +125,18 @@ public class VisualizationSettingsFrame extends JFrame {
       cp.add(buttons[1][i]);
       cp.add(buttons[2][i]);
     }
+    updateHideShow();
     buttons[2][0].setVisible(false); // disables the "up" button of the metric in slot 1
     buttons[1][rows-1].setVisible(false); // disables the "down" button of the metric in the last slot.
   
-    // ToDo: Optimize this a lot, add text presets
-    JTextField[] textFields = new JTextField[rows];
+    // ToDo: Add tooltiptexts
+    textFields = new JTextField[rows];
     for (int i = 0; i < rows; i++) {
       textFields[i] = new JTextField();
       textFields[i].setBounds(50, 50 * i, 200, 50);
       cp.add(textFields[i]);
     }
+    updateNames();
     
     // ToDo: Spacing stuff
     
@@ -162,34 +164,33 @@ public class VisualizationSettingsFrame extends JFrame {
   
   
   private void showButtonActionPerformed(ActionEvent actionEvent) {
-    // ToDo
     JButton activeButton = (JButton)actionEvent.getSource();
     int i = Integer.parseInt(activeButton.getText().substring(1));
     VisualizationTupelListFunctions.updateShow(visualizationTupels, i);
-    if (visualizationTupels.get(i).isActive()) {
-      activeButton.setIcon(iiOn);
-    } else {
-      activeButton.setIcon(iiOff);
-    }
-    System.out.println(visualizationTupels.get(i).isActive());
+    updateHideShow(i);
     somethingChanged = true;
   }
   
   private void downButtonActionPerformed(ActionEvent actionEvent) {
-    // ToDo
+    saveNames();
     int i = Integer.parseInt(((JButton)actionEvent.getSource()).getText().substring(1));
-    System.out.println(i);
+    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i + 1);
+    updateHideShow();
+    updateNames();
     somethingChanged = true;
   }
   
   private void upButtonActionPerformed(ActionEvent actionEvent) {
-    // ToDo
+    saveNames();
     int i = Integer.parseInt(((JButton)actionEvent.getSource()).getText().substring(1));
-    System.out.println(i);
+    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i - 1);
+    updateHideShow();
+    updateNames();
     somethingChanged = true;
   }
   
   private void saveButtonActionPerformed(ActionEvent actionEvent) {
+    saveNames();
     if (mode.equals("default")) {
       VisualizationSettingsFileHandler.save(vs, VISUALIZATION_FILE_FULL_NAME);
       new MainMenuFrame();
@@ -203,10 +204,35 @@ public class VisualizationSettingsFrame extends JFrame {
   private void cancelButtonActionPerformed(ActionEvent actionEvent) {
     if (mode.equals("default")) {
       new MainMenuFrame();
-      dispose();
     } else if (mode.equals("trick")) {
       new TrickControlPanelFrame(this, t);
-      dispose();
+    }
+    dispose();
+  }
+  
+  public void updateHideShow() {
+    for (int i = 0; i < rows; i++) {
+      updateHideShow(i);
+    }
+  }
+  
+  public void updateHideShow(int i) {
+      if (visualizationTupels.get(visualizationTupels.get(i).getIndex()).isActive()) {
+        buttons[0][i].setIcon(iiOn);
+      } else {
+        buttons[0][i].setIcon(iiOff);
+      }
+  }
+  
+  public void saveNames() {
+    for (int i = 0; i < rows; i++) {
+      visualizationTupels.get(visualizationTupels.get(i).getIndex()).setName(textFields[i].getText());
+    }
+  }
+  
+  public void updateNames() {
+    for (int i = 0; i < rows; i++) {
+      textFields[i].setText(visualizationTupels.get(visualizationTupels.get(i).getIndex()).getName());
     }
   }
   
@@ -220,11 +246,10 @@ public class VisualizationSettingsFrame extends JFrame {
     } else {
       if (mode.equals("default")) {
         new MainMenuFrame();
-        dispose();
       } else if (mode.equals("trick")) {
         new TrickControlPanelFrame(this, t);
-        dispose();
       }
+      dispose();
     }
     // ToDo? Directly to Menu/ControlPanel?
     
