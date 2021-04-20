@@ -40,8 +40,18 @@ public class TrickVisualizationFrame extends JFrame {
   }
 
   public void init() {
+    String fileName = tcpf.getTrick().getFileName();
+    String path = USER_HOME + "/" + DIRECTORY_NAME + "/" + fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT;
+    File f = new File(path);
+    if (!f.exists()) {
+      VisualizationSettings mainVisualizationSettings = VisualizationSettingsFileHandler.load(VISUALIZATION_FILE_FULL_NAME);
+      VisualizationSettingsFileHandler.save(mainVisualizationSettings, fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
+    }
+    vs = VisualizationSettingsFileHandler.load(fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
+  
+    // always opened to the right of TrickControlPanelFrame
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    setSize(FRAME_WIDTH, FRAME_HEIGHT);
+    setSize(FRAME_WIDTH, FRAME_HEIGHT); // ToDo calculate real needed height by non-hidden modules and spacing
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     int width = FRAME_WIDTH + TrickControlPanelFrame.FRAME_WIDTH;
     int height = FRAME_HEIGHT + TrickControlPanelFrame.FRAME_HEIGHT;
@@ -50,19 +60,7 @@ public class TrickVisualizationFrame extends JFrame {
     setLocation(x + TrickControlPanelFrame.FRAME_WIDTH, y);
     Container cp = getContentPane();
     cp.setLayout(null);
-  
-    System.out.println("---");
-    String fileName = tcpf.getTrick().getFileName();
-    System.out.println(fileName);
-    String path = USER_HOME + "/" + DIRECTORY_NAME + "/" + fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT;
-    File f = new File(path);
-    System.out.println(path);
-    System.out.println("---");
-    if (!f.exists()) {
-      VisualizationSettings mainVisualizationSettings = VisualizationSettingsFileHandler.load(VISUALIZATION_FILE_FULL_NAME);
-      VisualizationSettingsFileHandler.save(mainVisualizationSettings, fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
-    }
-    vs = VisualizationSettingsFileHandler.load(fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
+    
     this.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         if (!tcpf.getTrick().equals(TrickFileHandler.load(tcpf.getTrick().getFileName()))) {

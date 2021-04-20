@@ -29,4 +29,14 @@ public class VisualizationTupelListFunctions {
       System.out.println(vt.getName());
     }
   }
+  
+  public static int getActiveMetricsAmount(final ArrayList<VisualizationTupel> visualizationTupels) {
+    int c = 0;
+    for (VisualizationTupel vt : visualizationTupels) {
+      if (vt.isActive()) {
+        c++;
+      }
+    }
+    return c;
+  }
 }
