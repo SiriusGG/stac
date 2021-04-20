@@ -80,7 +80,7 @@ public class VisualizationSettingsFileHandler {
     return new VisualizationSettings(visualizationTupels, spacing, font);
   }
   
-  public static Font parseFont(final String fontString) {
+  public static Font parseFont(final String fontString) { // ToDo replace by util
     String name;
     int style;
     int size;
@@ -90,7 +90,7 @@ public class VisualizationSettingsFileHandler {
     return new Font(name, style, size);
   }
   
-  public static String toFontString(final Font font) {
+  public static String toFontString(final Font font) { // ToDo replace by util
     String name;
     int style;
     int size;
