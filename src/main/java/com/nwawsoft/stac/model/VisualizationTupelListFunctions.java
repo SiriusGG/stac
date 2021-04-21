@@ -63,11 +63,10 @@ public class VisualizationTupelListFunctions {
                                                     final int index) {
     for (int i = 0; i < visualizationTupels.size(); i++) {
       if (visualizationTupels.get(i).getIndex() == index) {
-        System.out.println("getTupelIndexByInternalIndex(tupels, " + index + ") returns " + i);
         return i;
       }
     }
-    System.out.println("getTupelIndexByInternalIndex failed. Returning -1.");
+    System.err.println("getTupelIndexByInternalIndex failed. Returning -1.");
     return -1;
   }
 }
