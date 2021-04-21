@@ -19,23 +19,12 @@ public class TrickVisualizationFrame extends JFrame {
   
   public final static int FRAME_WIDTH = 340;
   public final static int TITLE_BAR_SIZE = 30;
-
-  private JLabel labelAttempts;
-  private JLabel labelFails;
-  private JLabel labelSuccesses;
-  private JLabel labelSuccessesBackToBack;
-  private JLabel labelSuccessesHighscore;
-  private JLabel labelSuccessPercentage;
   
   private ArrayList<VisualizationTupel> vts;
   
-  int trickNameLabelIndex;
-  int attemptsLabelIndex;
-  int failsLabelIndex;
-  int successesLabelIndex;
-  int successesBackToBackLabelIndex;
-  int successesHighscoreLabelIndex;
-  int successPercentageLabelIndex;
+  private JLabel[] labels;
+  private int[] labelIndexes;
+  private int[] nonHiddenLabelIndexes;
 
   private final DecimalFormat df = new DecimalFormat("#.##");
 
@@ -79,37 +68,34 @@ public class TrickVisualizationFrame extends JFrame {
       }
     });
     
+    labels = new JLabel[vts.size()];
     int rowSpacing = vs.getSpacing();
     setIndexes();
-    
-    JLabel labelTrickName = new JLabel(vts.get(0).getName() + tcpf.getTrick().getName());
-    labelAttempts = new JLabel(vts.get(1).getName() + tcpf.getTrick().getAttempts());
-    labelFails = new JLabel(vts.get(2).getName() + (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
-    labelSuccesses = new JLabel(vts.get(3).getName() + tcpf.getTrick().getSuccesses());
-    labelSuccessesBackToBack = new JLabel(vts.get(4).getName() + tcpf.getTrick().getSuccessesBackToBack());
-    labelSuccessesHighscore = new JLabel(vts.get(5).getName() + tcpf.getTrick().getSuccessesHighscore());
+    setIndexesWithoutHidden();
+    labels[0] = new JLabel(vts.get(0).getName() + tcpf.getTrick().getName());
+    labels[1] = new JLabel(vts.get(1).getName() + tcpf.getTrick().getAttempts());
+    labels[2] = new JLabel(vts.get(2).getName() + (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
+    labels[3] = new JLabel(vts.get(3).getName() + tcpf.getTrick().getSuccesses());
+    labels[4] = new JLabel(vts.get(4).getName() + tcpf.getTrick().getSuccessesBackToBack());
+    labels[5] = new JLabel(vts.get(5).getName() + tcpf.getTrick().getSuccessesHighscore());
     df.setRoundingMode(RoundingMode.HALF_UP);
-    labelSuccessPercentage = new JLabel(vts.get(6).getName() + getSuccessPercentage());
+    labels[6] = new JLabel(vts.get(6).getName() + getSuccessPercentage());
+    // ToDo: Load spacing and font from vs
+    // ToDo: replace labelIndexes with nonHiddenLabelIndexes
+    // ToDo: probably with a lot of "if"s where isActive() is checked
+    labels[0].setBounds(10, 10 + (labelIndexes[0] * rowSpacing), 4096, 20);
+    labels[1].setBounds(10, 10 + (labelIndexes[1] * rowSpacing), FRAME_WIDTH - 20, 20);
+    labels[2].setBounds(10, 10 + (labelIndexes[2] * rowSpacing), FRAME_WIDTH - 20, 20);
+    labels[3].setBounds(10, 10 + (labelIndexes[3] * rowSpacing), FRAME_WIDTH - 20, 20);
+    labels[4].setBounds(10, 10 + (labelIndexes[4] * rowSpacing), FRAME_WIDTH - 20, 20);
+    labels[5].setBounds(10, 10 + (labelIndexes[5] * rowSpacing), FRAME_WIDTH - 20, 20);
+    labels[6].setBounds(10, 10 + (labelIndexes[6] * rowSpacing), FRAME_WIDTH - 20, 20);
+    // end of ToDo
+    for (JLabel label : labels) {
+      cp.add(label);
+    }
   
-    // TODO: Load spacing and font from vs
-    // ToDo: replace indexes with continuous numbers from 0-n where n is (activeMetrics - 1)
-    labelTrickName.setBounds(10, 10 + (trickNameLabelIndex * rowSpacing), 4096, 20);
-    labelAttempts.setBounds(10, 10 + (attemptsLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
-    labelFails.setBounds(10, 10 + (failsLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
-    labelSuccesses.setBounds(10, 10 + (successesLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
-    labelSuccessesBackToBack.setBounds(10, 10 + (successesBackToBackLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
-    labelSuccessesHighscore.setBounds(10, 10 + (successesHighscoreLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
-    labelSuccessPercentage.setBounds(10, 10 + (successPercentageLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
-    
     cp.setBackground(Color.WHITE);
-    cp.add(labelTrickName);
-    cp.add(labelAttempts);
-    cp.add(labelFails);
-    cp.add(labelSuccesses);
-    cp.add(labelSuccessesBackToBack);
-    cp.add(labelSuccessesHighscore);
-    cp.add(labelSuccessPercentage);
-  
     setResizable(true);
     setVisible(true);
   }
@@ -121,52 +107,63 @@ public class TrickVisualizationFrame extends JFrame {
     return TITLE_BAR_SIZE + (activeModules*fontSize) + (spacing*(activeModules-1));
   }
   
-  // ToDo: change to only non-hidden metrics
   public void setIndexes() {
-    trickNameLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+    labelIndexes = new int[vts.size()];
+    labelIndexes[0] = VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.TRICK_NAME).getIndex();
-    attemptsLabelIndex = VisualizationTupelListFunctions.getTupelByMetric
+    labelIndexes[1] = VisualizationTupelListFunctions.getTupelByMetric
         (vts, Metric.ATTEMPTS).getIndex();
-    failsLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+    labelIndexes[2] = VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.FAILS).getIndex();
-    successesLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+    labelIndexes[3] = VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.SUCCESSES).getIndex();
-    successesBackToBackLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+    labelIndexes[4] = VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.SUCCESSES_BACK_TO_BACK).getIndex();
-    successesHighscoreLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+    labelIndexes[5] = VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.SUCCESSES_HIGHSCORE).getIndex();
-    successPercentageLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+    labelIndexes[6] = VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.SUCCESS_PERCENTAGE).getIndex();
   }
   
+  public void setIndexesWithoutHidden() {
+    nonHiddenLabelIndexes = new int[VisualizationTupelListFunctions.getActiveMetricsAmount(vts)];
+    int counter = 0;
+    for (int i = 0; i < labelIndexes.length; i++) {
+      if (vts.get(i).isActive()) {
+        nonHiddenLabelIndexes[counter] = vts.get(i).getIndex();
+        counter++;
+      }
+    }
+  }
+  
   public void updateAttempts() {
-    labelAttempts.setText(VisualizationTupelListFunctions.getTupelByMetric(
+    labels[1].setText(VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.ATTEMPTS).getName() + tcpf.getTrick().getAttempts());
   }
 
   public void updateFails() {
-
-    labelFails.setText(VisualizationTupelListFunctions.getTupelByMetric(
+  
+    labels[2].setText(VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.FAILS).getName() + (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
   }
 
   public void updateSuccesses() {
-    labelSuccesses.setText(VisualizationTupelListFunctions.getTupelByMetric(
+    labels[3].setText(VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.SUCCESSES).getName() + tcpf.getTrick().getSuccesses());
   }
 
   public void updateSuccessesBackToBack() {
-    labelSuccessesBackToBack.setText(VisualizationTupelListFunctions.getTupelByMetric(
+    labels[4].setText(VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.SUCCESSES_BACK_TO_BACK).getName() + tcpf.getTrick().getSuccessesBackToBack());
   }
 
   public void updateSuccessesHighscore() {
-    labelSuccessesHighscore.setText(VisualizationTupelListFunctions.getTupelByMetric(
+    labels[5].setText(VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.SUCCESSES_HIGHSCORE).getName() + tcpf.getTrick().getSuccessesHighscore());
   }
 
   public void updateSuccessPercentage() {
-    labelSuccessPercentage.setText(VisualizationTupelListFunctions.getTupelByMetric(
+    labels[6].setText(VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.SUCCESS_PERCENTAGE).getName() + getSuccessPercentage());
   }
 
