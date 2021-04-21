@@ -30,10 +30,9 @@ public class VisualizationTupelListFunctions {
     }
   }
   
-  public static void printMetricsInIndexOrder(final ArrayList<VisualizationTupel> visualizationTupels) {
+  public static void printMetricsInListIndexOrder(final ArrayList<VisualizationTupel> visualizationTupels) {
     System.out.println("Printing names");
-    for (int i = 0; i < visualizationTupels.size(); i++) {
-      VisualizationTupel vt = visualizationTupels.get(i);
+    for (VisualizationTupel vt : visualizationTupels) {
       System.out.println(vt.getName());
     }
   }
