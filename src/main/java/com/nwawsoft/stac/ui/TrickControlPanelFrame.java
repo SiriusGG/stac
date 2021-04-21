@@ -31,9 +31,8 @@ public class TrickControlPanelFrame extends JFrame {
     setSize(FRAME_WIDTH, FRAME_HEIGHT);
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     int width = FRAME_WIDTH + TrickVisualizationFrame.FRAME_WIDTH;
-    int height = FRAME_HEIGHT + TrickVisualizationFrame.FRAME_HEIGHT;
     int x = ((d.width - width) / 2) ;
-    int y = (d.height - height) / 2;
+    int y = (d.height - FRAME_HEIGHT) / 2;
     setLocation(x, y);
     Container cp = getContentPane();
     cp.setLayout(null);

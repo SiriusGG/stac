@@ -1,8 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.model.TrickFileHandler;
-import com.nwawsoft.stac.model.VisualizationSettings;
-import com.nwawsoft.stac.model.VisualizationSettingsFileHandler;
+import com.nwawsoft.stac.model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,16 +9,16 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import static com.nwawsoft.stac.BuildData.*;
-import static com.nwawsoft.stac.ui.TrickInformationStrings.*;
 
 public class TrickVisualizationFrame extends JFrame {
 
   private final TrickControlPanelFrame tcpf;
-
+  
   public final static int FRAME_WIDTH = 340;
-  public final static int FRAME_HEIGHT = 210;
+  public final static int TITLE_BAR_SIZE = 30;
 
   private JLabel labelAttempts;
   private JLabel labelFails;
@@ -29,7 +27,15 @@ public class TrickVisualizationFrame extends JFrame {
   private JLabel labelSuccessesHighscore;
   private JLabel labelSuccessPercentage;
   
-  private VisualizationSettings vs;
+  private ArrayList<VisualizationTupel> vts;
+  
+  int trickNameLabelIndex;
+  int attemptsLabelIndex;
+  int failsLabelIndex;
+  int successesLabelIndex;
+  int successesBackToBackLabelIndex;
+  int successesHighscoreLabelIndex;
+  int successPercentageLabelIndex;
 
   private final DecimalFormat df = new DecimalFormat("#.##");
 
@@ -47,16 +53,18 @@ public class TrickVisualizationFrame extends JFrame {
       VisualizationSettings mainVisualizationSettings = VisualizationSettingsFileHandler.load(VISUALIZATION_FILE_FULL_NAME);
       VisualizationSettingsFileHandler.save(mainVisualizationSettings, fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
     }
-    vs = VisualizationSettingsFileHandler.load(fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
+    VisualizationSettings vs = VisualizationSettingsFileHandler.load(fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
+    vts = vs.getVisualizationTupels();
   
+    int frameHeight = calcHeight(vs);
+    
     // always opened to the right of TrickControlPanelFrame
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    setSize(FRAME_WIDTH, FRAME_HEIGHT); // ToDo calculate real needed height by non-hidden modules and spacing
+    setSize(FRAME_WIDTH, frameHeight);
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     int width = FRAME_WIDTH + TrickControlPanelFrame.FRAME_WIDTH;
-    int height = FRAME_HEIGHT + TrickControlPanelFrame.FRAME_HEIGHT;
     int x = (d.width - width) / 2;
-    int y = (d.height - height) / 2;
+    int y = (d.height - frameHeight) / 2;
     setLocation(x + TrickControlPanelFrame.FRAME_WIDTH, y);
     Container cp = getContentPane();
     cp.setLayout(null);
@@ -71,24 +79,19 @@ public class TrickVisualizationFrame extends JFrame {
       }
     });
     
-    // TODO: Load from visualization file instead
     int rowSpacing = vs.getSpacing();
-    int trickNameLabelIndex = 0;
-    int attemptsLabelIndex = 1;
-    int failsLabelIndex = 2;
-    int successesLabelIndex = 3;
-    int successesBackToBackLabelIndex = 4;
-    int successesHighscoreLabelIndex = 5;
-    int successPercentageLabelIndex = 6;
-  
-    JLabel labelTrickName = new JLabel(PREFIX_TRICK + tcpf.getTrick().getName());
-    labelAttempts = new JLabel(PREFIX_ATTEMPTS + tcpf.getTrick().getAttempts());
-    labelFails = new JLabel(PREFIX_FAILS + (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
-    labelSuccesses = new JLabel(PREFIX_SUCCESSES + tcpf.getTrick().getSuccesses());
-    labelSuccessesBackToBack = new JLabel(PREFIX_SUCCESSES_BACK_TO_BACK + tcpf.getTrick().getSuccessesBackToBack());
-    labelSuccessesHighscore = new JLabel(PREFIX_SUCCESSES_HIGHSCORE + tcpf.getTrick().getSuccessesHighscore());
+    setIndexes();
+    
+    JLabel labelTrickName = new JLabel(vts.get(0).getName() + tcpf.getTrick().getName());
+    labelAttempts = new JLabel(vts.get(1).getName() + tcpf.getTrick().getAttempts());
+    labelFails = new JLabel(vts.get(2).getName() + (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
+    labelSuccesses = new JLabel(vts.get(3).getName() + tcpf.getTrick().getSuccesses());
+    labelSuccessesBackToBack = new JLabel(vts.get(4).getName() + tcpf.getTrick().getSuccessesBackToBack());
+    labelSuccessesHighscore = new JLabel(vts.get(5).getName() + tcpf.getTrick().getSuccessesHighscore());
     df.setRoundingMode(RoundingMode.HALF_UP);
-    labelSuccessPercentage = new JLabel(PREFIX_SUCCESS_PERCENTAGE + getSuccessPercentage());
+    labelSuccessPercentage = new JLabel(vts.get(6).getName() + getSuccessPercentage());
+  
+    // TODO: Load spacing and font from vs
     labelTrickName.setBounds(10, 10 + (trickNameLabelIndex * rowSpacing), 4096, 20);
     labelAttempts.setBounds(10, 10 + (attemptsLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
     labelFails.setBounds(10, 10 + (failsLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
@@ -110,29 +113,59 @@ public class TrickVisualizationFrame extends JFrame {
     setVisible(true);
   }
 
+  private int calcHeight(final VisualizationSettings vs) {
+    int activeModules = VisualizationTupelListFunctions.getActiveMetricsAmount(vts);
+    int spacing = vs.getSpacing();
+    int fontSize = vs.getFont().getSize();
+    return TITLE_BAR_SIZE + (activeModules*fontSize) + (spacing*(activeModules-1));
+  }
+  
+  public void setIndexes() {
+    trickNameLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.TRICK_NAME).getIndex();
+    attemptsLabelIndex = VisualizationTupelListFunctions.getTupelByMetric
+        (vts, Metric.ATTEMPTS).getIndex();
+    failsLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.FAILS).getIndex();
+    successesLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.SUCCESSES).getIndex();
+    successesBackToBackLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.SUCCESSES_BACK_TO_BACK).getIndex();
+    successesHighscoreLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.SUCCESSES_HIGHSCORE).getIndex();
+    successPercentageLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.SUCCESS_PERCENTAGE).getIndex();
+  }
+  
   public void updateAttempts() {
-    labelAttempts.setText(PREFIX_ATTEMPTS + tcpf.getTrick().getAttempts());
+    labelAttempts.setText(VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.ATTEMPTS).getName() + tcpf.getTrick().getAttempts());
   }
 
   public void updateFails() {
 
-    labelFails.setText(PREFIX_FAILS + (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
+    labelFails.setText(VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.FAILS).getName() + (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
   }
 
   public void updateSuccesses() {
-    labelSuccesses.setText(PREFIX_SUCCESSES + tcpf.getTrick().getSuccesses());
+    labelSuccesses.setText(VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.SUCCESSES).getName() + tcpf.getTrick().getSuccesses());
   }
 
   public void updateSuccessesBackToBack() {
-    labelSuccessesBackToBack.setText(PREFIX_SUCCESSES_BACK_TO_BACK + tcpf.getTrick().getSuccessesBackToBack());
+    labelSuccessesBackToBack.setText(VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.SUCCESSES_BACK_TO_BACK).getName() + tcpf.getTrick().getSuccessesBackToBack());
   }
 
   public void updateSuccessesHighscore() {
-    labelSuccessesHighscore.setText(PREFIX_SUCCESSES_HIGHSCORE + tcpf.getTrick().getSuccessesHighscore());
+    labelSuccessesHighscore.setText(VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.SUCCESSES_HIGHSCORE).getName() + tcpf.getTrick().getSuccessesHighscore());
   }
 
   public void updateSuccessPercentage() {
-    labelSuccessPercentage.setText(PREFIX_SUCCESS_PERCENTAGE + getSuccessPercentage());
+    labelSuccessPercentage.setText(VisualizationTupelListFunctions.getTupelByMetric(
+        vts, Metric.SUCCESS_PERCENTAGE).getName() + getSuccessPercentage());
   }
 
   public void updateStats() {

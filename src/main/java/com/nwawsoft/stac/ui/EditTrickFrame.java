@@ -1,15 +1,15 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.controller.UIController;
-import com.nwawsoft.stac.model.Trick;
-import com.nwawsoft.stac.model.TrickFileHandler;
+import com.nwawsoft.stac.model.*;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
-import static com.nwawsoft.stac.ui.TrickInformationStrings.*;
+import static com.nwawsoft.stac.BuildData.*;
 
 public class EditTrickFrame extends JFrame {
   private static final String TRICK_FILE_NAME_RULES = "Trick file name may only contain lower and upper case " +
@@ -37,18 +37,19 @@ public class EditTrickFrame extends JFrame {
     ComponentFunctions.center(this);
     Container cp = getContentPane();
     cp.setLayout(null);
-
-    JLabel labelName = new JLabel("Trick name: ");
+    
+    ArrayList<VisualizationTupel> vts = VisualizationSettingsFileHandler.load(t.getFileName() + "." + TRICK_VISUALIZATION_FILE_FORMAT).getVisualizationTupels();
+    JLabel labelName = new JLabel(vts.get(VisualizationTupelListFunctions.getTupelByMetric(vts, Metric.TRICK_NAME).getIndex()).getName());
     textFieldName = new JTextField(t.getName());
     JLabel labelFileName = new JLabel("Trick file name: ");
     textFieldFileName = new JTextField(t.getFileName());
-    JLabel labelAttempts = new JLabel(PREFIX_ATTEMPTS);
+    JLabel labelAttempts = new JLabel(vts.get(VisualizationTupelListFunctions.getTupelByMetric(vts, Metric.ATTEMPTS).getIndex()).getName());
     textFieldAttempts = new JTextField("" + t.getAttempts());
-    JLabel labelSuccesses = new JLabel(PREFIX_SUCCESSES);
+    JLabel labelSuccesses = new JLabel(vts.get(VisualizationTupelListFunctions.getTupelByMetric(vts, Metric.SUCCESSES).getIndex()).getName());
     textFieldSuccesses = new JTextField("" + t.getSuccesses());
-    JLabel labelSuccessesBackToBack = new JLabel(PREFIX_SUCCESSES_BACK_TO_BACK);
+    JLabel labelSuccessesBackToBack = new JLabel(vts.get(VisualizationTupelListFunctions.getTupelByMetric(vts, Metric.SUCCESSES_BACK_TO_BACK).getIndex()).getName());
     textFieldSuccessesBackToBack = new JTextField("" + t.getSuccessesBackToBack());
-    JLabel labelSuccessesHighscore = new JLabel(PREFIX_SUCCESSES_HIGHSCORE);
+    JLabel labelSuccessesHighscore = new JLabel(vts.get(VisualizationTupelListFunctions.getTupelByMetric(vts, Metric.SUCCESSES_HIGHSCORE).getIndex()).getName());
     textFieldSuccessesHighscore = new JTextField("" + t.getSuccessesHighscore());
   
     JButton buttonEditTrick = new JButton("Edit Trick");

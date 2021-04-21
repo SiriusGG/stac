@@ -30,6 +30,14 @@ public class VisualizationTupelListFunctions {
     }
   }
   
+  public static void printMetricsInIndexOrder(final ArrayList<VisualizationTupel> visualizationTupels) {
+    System.out.println("Printing names");
+    for (int i = 0; i < visualizationTupels.size(); i++) {
+      VisualizationTupel vt = visualizationTupels.get(i);
+      System.out.println(vt.getName());
+    }
+  }
+  
   public static int getActiveMetricsAmount(final ArrayList<VisualizationTupel> visualizationTupels) {
     int c = 0;
     for (VisualizationTupel vt : visualizationTupels) {
@@ -38,5 +46,28 @@ public class VisualizationTupelListFunctions {
       }
     }
     return c;
+  }
+  
+  public static VisualizationTupel getTupelByMetric(final ArrayList<VisualizationTupel> visualizationTupels,
+                                                    final Metric metric) {
+    VisualizationTupel found = null;
+    for (VisualizationTupel visualizationTupel : visualizationTupels) {
+      if (visualizationTupel.getMetric().equals(metric)) {
+        found = visualizationTupel;
+      }
+    }
+    return found;
+  }
+  
+  public static int getTupelIndexByInternalIndex(final ArrayList<VisualizationTupel> visualizationTupels,
+                                                    final int index) {
+    for (int i = 0; i < visualizationTupels.size(); i++) {
+      if (visualizationTupels.get(i).getIndex() == index) {
+        System.out.println("getTupelIndexByInternalIndex(tupels, " + index + ") returns " + i);
+        return i;
+      }
+    }
+    System.out.println("getTupelIndexByInternalIndex failed. Returning -1.");
+    return -1;
   }
 }
