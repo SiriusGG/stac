@@ -92,6 +92,7 @@ public class TrickVisualizationFrame extends JFrame {
     labelSuccessPercentage = new JLabel(vts.get(6).getName() + getSuccessPercentage());
   
     // TODO: Load spacing and font from vs
+    // ToDo: replace indexes with continuous numbers from 0-n where n is (activeMetrics - 1)
     labelTrickName.setBounds(10, 10 + (trickNameLabelIndex * rowSpacing), 4096, 20);
     labelAttempts.setBounds(10, 10 + (attemptsLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
     labelFails.setBounds(10, 10 + (failsLabelIndex * rowSpacing), FRAME_WIDTH - 20, 20);
@@ -120,6 +121,7 @@ public class TrickVisualizationFrame extends JFrame {
     return TITLE_BAR_SIZE + (activeModules*fontSize) + (spacing*(activeModules-1));
   }
   
+  // ToDo: change to only non-hidden metrics
   public void setIndexes() {
     trickNameLabelIndex = VisualizationTupelListFunctions.getTupelByMetric(
         vts, Metric.TRICK_NAME).getIndex();
