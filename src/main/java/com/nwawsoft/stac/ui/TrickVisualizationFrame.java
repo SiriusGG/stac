@@ -187,7 +187,7 @@ public class TrickVisualizationFrame extends JFrame {
 
   public String getSuccessPercentage() {
     if (tcpf.getTrick().getAttempts() != 0) {
-      return df.format(((double) tcpf.getTrick().getSuccesses() * 100) / tcpf.getTrick().getAttempts()) + "%";
+      return df.format(tcpf.getTrick().getSuccessPercentage()) + "%";
     } else {
       return "undefined";
     }

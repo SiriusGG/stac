@@ -82,6 +82,10 @@ public class Trick {
     return successesHighscore;
   }
   
+  public double getSuccessPercentage() {
+    return ((double)getSuccesses() * 100) / getAttempts();
+  }
+  
   /**
    * Add a failed attempt to the counter.
    */
