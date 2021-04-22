@@ -25,7 +25,6 @@ public class TrickVisualizationFrame extends JFrame {
   private ArrayList<VisualizationTupel> vts;
   
   private JLabel[] labels;
-  private int[] labelIndexes;
   private int[] nonHiddenLabelIndexes;
 
   private final DecimalFormat df = new DecimalFormat("#.##");
@@ -73,7 +72,7 @@ public class TrickVisualizationFrame extends JFrame {
     
     labels = new JLabel[vts.size()];
     int rowSpacing = vs.getSpacing();
-    setIndexes();
+    // setIndexes();
     setIndexesWithoutHidden();
     labels[0] = new JLabel(vts.get(0).getName() + tcpf.getTrick().getName());
     labels[1] = new JLabel(vts.get(1).getName() + tcpf.getTrick().getAttempts());
@@ -85,12 +84,10 @@ public class TrickVisualizationFrame extends JFrame {
     df.setRoundingMode(RoundingMode.HALF_UP);
     labels[6] = new JLabel(vts.get(6).getName() + getSuccessPercentage());
     // ToDo: Load spacing and font from vs
-    // ToDo: Remove empty lines
-    int currentMetricCounter = 0;
+    // ToDo: Remove empty lines (use nonHiddenLabelIndexes?)
     for (int i = 0; i < vts.size(); i++) {
-      if (vts.get(i).isActive()) {
-        labels[i].setBounds(10, 10 + (nonHiddenLabelIndexes[currentMetricCounter] * rowSpacing), 4096, vs.getFont().getSize());
-        currentMetricCounter++;
+      if (vts.get(i).isActive()) { // ToDo: check this
+        labels[i].setBounds(10, 10 + (i * rowSpacing), 4096, vs.getFont().getSize()); // ToDo: Make adaptations
       }
     }
     // end of ToDo
@@ -110,7 +107,7 @@ public class TrickVisualizationFrame extends JFrame {
     return TITLE_BAR_SIZE + (activeModules*fontSize) + (spacing*(activeModules-1));
   }
   
-  public void setIndexes() {
+  /*public void setIndexes() {
     labelIndexes = new int[vts.size()];
     labelIndexes[0] = getTupelByMetric(vts, Metric.TRICK_NAME).getIndex();
     labelIndexes[1] = getTupelByMetric(vts, Metric.ATTEMPTS).getIndex();
@@ -119,14 +116,14 @@ public class TrickVisualizationFrame extends JFrame {
     labelIndexes[4] = getTupelByMetric(vts, Metric.SUCCESSES_BACK_TO_BACK).getIndex();
     labelIndexes[5] = getTupelByMetric(vts, Metric.SUCCESSES_HIGHSCORE).getIndex();
     labelIndexes[6] = getTupelByMetric(vts, Metric.SUCCESS_PERCENTAGE).getIndex();
-  }
+  }*/
   
-  public void setIndexesWithoutHidden() {
+  public void setIndexesWithoutHidden() { // Todo: Test
     nonHiddenLabelIndexes = new int[getActiveMetricsAmount(vts)];
     int counter = 0;
-    for (int i = 0; i < labelIndexes.length; i++) {
-      if (vts.get(i).isActive()) {
-        nonHiddenLabelIndexes[counter] = vts.get(i).getIndex();
+    for (VisualizationTupel vt : vts) {
+      if (vt.isActive()) {
+        nonHiddenLabelIndexes[counter] = vt.getIndex();
         counter++;
       }
     }

@@ -11,6 +11,8 @@ public class VisualizationTupelListFunctions {
   
   public static void swapIndex(final ArrayList<VisualizationTupel> visualizationTupels,
                                final int indexOne, final int indexTwo) {
+    // ToDo: THE ERROR LIES HERE!
+    // ToDo: the wrong tupels are swapped. Search by original index?
     int swap = visualizationTupels.get(indexOne).getIndex();
     visualizationTupels.get(indexOne).setIndex(visualizationTupels.get(indexTwo).getIndex());
     visualizationTupels.get(indexTwo).setIndex(swap);
