@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import static com.nwawsoft.stac.BuildData.*;
 
 public class VisualizationSettingsFileHandler {
-  // ToDo
-  
   /**
    * Saves the visualization settings to a text file.
    * The file extension will be set accordingly.
@@ -157,7 +155,7 @@ public class VisualizationSettingsFileHandler {
     visualizationTupels.add(new VisualizationTupel(3, "Successes: ", Metric.SUCCESSES, true));
     visualizationTupels.add(new VisualizationTupel(4, "Successes in a row: ", Metric.SUCCESSES_BACK_TO_BACK, true));
     visualizationTupels.add(new VisualizationTupel(5, "Max successes in a row: ", Metric.SUCCESSES_HIGHSCORE, true));
-    visualizationTupels.add(new VisualizationTupel(6, "Success rate (in %): ", Metric.SUCCESS_PERCENTAGE, true));
+    visualizationTupels.add(new VisualizationTupel(6, "Success rate: ", Metric.SUCCESS_PERCENTAGE, true));
     return visualizationTupels;
   }
   

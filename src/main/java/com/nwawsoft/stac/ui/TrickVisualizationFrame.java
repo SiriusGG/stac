@@ -12,6 +12,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import static com.nwawsoft.stac.BuildData.*;
+import static com.nwawsoft.stac.model.VisualizationSettingsFileHandler.*;
+import static com.nwawsoft.stac.model.VisualizationTupelListFunctions.*;
 
 public class TrickVisualizationFrame extends JFrame {
 
@@ -36,13 +38,14 @@ public class TrickVisualizationFrame extends JFrame {
 
   public void init() {
     String fileName = tcpf.getTrick().getFileName();
-    String path = USER_HOME + "/" + DIRECTORY_NAME + "/" + fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT;
+    String path = USER_HOME + "/" + DIRECTORY_NAME + "/" + fileName + "." +
+        TRICK_VISUALIZATION_FILE_FORMAT;
     File f = new File(path);
     if (!f.exists()) {
-      VisualizationSettings mainVisualizationSettings = VisualizationSettingsFileHandler.load(VISUALIZATION_FILE_FULL_NAME);
-      VisualizationSettingsFileHandler.save(mainVisualizationSettings, fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
+      VisualizationSettings mainVisualizationSettings = load(VISUALIZATION_FILE_FULL_NAME);
+      save(mainVisualizationSettings, fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
     }
-    VisualizationSettings vs = VisualizationSettingsFileHandler.load(fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
+    VisualizationSettings vs = load(fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
     vts = vs.getVisualizationTupels();
   
     int frameHeight = calcHeight(vs);
@@ -74,22 +77,22 @@ public class TrickVisualizationFrame extends JFrame {
     setIndexesWithoutHidden();
     labels[0] = new JLabel(vts.get(0).getName() + tcpf.getTrick().getName());
     labels[1] = new JLabel(vts.get(1).getName() + tcpf.getTrick().getAttempts());
-    labels[2] = new JLabel(vts.get(2).getName() + (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
+    labels[2] = new JLabel(vts.get(2).getName() +
+        (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
     labels[3] = new JLabel(vts.get(3).getName() + tcpf.getTrick().getSuccesses());
     labels[4] = new JLabel(vts.get(4).getName() + tcpf.getTrick().getSuccessesBackToBack());
     labels[5] = new JLabel(vts.get(5).getName() + tcpf.getTrick().getSuccessesHighscore());
     df.setRoundingMode(RoundingMode.HALF_UP);
     labels[6] = new JLabel(vts.get(6).getName() + getSuccessPercentage());
     // ToDo: Load spacing and font from vs
-    // ToDo: replace labelIndexes with nonHiddenLabelIndexes
-    // ToDo: probably with a lot of "if"s where isActive() is checked
-    labels[0].setBounds(10, 10 + (labelIndexes[0] * rowSpacing), 4096, 20);
-    labels[1].setBounds(10, 10 + (labelIndexes[1] * rowSpacing), FRAME_WIDTH - 20, 20);
-    labels[2].setBounds(10, 10 + (labelIndexes[2] * rowSpacing), FRAME_WIDTH - 20, 20);
-    labels[3].setBounds(10, 10 + (labelIndexes[3] * rowSpacing), FRAME_WIDTH - 20, 20);
-    labels[4].setBounds(10, 10 + (labelIndexes[4] * rowSpacing), FRAME_WIDTH - 20, 20);
-    labels[5].setBounds(10, 10 + (labelIndexes[5] * rowSpacing), FRAME_WIDTH - 20, 20);
-    labels[6].setBounds(10, 10 + (labelIndexes[6] * rowSpacing), FRAME_WIDTH - 20, 20);
+    // ToDo: Remove empty lines
+    int currentMetricCounter = 0;
+    for (int i = 0; i < vts.size(); i++) {
+      if (vts.get(i).isActive()) {
+        labels[i].setBounds(10, 10 + (nonHiddenLabelIndexes[currentMetricCounter] * rowSpacing), 4096, vs.getFont().getSize());
+        currentMetricCounter++;
+      }
+    }
     // end of ToDo
     for (JLabel label : labels) {
       cp.add(label);
@@ -101,7 +104,7 @@ public class TrickVisualizationFrame extends JFrame {
   }
 
   private int calcHeight(final VisualizationSettings vs) {
-    int activeModules = VisualizationTupelListFunctions.getActiveMetricsAmount(vts);
+    int activeModules = getActiveMetricsAmount(vts);
     int spacing = vs.getSpacing();
     int fontSize = vs.getFont().getSize();
     return TITLE_BAR_SIZE + (activeModules*fontSize) + (spacing*(activeModules-1));
@@ -109,24 +112,17 @@ public class TrickVisualizationFrame extends JFrame {
   
   public void setIndexes() {
     labelIndexes = new int[vts.size()];
-    labelIndexes[0] = VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.TRICK_NAME).getIndex();
-    labelIndexes[1] = VisualizationTupelListFunctions.getTupelByMetric
-        (vts, Metric.ATTEMPTS).getIndex();
-    labelIndexes[2] = VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.FAILS).getIndex();
-    labelIndexes[3] = VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.SUCCESSES).getIndex();
-    labelIndexes[4] = VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.SUCCESSES_BACK_TO_BACK).getIndex();
-    labelIndexes[5] = VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.SUCCESSES_HIGHSCORE).getIndex();
-    labelIndexes[6] = VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.SUCCESS_PERCENTAGE).getIndex();
+    labelIndexes[0] = getTupelByMetric(vts, Metric.TRICK_NAME).getIndex();
+    labelIndexes[1] = getTupelByMetric(vts, Metric.ATTEMPTS).getIndex();
+    labelIndexes[2] = getTupelByMetric(vts, Metric.FAILS).getIndex();
+    labelIndexes[3] = getTupelByMetric(vts, Metric.SUCCESSES).getIndex();
+    labelIndexes[4] = getTupelByMetric(vts, Metric.SUCCESSES_BACK_TO_BACK).getIndex();
+    labelIndexes[5] = getTupelByMetric(vts, Metric.SUCCESSES_HIGHSCORE).getIndex();
+    labelIndexes[6] = getTupelByMetric(vts, Metric.SUCCESS_PERCENTAGE).getIndex();
   }
   
   public void setIndexesWithoutHidden() {
-    nonHiddenLabelIndexes = new int[VisualizationTupelListFunctions.getActiveMetricsAmount(vts)];
+    nonHiddenLabelIndexes = new int[getActiveMetricsAmount(vts)];
     int counter = 0;
     for (int i = 0; i < labelIndexes.length; i++) {
       if (vts.get(i).isActive()) {
@@ -137,34 +133,33 @@ public class TrickVisualizationFrame extends JFrame {
   }
   
   public void updateAttempts() {
-    labels[1].setText(VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.ATTEMPTS).getName() + tcpf.getTrick().getAttempts());
+    labels[1].setText(getTupelByMetric(vts, Metric.ATTEMPTS).getName() +
+        tcpf.getTrick().getAttempts());
   }
 
   public void updateFails() {
-  
-    labels[2].setText(VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.FAILS).getName() + (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
+    labels[2].setText(getTupelByMetric(vts, Metric.FAILS).getName() +
+        (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
   }
 
   public void updateSuccesses() {
-    labels[3].setText(VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.SUCCESSES).getName() + tcpf.getTrick().getSuccesses());
+    labels[3].setText(getTupelByMetric(vts, Metric.SUCCESSES).getName() +
+        tcpf.getTrick().getSuccesses());
   }
 
   public void updateSuccessesBackToBack() {
-    labels[4].setText(VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.SUCCESSES_BACK_TO_BACK).getName() + tcpf.getTrick().getSuccessesBackToBack());
+    labels[4].setText(getTupelByMetric(vts, Metric.SUCCESSES_BACK_TO_BACK).getName() +
+        tcpf.getTrick().getSuccessesBackToBack());
   }
 
   public void updateSuccessesHighscore() {
-    labels[5].setText(VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.SUCCESSES_HIGHSCORE).getName() + tcpf.getTrick().getSuccessesHighscore());
+    labels[5].setText(getTupelByMetric(vts, Metric.SUCCESSES_HIGHSCORE).getName() +
+        tcpf.getTrick().getSuccessesHighscore());
   }
 
   public void updateSuccessPercentage() {
-    labels[6].setText(VisualizationTupelListFunctions.getTupelByMetric(
-        vts, Metric.SUCCESS_PERCENTAGE).getName() + getSuccessPercentage());
+    labels[6].setText(getTupelByMetric(vts, Metric.SUCCESS_PERCENTAGE).getName() +
+        getSuccessPercentage());
   }
 
   public void updateStats() {
