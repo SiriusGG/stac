@@ -14,46 +14,64 @@ import static com.nwawsoft.stac.BuildData.*;
 public class SaveWarningDialog extends JDialog {
   private final JFrame calledBy;
   private final String mode;
+  private final String caller;
 
   public SaveWarningDialog(final JFrame calledBy, final String caller, final String destination) {
     super(calledBy, true);
     this.calledBy = calledBy;
+    this.caller = caller;
     mode = caller + ", " + destination;
     init();
   }
 
   private void init() {
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    int frameWidth = 320;
-    int frameHeight = 120;
+    int frameWidth = 380;
+    int frameHeight = 130;
     setSize(frameWidth, frameHeight);
     ComponentFunctions.center(this);
     setTitle("Unsaved changes");
     Container cp = getContentPane();
     cp.setLayout(null);
 
-    int smallButtonWidth = 80;
-    int largeButtonWidth = 100;
+    int buttonWidth = 100;
     int buttonHeight = 30;
-    int verticalOffset = 40;
-    JLabel labelSaveQuestion1 = new JLabel(HTMLTagger.toHTML("There have been unsaved attempts on this trick."),
-        SwingConstants.CENTER); // ToDo: Change text for case Visualization
+    int verticalOffset = 50;
+    JLabel labelSaveQuestion1 = new JLabel();
+    if (caller.equals("controlpanel") || caller.equals("visualization")) {
+      labelSaveQuestion1 = new JLabel(HTMLTagger.toHTML(
+          "There have been unsaved attempts on this trick."),
+          SwingConstants.CENTER);
+    }
+    if (caller.equals("visualization settings") || caller.equals("trick visualization settings")) {
+      labelSaveQuestion1 = new JLabel(HTMLTagger.toHTML(
+          "There have been unsaved changes on this visualization file."),
+          SwingConstants.CENTER);
+    }
     labelSaveQuestion1.setBounds(0, 0, frameWidth, 20);
     cp.add(labelSaveQuestion1);
-    JLabel labelSaveQuestion2 = new JLabel(HTMLTagger.toHTML("Save trick file before closing?"), SwingConstants.CENTER); // ToDo: Change text for case Visualization
+    JLabel labelSaveQuestion2 = new JLabel();
+    if (caller.equals("controlpanel") || caller.equals("visualization")) {
+      labelSaveQuestion2 = new JLabel(HTMLTagger.toHTML(
+          "Save trick file before closing?"), SwingConstants.CENTER);
+    }
+    if (caller.equals("visualization settings") || caller.equals("trick visualization settings")) {
+      labelSaveQuestion2 = new JLabel(HTMLTagger.toHTML(
+          "Save visualization settings file before closing?"), SwingConstants.CENTER);
+    }
     labelSaveQuestion2.setBounds(0, 20, frameWidth, 20);
     cp.add(labelSaveQuestion2);
 
     JButton buttonYes = new JButton("Yes");
-    buttonYes.setBounds(20, frameHeight - buttonHeight - verticalOffset, smallButtonWidth, buttonHeight);
+    buttonYes.setBounds(20, frameHeight - buttonHeight - verticalOffset, buttonWidth, buttonHeight);
     buttonYes.addActionListener(this::buttonYes_ActionPerformed);
     cp.add(buttonYes);
     JButton buttonNo = new JButton("No");
-    buttonNo.setBounds(110, frameHeight - buttonHeight - verticalOffset, smallButtonWidth, buttonHeight);
+    buttonNo.setBounds(130, frameHeight - buttonHeight - verticalOffset, buttonWidth, buttonHeight);
     buttonNo.addActionListener(this::buttonNo_ActionPerformed);
     cp.add(buttonNo);
     JButton buttonCancel = new JButton("Cancel");
-    buttonCancel.setBounds(200, frameHeight - buttonHeight - verticalOffset, largeButtonWidth, buttonHeight);
+    buttonCancel.setBounds(240, frameHeight - buttonHeight - verticalOffset, buttonWidth, buttonHeight);
     buttonCancel.addActionListener(this::buttonCancel_ActionPerformed);
     cp.add(buttonCancel);
 
