@@ -129,11 +129,11 @@ public class VisualizationSettingsFrame extends JFrame {
     buttons[2][0].setVisible(false); // disables the "up" button of the metric in slot 1
     buttons[1][rows-1].setVisible(false); // disables the "down" button of the metric in the last slot.
   
-    // ToDo: Add tooltiptexts
     textFields = new JTextField[rows];
     for (int i = 0; i < rows; i++) {
       textFields[i] = new JTextField();
       textFields[i].setBounds(50, 50 * i, 200, 50);
+      textFields[i].setToolTipText("Name for metric " + Metric.values()[i].toString()); // ToDo: Swap when content is swapped
       cp.add(textFields[i]);
     }
     updateNames();
