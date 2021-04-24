@@ -16,28 +16,36 @@ public class EditTrickFrame extends JFrame {
       "characters from a to z, digits from 0 to 9, - (minus) and _ (underscore)";
   private static final String TRICK_NAME_RULES = "Trick name may be almost anything except empty";
 
-  private final JTextField textFieldName;
-  private final JTextField textFieldFileName;
-  private final JTextField textFieldAttempts;
-  private final JTextField textFieldSuccesses;
-  private final JTextField textFieldSuccessesBackToBack;
-  private final JTextField textFieldSuccessesHighscore;
+  private JTextField textFieldName;
+  private JTextField textFieldFileName;
+  private JTextField textFieldAttempts;
+  private JTextField textFieldSuccesses;
+  private JTextField textFieldSuccessesBackToBack;
+  private JTextField textFieldSuccessesHighscore;
   private boolean defaultName = true;
   
   private final Trick t;
   
+  private final JFrame calledBy;
+  
   public EditTrickFrame(final JFrame calledBy, final Trick t) {
     super("Edit trick");
     this.t = t;
+    this.calledBy = calledBy;
+    init();
+  }
+  
+  public void init() {
     calledBy.dispose();
-    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    
     int frameWidth = 400;
     int frameHeight = 280;
     setSize(frameWidth, frameHeight);
     ComponentFunctions.center(this);
     Container cp = getContentPane();
     cp.setLayout(null);
-    
+  
     ArrayList<VisualizationTupel> vts = VisualizationSettingsFileHandler.load(t.getFileName() + "." + TRICK_VISUALIZATION_FILE_FORMAT).getVisualizationTupels();
     JLabel labelName = new JLabel(vts.get(VisualizationTupelListFunctions.getTupelByMetric(vts, Metric.TRICK_NAME).getIndex()).getName());
     textFieldName = new JTextField(t.getName());
@@ -58,7 +66,7 @@ public class EditTrickFrame extends JFrame {
     int leftColumnWidth = 150;
     int leftColumnSpacer = 180;
     int rightColumnWidth = 200;
-    
+  
     labelName.setBounds(10, 10, leftColumnWidth, 20);
     textFieldName.setBounds(leftColumnSpacer, 10, rightColumnWidth, 20);
     labelFileName.setBounds(10, 40, leftColumnWidth, 20);
@@ -73,24 +81,24 @@ public class EditTrickFrame extends JFrame {
     textFieldSuccessesHighscore.setBounds(leftColumnSpacer, 160, rightColumnWidth, 20);
     buttonEditTrick.setBounds(20, 190, 150, 30);
     buttonCancel.setBounds(180, 190, 180, 30);
-
+  
     labelName.setToolTipText(TRICK_NAME_RULES);
     textFieldName.setToolTipText(TRICK_NAME_RULES);
     labelFileName.setToolTipText(TRICK_FILE_NAME_RULES);
     textFieldFileName.setToolTipText(TRICK_FILE_NAME_RULES);
-
+  
     textFieldFileName.setForeground(Color.GRAY);
-
+  
     buttonEditTrick.addActionListener(this::buttonEditTrickActionPerformed);
     buttonCancel.addActionListener(this::buttonCancelActionPerformed);
-    
+  
     KeyListener nameListener = new KeyListener() {
       public void keyTyped(KeyEvent e) {
       }
-
+    
       public void keyPressed(KeyEvent e) {
       }
-
+    
       public void keyReleased(KeyEvent e) {
         if (defaultName) {
           textFieldFileName.setText(TrickFileHandler.trimmedFileString(textFieldName.getText()));
@@ -98,22 +106,22 @@ public class EditTrickFrame extends JFrame {
       }
     };
     textFieldName.addKeyListener(nameListener);
-
+  
     KeyListener fileNameListener = new KeyListener() {
       public void keyTyped(KeyEvent e) {
         defaultName = false;
       }
-
+    
       public void keyPressed(KeyEvent e) {
         defaultName = false;
       }
-
+    
       public void keyReleased(KeyEvent e) {
         defaultName = false;
       }
     };
     textFieldFileName.addKeyListener(fileNameListener);
-
+  
     textFieldFileName.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -123,7 +131,7 @@ public class EditTrickFrame extends JFrame {
         }
       }
     });
-
+  
     textFieldFileName.addFocusListener(new FocusAdapter() {
       @Override
       public void focusGained(FocusEvent e) {
@@ -134,7 +142,7 @@ public class EditTrickFrame extends JFrame {
         }
       }
     });
-    
+  
     cp.add(labelName);
     cp.add(textFieldName);
     cp.add(labelFileName);
@@ -149,18 +157,22 @@ public class EditTrickFrame extends JFrame {
     cp.add(textFieldSuccessesHighscore);
     cp.add(buttonEditTrick);
     cp.add(buttonCancel);
-
+  
     setResizable(false);
     setVisible(true);
   }
   
   private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
-    new MainMenuFrame();
+    if (calledBy instanceof MainMenuFrame) {
+      new MainMenuFrame();
+    } else if (calledBy instanceof TrickControlPanelFrame) {
+      new TrickControlPanelFrame(this, t);
+    }
     dispose();
   }
   
   private void buttonEditTrickActionPerformed(final ActionEvent actionEvent) {
-    UIController.editTrick(this, TrickFileHandler.trimmedFileString(textFieldFileName.getText()), t);
+    UIController.editTrick(this, TrickFileHandler.trimmedFileString(getFileNameFieldContent()), t);
   }
   
   public String getNameFieldContent() {
