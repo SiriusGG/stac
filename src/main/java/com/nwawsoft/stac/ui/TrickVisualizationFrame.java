@@ -28,6 +28,8 @@ public class TrickVisualizationFrame extends JFrame {
   private int[] nonHiddenLabelIndexes;
 
   private final DecimalFormat df = new DecimalFormat("#.##");
+  
+  private final int initialOffset = 10;
 
   public TrickVisualizationFrame(final TrickControlPanelFrame tcpf) {
     super("Visualization");
@@ -74,6 +76,7 @@ public class TrickVisualizationFrame extends JFrame {
     int rowSpacing = vs.getSpacing();
     // setIndexes();
     setIndexesWithoutHidden();
+    // ToDo load from array nonHiddenArrayIndexes instead of vts to remove empty lines
     labels[0] = new JLabel(vts.get(0).getName() + tcpf.getTrick().getName());
     labels[1] = new JLabel(vts.get(1).getName() + tcpf.getTrick().getAttempts());
     labels[2] = new JLabel(vts.get(2).getName() +
@@ -83,14 +86,14 @@ public class TrickVisualizationFrame extends JFrame {
     labels[5] = new JLabel(vts.get(5).getName() + tcpf.getTrick().getSuccessesHighscore());
     df.setRoundingMode(RoundingMode.HALF_UP);
     labels[6] = new JLabel(vts.get(6).getName() + getSuccessPercentage());
-    // ToDo: Load spacing and font from vs
-    // ToDo: Remove empty lines (use nonHiddenLabelIndexes?)
+    // end of previous ToDo
+    Font font = vs.getFont();
     for (int i = 0; i < vts.size(); i++) {
       if (vts.get(i).isActive()) { // ToDo: check this
-        labels[i].setBounds(10, 10 + (i * rowSpacing), 4096, vs.getFont().getSize()); // ToDo: Make adaptations
+        labels[i].setFont(font);
+        labels[i].setBounds(10, initialOffset + (i * rowSpacing) + (i * font.getSize()), 4096, font.getSize());
       }
     }
-    // end of ToDo
     for (JLabel label : labels) {
       cp.add(label);
     }
@@ -104,7 +107,7 @@ public class TrickVisualizationFrame extends JFrame {
     int activeModules = getActiveMetricsAmount(vts);
     int spacing = vs.getSpacing();
     int fontSize = vs.getFont().getSize();
-    return TITLE_BAR_SIZE + (activeModules*fontSize) + (spacing*(activeModules-1));
+    return TITLE_BAR_SIZE + (activeModules*fontSize) + (spacing*activeModules) + (2 * initialOffset);
   }
   
   /*public void setIndexes() {
