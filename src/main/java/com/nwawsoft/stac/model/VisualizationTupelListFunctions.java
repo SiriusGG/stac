@@ -39,6 +39,15 @@ public class VisualizationTupelListFunctions {
     }
   }
   
+  public static Metric[] getMetricsInInternalIndexOrder(final ArrayList<VisualizationTupel> visualizationTupels) {
+    int amount = visualizationTupels.size();
+    Metric[] metrics = new Metric[amount];
+    for (int i = 0; i < amount; i++) {
+      metrics[i] = Metric.getMetric(getTupelIndexByInternalIndex(visualizationTupels, i));
+    }
+    return metrics;
+  }
+  
   public static int getActiveMetricsAmount(final ArrayList<VisualizationTupel> visualizationTupels) {
     int c = 0;
     for (VisualizationTupel vt : visualizationTupels) {

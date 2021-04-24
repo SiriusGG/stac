@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static com.nwawsoft.stac.BuildData.*;
+import static com.nwawsoft.stac.model.VisualizationTupelListFunctions.getMetricsInInternalIndexOrder;
 
 public class VisualizationSettingsFrame extends JFrame {
   private Trick t = null;
@@ -133,7 +134,8 @@ public class VisualizationSettingsFrame extends JFrame {
     for (int i = 0; i < rows; i++) {
       textFields[i] = new JTextField();
       textFields[i].setBounds(50, 50 * i, 200, 50);
-      textFields[i].setToolTipText("Name for metric " + Metric.values()[i].toString()); // ToDo: Swap when content is swapped
+      Metric[] metricsInOrder = getMetricsInInternalIndexOrder(visualizationTupels);
+      textFields[i].setToolTipText("Name for metric " + metricsInOrder[i].toString());
       cp.add(textFields[i]);
     }
     updateNames();
@@ -174,7 +176,10 @@ public class VisualizationSettingsFrame extends JFrame {
   private void downButtonActionPerformed(ActionEvent actionEvent) {
     saveNames();
     int i = Integer.parseInt(((JButton)actionEvent.getSource()).getText().substring(1));
-    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i + 1); // ToDo WRONG?
+    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i + 1); // ToDo: WRONG?
+    Metric[] metricsInOrder = getMetricsInInternalIndexOrder(visualizationTupels);
+    textFields[i].setToolTipText("Name for metric " + metricsInOrder[i].toString()); // ToDo: also bugged
+    textFields[i + 1].setToolTipText("Name for metric " + metricsInOrder[i + 1].toString()); // ToDo: also bugged
     updateHideShow();
     updateNames();
     somethingChanged = true;
@@ -183,7 +188,10 @@ public class VisualizationSettingsFrame extends JFrame {
   private void upButtonActionPerformed(ActionEvent actionEvent) {
     saveNames();
     int i = Integer.parseInt(((JButton)actionEvent.getSource()).getText().substring(1));
-    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i - 1); // ToDo WRONG?
+    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i - 1); // ToDo: WRONG?
+    Metric[] metricsInOrder = getMetricsInInternalIndexOrder(visualizationTupels);
+    textFields[i].setToolTipText("Name for metric " + metricsInOrder[i].toString()); // ToDo: also bugged
+    textFields[i - 1].setToolTipText("Name for metric " + metricsInOrder[i - 1].toString()); // ToDo: also bugged
     updateHideShow();
     updateNames();
     somethingChanged = true;
