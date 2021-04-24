@@ -33,9 +33,9 @@ public class VisualizationTupelListFunctions {
   }
   
   public static void printMetricsInListIndexOrder(final ArrayList<VisualizationTupel> visualizationTupels) {
-    System.out.println("Printing names");
+    System.out.println("Printing metrics");
     for (VisualizationTupel vt : visualizationTupels) {
-      System.out.println(vt.getName());
+      System.out.println(vt.getMetric().toString());
     }
   }
   

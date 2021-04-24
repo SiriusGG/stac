@@ -37,10 +37,10 @@ public class SaveWarningDialog extends JDialog {
     int buttonHeight = 30;
     int verticalOffset = 40;
     JLabel labelSaveQuestion1 = new JLabel(HTMLTagger.toHTML("There have been unsaved attempts on this trick."),
-        SwingConstants.CENTER);
+        SwingConstants.CENTER); // ToDo: Change text for case Visualization
     labelSaveQuestion1.setBounds(0, 0, frameWidth, 20);
     cp.add(labelSaveQuestion1);
-    JLabel labelSaveQuestion2 = new JLabel(HTMLTagger.toHTML("Save trick file before closing?"), SwingConstants.CENTER);
+    JLabel labelSaveQuestion2 = new JLabel(HTMLTagger.toHTML("Save trick file before closing?"), SwingConstants.CENTER); // ToDo: Change text for case Visualization
     labelSaveQuestion2.setBounds(0, 20, frameWidth, 20);
     cp.add(labelSaveQuestion2);
 

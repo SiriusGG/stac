@@ -174,7 +174,7 @@ public class VisualizationSettingsFrame extends JFrame {
   private void downButtonActionPerformed(ActionEvent actionEvent) {
     saveNames();
     int i = Integer.parseInt(((JButton)actionEvent.getSource()).getText().substring(1));
-    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i + 1);
+    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i + 1); // ToDo WRONG?
     updateHideShow();
     updateNames();
     somethingChanged = true;
@@ -183,7 +183,7 @@ public class VisualizationSettingsFrame extends JFrame {
   private void upButtonActionPerformed(ActionEvent actionEvent) {
     saveNames();
     int i = Integer.parseInt(((JButton)actionEvent.getSource()).getText().substring(1));
-    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i - 1);
+    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i - 1); // ToDo WRONG?
     updateHideShow();
     updateNames();
     somethingChanged = true;
@@ -216,6 +216,7 @@ public class VisualizationSettingsFrame extends JFrame {
     }
   }
   
+  // ToDo: There is possibly an error here which "synergizes" with the error in VisualizationTupelListFunctions.swapIndex()!
   public void updateHideShow(int i) {
       if (visualizationTupels.get(visualizationTupels.get(i).getIndex()).isActive()) {
         buttons[0][i].setIcon(iiOn);
@@ -224,12 +225,14 @@ public class VisualizationSettingsFrame extends JFrame {
       }
   }
   
+  // ToDo: There is possibly an error here which "synergizes" with the error in VisualizationTupelListFunctions.swapIndex()!
   public void saveNames() {
     for (int i = 0; i < rows; i++) {
       visualizationTupels.get(visualizationTupels.get(i).getIndex()).setName(textFields[i].getText());
     }
   }
   
+  // ToDo: There is possibly an error here which "synergizes" with the error in VisualizationTupelListFunctions.swapIndex()!
   public void updateNames() {
     for (int i = 0; i < rows; i++) {
       textFields[i].setText(visualizationTupels.get(visualizationTupels.get(i).getIndex()).getName());
@@ -251,8 +254,6 @@ public class VisualizationSettingsFrame extends JFrame {
       }
       dispose();
     }
-    // ToDo? Directly to Menu/ControlPanel?
-    
   }
   
   public Trick getTrick() {
