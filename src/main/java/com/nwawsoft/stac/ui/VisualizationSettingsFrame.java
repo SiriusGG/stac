@@ -226,7 +226,12 @@ public class VisualizationSettingsFrame extends JFrame {
   }
 
   public void updateHideShow(int i) {
-    updateHideShow(i, getByInternalIndex(visualizationTupels, i).get().isActive());
+    VisualizationTupel tupel = getByInternalIndex(visualizationTupels, i);
+    if (tupel != null) {
+      updateHideShow(i, tupel.isActive());
+    } else {
+      //TODO: error handling here
+    }
   }
   // ToDo: There is possibly an error here which "synergizes" with the error in VisualizationTupelListFunctions.swapIndex()!
   public void updateHideShow(int i, boolean isActive) {

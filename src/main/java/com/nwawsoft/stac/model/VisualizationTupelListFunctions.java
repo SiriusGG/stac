@@ -6,39 +6,51 @@ import java.util.Optional;
 public class VisualizationTupelListFunctions {
   
   public static void updateShow(final ArrayList<VisualizationTupel> visualizationTupels, int index) {
-    getByInternalIndex(visualizationTupels, index).ifPresent(tuple-> tuple.setActive(!tuple.isActive()));
+    VisualizationTupel tupleToUpdate = getByInternalIndex(visualizationTupels, index);
+    if (tupleToUpdate != null) {
+      tupleToUpdate.setActive(!tupleToUpdate.isActive());
+    } else {
+      //TODO: error handling here
+    }
   }
   
   public static void swapIndex(final ArrayList<VisualizationTupel> visualizationTupels,
                                final int indexOne, final int indexTwo) {
     // ToDo: THE ERROR LIES HERE!
     // ToDo: the wrong tupels are swapped. Search by original index?
-    getListIndexByInternalIndex(visualizationTupels, indexOne)
-            .ifPresent(listIdxOne ->
-              getListIndexByInternalIndex(visualizationTupels, indexTwo)
-                      .ifPresent(listIdxTwo -> {
-                        visualizationTupels.get(listIdxOne).setIndex(indexTwo);
-                        visualizationTupels.get(listIdxTwo).setIndex(indexOne);
-                      })
-            );
-    /*int swap = visualizationTupels.get(indexOne).getIndex();
-    visualizationTupels.get(indexOne).setIndex(visualizationTupels.get(indexTwo).getIndex());
-    visualizationTupels.get(indexTwo).setIndex(swap);*/
+    VisualizationTupel tupleOne = getByInternalIndex(visualizationTupels, indexOne);
+    VisualizationTupel tupleTwo = getByInternalIndex(visualizationTupels, indexTwo);
+    if (tupleOne != null && tupleTwo != null) {
+      tupleOne.setIndex(indexTwo);
+      tupleTwo.setIndex(indexOne);
+    } else {
+      //TODO: error handling here
+    }
   }
 
-  public static Optional<VisualizationTupel> getByInternalIndex(final ArrayList<VisualizationTupel> visualizationTupels,
-                                                                final int index)
-  {
+  public static VisualizationTupel getByInternalIndex(final ArrayList<VisualizationTupel> visualizationTupels,
+                                                      final int index) {
+    return internalGetByInternalIndex(visualizationTupels, index).orElse(null);
+  }
+
+  public static Optional<VisualizationTupel> internalGetByInternalIndex(
+          final ArrayList<VisualizationTupel> visualizationTupels,
+          final int index) {
     return visualizationTupels
             .stream()
             .filter(tuple -> tuple.getIndex() == index)
             .findAny();
   }
-  public static Optional<Integer> getListIndexByInternalIndex(
+
+  public static int getListIndexByInternalIndex(final ArrayList<VisualizationTupel> visualizationTupels,
+                                                final int index) {
+    return internalGetListIndexByInternalIndex(visualizationTupels, index).orElse(-1);
+  }
+
+  public static Optional<Integer> internalGetListIndexByInternalIndex(
           final ArrayList<VisualizationTupel> visualizationTupels,
-          final int index)
-  {
-    return getByInternalIndex(visualizationTupels, index)
+          final int index) {
+    return internalGetByInternalIndex(visualizationTupels, index)
             .map(visualizationTupels::indexOf)
             .filter(i -> i != -1);
   }
