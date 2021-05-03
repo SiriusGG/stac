@@ -6,53 +6,49 @@ import com.nwawsoft.util.ui.ComponentFunctions;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.event.*;
+import java.io.*;
 import java.util.ArrayList;
 
 import static com.nwawsoft.stac.BuildData.*;
-import static com.nwawsoft.stac.model.VisualizationTupelListFunctions.getByInternalIndex;
-import static com.nwawsoft.stac.model.VisualizationTupelListFunctions.getMetricsInInternalIndexOrder;
+import static com.nwawsoft.stac.model.VisualizationTupelListFunctions.*;
 
 public class VisualizationSettingsFrame extends JFrame {
-  private Trick t = null;
-  
+  private Trick trick = null;
+
   private final static int FRAME_WIDTH = 365;
   private final static int FRAME_HEIGHT = 460;
-  
+
   private final String mode;
   private boolean somethingChanged = false;
-  
+
   private final VisualizationSettings vs;
   private ArrayList<VisualizationTupel> visualizationTupels;
-  
+
   private ImageIcon iiOn;
   private ImageIcon iiOff;
-  
+  private ImageIcon iiDown;
+  private ImageIcon iiUp;
   private JTextField[] textFields;
-  
-  private int rows;
-  
   private JButton[][] buttons;
-  
+
+  int metricsAmount = Metric.values().length;
+
   public VisualizationSettingsFrame() {
     super("Visualization Settings");
     mode = "default";
     vs = VisualizationSettingsFileHandler.load(VISUALIZATION_FILE_FULL_NAME);
     init();
   }
-  
+
   public VisualizationSettingsFrame(final TrickControlPanelFrame tcpf) {
     super("Visualization Settings");
-    this.t = tcpf.getTrick();
+    this.trick = tcpf.getTrick();
     mode = "trick";
-    vs = VisualizationSettingsFileHandler.load(t.getFileName() + "." + TRICK_VISUALIZATION_FILE_FORMAT);
+    vs = VisualizationSettingsFileHandler.load(trick.getFileName() + "." + TRICK_VISUALIZATION_FILE_FORMAT);
     init();
   }
-  
+
   public void init() {
     visualizationTupels = vs.getVisualizationTupels();
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -60,52 +56,57 @@ public class VisualizationSettingsFrame extends JFrame {
     ComponentFunctions.center(this);
     Container cp = getContentPane();
     cp.setLayout(null);
-  
+
     String currentImage = "/" + GRAPHICS_DIRECTORY + "/on.png";
     InputStream iiStream = getClass().getResourceAsStream(currentImage);
-    try {
-      iiOn = new ImageIcon(ImageIO.read(iiStream));
-    } catch (IOException e) {
-      iiOn = new ImageIcon();
-      System.err.println("Did not find graphics file " + currentImage);
-      e.printStackTrace();
+    if (iiStream != null) {
+      try {
+        iiOn = new ImageIcon(ImageIO.read(iiStream));
+      } catch (IOException e) {
+        iiOn = new ImageIcon();
+        System.err.println("Did not find graphics file " + currentImage);
+        e.printStackTrace();
+      }
     }
     currentImage = "/" + GRAPHICS_DIRECTORY + "/off.png";
     iiStream = getClass().getResourceAsStream(currentImage);
-    try {
-      iiOff = new ImageIcon(ImageIO.read(iiStream));
-    } catch (IOException e) {
-      iiOff = new ImageIcon();
-      System.err.println("Did not find graphics file " + currentImage);
-      e.printStackTrace();
+    if (iiStream != null) {
+      try {
+        iiOff = new ImageIcon(ImageIO.read(iiStream));
+      } catch (IOException e) {
+        iiOff = new ImageIcon();
+        System.err.println("Did not find graphics file " + currentImage);
+        e.printStackTrace();
+      }
+      currentImage = "/" + GRAPHICS_DIRECTORY + "/down.png";
     }
-    currentImage = "/" + GRAPHICS_DIRECTORY + "/down.png";
     iiStream = getClass().getResourceAsStream(currentImage);
-    ImageIcon iiDown;
-    try {
-      iiDown = new ImageIcon(ImageIO.read(iiStream));
-    } catch (IOException e) {
-      iiDown = new ImageIcon();
-      System.err.println("Did not find graphics file " + currentImage);
-      e.printStackTrace();
+    if (iiStream != null) {
+      try {
+        iiDown = new ImageIcon(ImageIO.read(iiStream));
+      } catch (IOException e) {
+        iiDown = new ImageIcon();
+        System.err.println("Did not find graphics file " + currentImage);
+        e.printStackTrace();
+      }
+      currentImage = "/" + GRAPHICS_DIRECTORY + "/up.png";
     }
-    currentImage = "/" + GRAPHICS_DIRECTORY + "/up.png";
     iiStream = getClass().getResourceAsStream(currentImage);
-    ImageIcon iiUp;
-    try {
-      iiUp = new ImageIcon(ImageIO.read(iiStream));
-    } catch (IOException e) {
-      iiUp = new ImageIcon();
-      System.err.println("Did not find graphics file " + currentImage);
-      e.printStackTrace();
+    if (iiStream != null) {
+      try {
+        iiUp = new ImageIcon(ImageIO.read(iiStream));
+      } catch (IOException e) {
+        iiUp = new ImageIcon();
+        System.err.println("Did not find graphics file " + currentImage);
+        e.printStackTrace();
+      }
     }
-  
+
     int buttonColumns = 3;
-    rows = Metric.values().length;
-    
+
     // ToDo: Fix non-centered button graphics, especially up/down (probably because of text?)
-    buttons = new JButton[buttonColumns][rows];
-    for (int i = 0; i < rows; i++) {
+    buttons = new JButton[buttonColumns][metricsAmount];
+    for (int i = 0; i < metricsAmount; i++) {
       buttons[0][i] = new JButton();
       buttons[0][i].setBounds(0, 50 * i, 50, 50);
       buttons[0][i].setText("H" + i); // Currently needed for event recognition
@@ -115,13 +116,13 @@ public class VisualizationSettingsFrame extends JFrame {
       buttons[1][i].setBounds(250, 50 * i, 50, 50);
       buttons[1][i].setText("D" + i); // Currently needed for event recognition
       buttons[1][i].setIcon(iiDown);
-      buttons[1][i].setToolTipText("Move metric from slot " + i + " down to " + (i+1));
+      buttons[1][i].setToolTipText("Move metric from slot " + i + " down to " + (i + 1));
       buttons[1][i].addActionListener(this::downButtonActionPerformed);
       buttons[2][i] = new JButton();
       buttons[2][i].setBounds(300, 50 * i, 50, 50);
       buttons[2][i].setText("U" + i); // Currently needed for event recognition
       buttons[2][i].setIcon(iiUp);
-      buttons[2][i].setToolTipText("Move metric from slot " + i + " up to " + (i-1));
+      buttons[2][i].setToolTipText("Move metric from slot " + i + " up to " + (i - 1));
       buttons[2][i].addActionListener(this::upButtonActionPerformed);
       cp.add(buttons[0][i]);
       cp.add(buttons[1][i]);
@@ -129,10 +130,10 @@ public class VisualizationSettingsFrame extends JFrame {
     }
     updateHideShow();
     buttons[2][0].setVisible(false); // disables the "up" button of the metric in slot 1
-    buttons[1][rows-1].setVisible(false); // disables the "down" button of the metric in the last slot.
-  
-    textFields = new JTextField[rows];
-    for (int i = 0; i < rows; i++) {
+    buttons[1][metricsAmount - 1].setVisible(false); // disables the "down" button of the metric in the last slot.
+
+    textFields = new JTextField[metricsAmount];
+    for (int i = 0; i < metricsAmount; i++) {
       textFields[i] = new JTextField();
       textFields[i].setBounds(50, 50 * i, 200, 50);
       Metric[] metricsInOrder = getMetricsInInternalIndexOrder(visualizationTupels);
@@ -140,122 +141,120 @@ public class VisualizationSettingsFrame extends JFrame {
       cp.add(textFields[i]);
     }
     updateNames();
-    
+
     // ToDo: Spacing stuff
-    
+
     // ToDo: Font stuff
-    
+
     JButton saveButton = new JButton("Save");
-    saveButton.setBounds(10, 50*rows + 10, 160, 50);
+    saveButton.setBounds(10, 50 * metricsAmount + 10, 160, 50);
     saveButton.addActionListener(this::saveButtonActionPerformed);
     cp.add(saveButton);
-    
+
     JButton cancelButton = new JButton("Cancel");
-    cancelButton.setBounds(180, 50*rows + 10, 160, 50);
+    cancelButton.setBounds(180, 50 * metricsAmount + 10, 160, 50);
     cancelButton.addActionListener(this::cancelButtonActionPerformed);
     cp.add(cancelButton);
-    
+
     this.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         doClose();
       }
     });
-    
+
     setResizable(false);
     setVisible(true);
   }
-  
-  
+
+
   private void showButtonActionPerformed(ActionEvent actionEvent) {
-    JButton activeButton = (JButton)actionEvent.getSource();
+    JButton activeButton = (JButton) actionEvent.getSource();
     int i = Integer.parseInt(activeButton.getText().substring(1));
     VisualizationTupelListFunctions.updateShow(visualizationTupels, i);
     updateHideShow(i);
     somethingChanged = true;
   }
-  
+
   private void downButtonActionPerformed(ActionEvent actionEvent) {
     saveNames();
-    int i = Integer.parseInt(((JButton)actionEvent.getSource()).getText().substring(1));
-    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i + 1); // ToDo: WRONG?
+    int i = Integer.parseInt(((JButton) actionEvent.getSource()).getText().substring(1));
+    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i + 1);
     Metric[] metricsInOrder = getMetricsInInternalIndexOrder(visualizationTupels);
-    textFields[i].setToolTipText("Name for metric " + metricsInOrder[i].toString()); // ToDo: also bugged
-    textFields[i + 1].setToolTipText("Name for metric " + metricsInOrder[i + 1].toString()); // ToDo: also bugged
+    textFields[i].setToolTipText("Name for metric " + metricsInOrder[i].toString());
+    textFields[i + 1].setToolTipText("Name for metric " + metricsInOrder[i + 1].toString());
     updateHideShow();
     updateNames();
     somethingChanged = true;
   }
-  
+
   private void upButtonActionPerformed(ActionEvent actionEvent) {
     saveNames();
-    int i = Integer.parseInt(((JButton)actionEvent.getSource()).getText().substring(1));
-    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i - 1); // ToDo: WRONG?
+    int i = Integer.parseInt(((JButton) actionEvent.getSource()).getText().substring(1));
+    VisualizationTupelListFunctions.swapIndex(visualizationTupels, i, i - 1);
     Metric[] metricsInOrder = getMetricsInInternalIndexOrder(visualizationTupels);
-    textFields[i].setToolTipText("Name for metric " + metricsInOrder[i].toString()); // ToDo: also bugged
-    textFields[i - 1].setToolTipText("Name for metric " + metricsInOrder[i - 1].toString()); // ToDo: also bugged
+    textFields[i].setToolTipText("Name for metric " + metricsInOrder[i].toString());
+    textFields[i - 1].setToolTipText("Name for metric " + metricsInOrder[i - 1].toString());
     updateHideShow();
     updateNames();
     somethingChanged = true;
   }
-  
-  private void saveButtonActionPerformed(ActionEvent actionEvent) {
+
+  private void saveButtonActionPerformed(final ActionEvent actionEvent) {
     saveNames();
     if (mode.equals("default")) {
       VisualizationSettingsFileHandler.save(vs, VISUALIZATION_FILE_FULL_NAME);
       new MainMenuFrame();
     } else if (mode.equals("trick")) {
-      VisualizationSettingsFileHandler.save(vs, t.getFileName() + "." + TRICK_VISUALIZATION_FILE_FORMAT);
-      new TrickControlPanelFrame(this, t);
+      VisualizationSettingsFileHandler.save(vs, trick.getFileName() + "." + TRICK_VISUALIZATION_FILE_FORMAT);
+      new TrickControlPanelFrame(this, trick);
     }
     dispose();
   }
-  
-  private void cancelButtonActionPerformed(ActionEvent actionEvent) {
+
+  private void cancelButtonActionPerformed(final ActionEvent actionEvent) {
     if (mode.equals("default")) {
       new MainMenuFrame();
     } else if (mode.equals("trick")) {
-      new TrickControlPanelFrame(this, t);
+      new TrickControlPanelFrame(this, trick);
     }
     dispose();
   }
-  
+
   public void updateHideShow() {
     for (VisualizationTupel tupel : visualizationTupels) {
       updateHideShow(tupel.getIndex(), tupel.isActive());
     }
   }
 
-  public void updateHideShow(int i) {
+  public void updateHideShow(final int i) {
     VisualizationTupel tupel = getByInternalIndex(visualizationTupels, i);
     if (tupel != null) {
       updateHideShow(i, tupel.isActive());
     } else {
-      //TODO: error handling here
+      System.err.println("Tupel " + i + " is null.");
     }
   }
-  // ToDo: There is possibly an error here which "synergizes" with the error in VisualizationTupelListFunctions.swapIndex()!
+
   public void updateHideShow(int i, boolean isActive) {
-      if (isActive) {
-        buttons[0][i].setIcon(iiOn);
-      } else {
-        buttons[0][i].setIcon(iiOff);
-      }
+    if (isActive) {
+      buttons[0][i].setIcon(iiOn);
+    } else {
+      buttons[0][i].setIcon(iiOff);
+    }
   }
-  
-  // ToDo: There is possibly an error here which "synergizes" with the error in VisualizationTupelListFunctions.swapIndex()!
+
   public void saveNames() {
     for (VisualizationTupel tupel : visualizationTupels) {
       tupel.setName(textFields[tupel.getIndex()].getText());
     }
   }
-  
-  // ToDo: There is possibly an error here which "synergizes" with the error in VisualizationTupelListFunctions.swapIndex()!
+
   public void updateNames() {
     for (VisualizationTupel tupel : visualizationTupels) {
       textFields[tupel.getIndex()].setText(tupel.getName());
     }
   }
-  
+
   public void doClose() {
     if (somethingChanged) {
       if (mode.equals("default")) {
@@ -267,20 +266,20 @@ public class VisualizationSettingsFrame extends JFrame {
       if (mode.equals("default")) {
         new MainMenuFrame();
       } else if (mode.equals("trick")) {
-        new TrickControlPanelFrame(this, t);
+        new TrickControlPanelFrame(this, trick);
       }
       dispose();
     }
   }
-  
+
   public Trick getTrick() {
-    return t;
+    return trick;
   }
-  
+
   public String getMode() {
     return mode;
   }
-  
+
   public VisualizationSettings getVisualizationSettings() {
     return vs;
   }
