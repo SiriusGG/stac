@@ -1,23 +1,48 @@
 package com.nwawsoft.stac.model;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class VisualizationTupelListFunctions {
   
   public static void updateShow(final ArrayList<VisualizationTupel> visualizationTupels, int index) {
-    visualizationTupels.get(visualizationTupels.get(index).getIndex()).setActive
-        (!visualizationTupels.get(visualizationTupels.get(index).getIndex()).isActive());
+    getByInternalIndex(visualizationTupels, index).ifPresent(tuple-> tuple.setActive(!tuple.isActive()));
   }
   
   public static void swapIndex(final ArrayList<VisualizationTupel> visualizationTupels,
                                final int indexOne, final int indexTwo) {
     // ToDo: THE ERROR LIES HERE!
     // ToDo: the wrong tupels are swapped. Search by original index?
-    int swap = visualizationTupels.get(indexOne).getIndex();
+    getListIndexByInternalIndex(visualizationTupels, indexOne)
+            .ifPresent(listIdxOne ->
+              getListIndexByInternalIndex(visualizationTupels, indexTwo)
+                      .ifPresent(listIdxTwo -> {
+                        visualizationTupels.get(listIdxOne).setIndex(indexTwo);
+                        visualizationTupels.get(listIdxTwo).setIndex(indexOne);
+                      })
+            );
+    /*int swap = visualizationTupels.get(indexOne).getIndex();
     visualizationTupels.get(indexOne).setIndex(visualizationTupels.get(indexTwo).getIndex());
-    visualizationTupels.get(indexTwo).setIndex(swap);
+    visualizationTupels.get(indexTwo).setIndex(swap);*/
   }
-  
+
+  public static Optional<VisualizationTupel> getByInternalIndex(final ArrayList<VisualizationTupel> visualizationTupels,
+                                                                final int index)
+  {
+    return visualizationTupels
+            .stream()
+            .filter(tuple -> tuple.getIndex() == index)
+            .findAny();
+  }
+  public static Optional<Integer> getListIndexByInternalIndex(
+          final ArrayList<VisualizationTupel> visualizationTupels,
+          final int index)
+  {
+    return getByInternalIndex(visualizationTupels, index)
+            .map(visualizationTupels::indexOf)
+            .filter(i -> i != -1);
+  }
+
   public static void printIndexes(final ArrayList<VisualizationTupel> visualizationTupels) {
     System.out.println("Printing indexes");
     for (VisualizationTupel vt : visualizationTupels) {
