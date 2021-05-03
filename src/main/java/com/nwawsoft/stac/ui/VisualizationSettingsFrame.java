@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static com.nwawsoft.stac.BuildData.*;
+import static com.nwawsoft.stac.model.VisualizationTupelListFunctions.getByInternalIndex;
 import static com.nwawsoft.stac.model.VisualizationTupelListFunctions.getMetricsInInternalIndexOrder;
 
 public class VisualizationSettingsFrame extends JFrame {
@@ -219,14 +220,22 @@ public class VisualizationSettingsFrame extends JFrame {
   }
   
   public void updateHideShow() {
-    for (int i = 0; i < rows; i++) {
-      updateHideShow(i);
+    for (VisualizationTupel tupel : visualizationTupels) {
+      updateHideShow(tupel.getIndex(), tupel.isActive());
     }
   }
-  
-  // ToDo: There is possibly an error here which "synergizes" with the error in VisualizationTupelListFunctions.swapIndex()!
+
   public void updateHideShow(int i) {
-      if (visualizationTupels.get(visualizationTupels.get(i).getIndex()).isActive()) {
+    VisualizationTupel tupel = getByInternalIndex(visualizationTupels, i);
+    if (tupel != null) {
+      updateHideShow(i, tupel.isActive());
+    } else {
+      //TODO: error handling here
+    }
+  }
+  // ToDo: There is possibly an error here which "synergizes" with the error in VisualizationTupelListFunctions.swapIndex()!
+  public void updateHideShow(int i, boolean isActive) {
+      if (isActive) {
         buttons[0][i].setIcon(iiOn);
       } else {
         buttons[0][i].setIcon(iiOff);
@@ -235,15 +244,15 @@ public class VisualizationSettingsFrame extends JFrame {
   
   // ToDo: There is possibly an error here which "synergizes" with the error in VisualizationTupelListFunctions.swapIndex()!
   public void saveNames() {
-    for (int i = 0; i < rows; i++) {
-      visualizationTupels.get(visualizationTupels.get(i).getIndex()).setName(textFields[i].getText());
+    for (VisualizationTupel tupel : visualizationTupels) {
+      tupel.setName(textFields[tupel.getIndex()].getText());
     }
   }
   
   // ToDo: There is possibly an error here which "synergizes" with the error in VisualizationTupelListFunctions.swapIndex()!
   public void updateNames() {
-    for (int i = 0; i < rows; i++) {
-      textFields[i].setText(visualizationTupels.get(visualizationTupels.get(i).getIndex()).getName());
+    for (VisualizationTupel tupel : visualizationTupels) {
+      textFields[tupel.getIndex()].setText(tupel.getName());
     }
   }
   
