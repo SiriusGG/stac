@@ -23,9 +23,9 @@ public class TrickVisualizationFrame extends JFrame {
   public final static int TITLE_BAR_SIZE = 30;
   
   private ArrayList<VisualizationTupel> vts;
-  
+
   private JLabel[] labels;
-  private int[] nonHiddenLabelIndexes;
+  private int[] nonHiddenIndexes;
 
   private final DecimalFormat df = new DecimalFormat("#.##");
   
@@ -71,32 +71,20 @@ public class TrickVisualizationFrame extends JFrame {
         }
       }
     });
-    
-    labels = new JLabel[vts.size()];
-    int rowSpacing = vs.getSpacing();
-    // setIndexes();
-    setIndexesWithoutHidden();
-    // ToDo load from array nonHiddenArrayIndexes instead of vts to remove empty lines
-    labels[0] = new JLabel(vts.get(0).getName() + tcpf.getTrick().getName());
-    labels[1] = new JLabel(vts.get(1).getName() + tcpf.getTrick().getAttempts());
-    labels[2] = new JLabel(vts.get(2).getName() +
-        (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
-    labels[3] = new JLabel(vts.get(3).getName() + tcpf.getTrick().getSuccesses());
-    labels[4] = new JLabel(vts.get(4).getName() + tcpf.getTrick().getSuccessesBackToBack());
-    labels[5] = new JLabel(vts.get(5).getName() + tcpf.getTrick().getSuccessesHighscore());
+
     df.setRoundingMode(RoundingMode.HALF_UP);
-    labels[6] = new JLabel(vts.get(6).getName() + getSuccessPercentage());
-    // end of previous ToDo
+    int rowSpacing = vs.getSpacing();
+    nonHiddenIndexes = generateIndexArrayWithoutHiddenEntries();
+    labels = new JLabel[nonHiddenIndexes.length];
     Font font = vs.getFont();
-    for (int i = 0; i < vts.size(); i++) {
-      if (vts.get(i).isActive()) { // ToDo: check this
-        labels[i].setFont(font);
-        labels[i].setBounds(10, initialOffset + (i * rowSpacing) + (i * font.getSize()), 4096, font.getSize());
-      }
+
+    for (int i = 0; i < nonHiddenIndexes.length; i++) {
+      labels[i] = new JLabel();
+      labels[i].setFont(font);
+      labels[i].setBounds(10, initialOffset + (i * rowSpacing) + (i * font.getSize()), 4096, font.getSize());
+      cp.add(labels[i]);
     }
-    for (JLabel label : labels) {
-      cp.add(label);
-    }
+    updateStats();
   
     cp.setBackground(Color.WHITE);
     setResizable(true);
@@ -110,65 +98,30 @@ public class TrickVisualizationFrame extends JFrame {
     return TITLE_BAR_SIZE + (activeModules*fontSize) + (spacing*activeModules) + (2 * initialOffset);
   }
   
-  /*public void setIndexes() {
-    labelIndexes = new int[vts.size()];
-    labelIndexes[0] = getTupelByMetric(vts, Metric.TRICK_NAME).getIndex();
-    labelIndexes[1] = getTupelByMetric(vts, Metric.ATTEMPTS).getIndex();
-    labelIndexes[2] = getTupelByMetric(vts, Metric.FAILS).getIndex();
-    labelIndexes[3] = getTupelByMetric(vts, Metric.SUCCESSES).getIndex();
-    labelIndexes[4] = getTupelByMetric(vts, Metric.SUCCESSES_BACK_TO_BACK).getIndex();
-    labelIndexes[5] = getTupelByMetric(vts, Metric.SUCCESSES_HIGHSCORE).getIndex();
-    labelIndexes[6] = getTupelByMetric(vts, Metric.SUCCESS_PERCENTAGE).getIndex();
-  }*/
-  
-  public void setIndexesWithoutHidden() { // Todo: Test
-    nonHiddenLabelIndexes = new int[getActiveMetricsAmount(vts)];
-    int counter = 0;
-    for (VisualizationTupel vt : vts) {
+  public int[] generateIndexArrayWithoutHiddenEntries() {
+    int[] indexes = new int[getActiveMetricsAmount(vts)];
+    for (int i = 0; i < vts.size(); i++) {
+      VisualizationTupel vt = vts.get(i);
       if (vt.isActive()) {
-        nonHiddenLabelIndexes[counter] = vt.getIndex();
-        counter++;
+        indexes[i] = vt.getIndex();
       }
     }
-  }
-  
-  public void updateAttempts() {
-    labels[1].setText(getTupelByMetric(vts, Metric.ATTEMPTS).getName() +
-        tcpf.getTrick().getAttempts());
-  }
-
-  public void updateFails() {
-    labels[2].setText(getTupelByMetric(vts, Metric.FAILS).getName() +
-        (tcpf.getTrick().getAttempts() - tcpf.getTrick().getSuccesses()));
-  }
-
-  public void updateSuccesses() {
-    labels[3].setText(getTupelByMetric(vts, Metric.SUCCESSES).getName() +
-        tcpf.getTrick().getSuccesses());
-  }
-
-  public void updateSuccessesBackToBack() {
-    labels[4].setText(getTupelByMetric(vts, Metric.SUCCESSES_BACK_TO_BACK).getName() +
-        tcpf.getTrick().getSuccessesBackToBack());
-  }
-
-  public void updateSuccessesHighscore() {
-    labels[5].setText(getTupelByMetric(vts, Metric.SUCCESSES_HIGHSCORE).getName() +
-        tcpf.getTrick().getSuccessesHighscore());
-  }
-
-  public void updateSuccessPercentage() {
-    labels[6].setText(getTupelByMetric(vts, Metric.SUCCESS_PERCENTAGE).getName() +
-        getSuccessPercentage());
+    return indexes;
   }
 
   public void updateStats() {
-    updateAttempts();
-    updateFails();
-    updateSuccesses();
-    updateSuccessesBackToBack();
-    updateSuccessesHighscore();
-    updateSuccessPercentage();
+    // ToDo: Fix ArrayOutOfBoundsException which occurs when not all metrics are active.
+    for (int i = 0; i < nonHiddenIndexes.length; i++) {
+      if (nonHiddenIndexes[i] == 0) {
+        labels[nonHiddenIndexes[i]].setText(vts.get(i).getName() + (String) tcpf.getTrick().getValueByMetricIndex(nonHiddenIndexes[i]));
+      } else if (nonHiddenIndexes[i] == 1 || nonHiddenIndexes[i] == 2 || nonHiddenIndexes[i] == 3 || nonHiddenIndexes[i] == 4 || nonHiddenIndexes[i] == 5) {
+        labels[nonHiddenIndexes[i]].setText(vts.get(i).getName() + (int) tcpf.getTrick().getValueByMetricIndex(nonHiddenIndexes[i]));
+      } else if (nonHiddenIndexes[i] == 6) {
+        labels[nonHiddenIndexes[i]].setText(vts.get(i).getName() + getSuccessPercentage());
+      } else {
+        System.err.println("Unknown index for metric: " + nonHiddenIndexes[i]);
+      }
+    }
   }
 
   public void openSaveDialog() {

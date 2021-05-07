@@ -69,7 +69,11 @@ public class Trick {
   public int getAttempts() {
     return attempts;
   }
-  
+
+  public int getFails() {
+    return attempts - successes;
+  }
+
   public int getSuccesses() {
     return successes;
   }
@@ -83,9 +87,49 @@ public class Trick {
   }
   
   public double getSuccessPercentage() {
-    return ((double)getSuccesses() * 100) / getAttempts();
+    return ((double)successes * 100) / attempts;
   }
-  
+
+  public Object getValueByMetricIndex(final int metricIndex) {
+    switch (metricIndex) {
+      case 0:
+        return name;
+      case 1:
+        return attempts;
+      case 2:
+        return getFails();
+      case 3:
+        return successes;
+      case 4:
+        return successesBackToBack;
+      case 5:
+        return successesHighscore;
+      case 6:
+        return getSuccessPercentage();
+    }
+    return null;
+  }
+
+  public Object getValueByMetric(final Metric metric) {
+    switch (metric) {
+      case TRICK_NAME:
+        return name;
+      case ATTEMPTS:
+        return attempts;
+      case FAILS:
+        return getFails();
+      case SUCCESSES:
+        return successes;
+      case SUCCESSES_BACK_TO_BACK:
+        return successesBackToBack;
+      case SUCCESSES_HIGHSCORE:
+        return successesHighscore;
+      case SUCCESS_PERCENTAGE:
+        return getSuccessPercentage();
+    }
+    return null;
+  }
+
   /**
    * Add a failed attempt to the counter.
    */
