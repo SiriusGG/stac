@@ -37,7 +37,7 @@ public class EditTrickFrame extends JFrame {
   
   public void init() {
     calledBy.dispose();
-    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // ToDo add window listener and action
     
     int frameWidth = 400;
     int frameHeight = 280;
