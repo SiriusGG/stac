@@ -1,7 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.model.TrickFileHandler;
-import com.nwawsoft.stac.model.VisualizationSettingsFileHandler;
+import com.nwawsoft.stac.model.*;
 import com.nwawsoft.util.html.HTMLTagger;
 import com.nwawsoft.util.ui.ComponentFunctions;
 

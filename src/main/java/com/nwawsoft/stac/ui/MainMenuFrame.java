@@ -8,8 +8,7 @@ import com.nwawsoft.util.ui.ComponentFunctions;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 import static com.nwawsoft.stac.BuildData.DIRECTORY_NAME;
 

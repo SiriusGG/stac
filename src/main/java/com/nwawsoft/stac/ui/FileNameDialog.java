@@ -3,9 +3,7 @@ package com.nwawsoft.stac.ui;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 

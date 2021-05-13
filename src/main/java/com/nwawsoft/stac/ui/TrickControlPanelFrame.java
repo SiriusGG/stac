@@ -1,17 +1,12 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.controller.LAFChanger;
-import com.nwawsoft.stac.model.CounterKeyListenerSingleton;
-import com.nwawsoft.stac.model.TrickFileHandler;
-import com.nwawsoft.stac.model.KeyBindingsFileHandler;
-import com.nwawsoft.stac.model.Trick;
+import com.nwawsoft.stac.model.*;
 import org.jnativehook.GlobalScreen;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 public class TrickControlPanelFrame extends JFrame {
   public final static int FRAME_WIDTH = 280;

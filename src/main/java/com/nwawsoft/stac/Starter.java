@@ -2,12 +2,9 @@ package com.nwawsoft.stac;
 
 import com.nwawsoft.stac.model.BackwardsCompatibility;
 import com.nwawsoft.stac.ui.MainMenuFrame;
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
+import org.jnativehook.*;
 
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 public class Starter {
   public static void main (String[] args) {

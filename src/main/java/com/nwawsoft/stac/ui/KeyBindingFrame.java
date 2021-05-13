@@ -1,8 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.model.AvailableKeys;
-import com.nwawsoft.stac.model.CounterKeyListenerSingleton;
-import com.nwawsoft.stac.model.KeyBindingsFileHandler;
+import com.nwawsoft.stac.model.*;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
