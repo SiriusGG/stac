@@ -4,8 +4,7 @@ import com.nwawsoft.stac.model.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;

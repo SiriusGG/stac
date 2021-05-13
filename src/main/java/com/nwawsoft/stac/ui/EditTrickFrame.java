@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.UIController;
+import com.nwawsoft.stac.controller.EditTrickController;
 import com.nwawsoft.stac.model.*;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
@@ -172,7 +172,7 @@ public class EditTrickFrame extends JFrame {
   }
   
   private void buttonEditTrickActionPerformed(final ActionEvent actionEvent) {
-    UIController.editTrick(this, TrickFileHandler.trimmedFileString(getFileNameFieldContent()), t);
+    EditTrickController.editTrick(this, TrickFileHandler.trimmedFileString(getFileNameFieldContent()), t);
   }
   
   public String getNameFieldContent() {

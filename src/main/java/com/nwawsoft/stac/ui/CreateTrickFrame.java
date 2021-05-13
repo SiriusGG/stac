@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.UIController;
+import com.nwawsoft.stac.controller.AddTrickController;
 import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
@@ -115,7 +115,7 @@ public class CreateTrickFrame extends JFrame {
   }
   
   private void buttonAddTrickActionPerformed(final ActionEvent actionEvent) {
-    UIController.addTrick(textFieldName.getText().trim(),
+    AddTrickController.addTrick(textFieldName.getText().trim(),
         TrickFileHandler.trimmedFileString(textFieldFileName.getText()), this);
   }
   

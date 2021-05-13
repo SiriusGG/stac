@@ -1,10 +1,8 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.BuildData;
-import com.nwawsoft.stac.controller.UIController;
-import com.nwawsoft.stac.model.KeyBindingsFileHandler;
-import com.nwawsoft.stac.model.Trick;
-import com.nwawsoft.stac.model.VisualizationSettingsFileHandler;
+import com.nwawsoft.stac.controller.TrickChooserController;
+import com.nwawsoft.stac.model.*;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
@@ -109,7 +107,7 @@ public class MainMenuFrame extends JFrame {
   }
   
   private void buttonEditActionPerformed(final ActionEvent actionEvent) {
-    Trick t = UIController.createTrickFromJFileChooser();
+    Trick t = TrickChooserController.createTrickFromJFileChooser();
     if (t != null) {
       new EditTrickFrame(this, t);
       dispose();
@@ -117,7 +115,7 @@ public class MainMenuFrame extends JFrame {
   }
 
   private void buttonLoadActionPerformed(final ActionEvent actionEvent) {
-    Trick t = UIController.createTrickFromJFileChooser();
+    Trick t = TrickChooserController.createTrickFromJFileChooser();
     if (t != null) {
       new TrickControlPanelFrame(this, t);
       dispose();
