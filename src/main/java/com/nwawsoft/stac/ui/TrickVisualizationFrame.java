@@ -15,20 +15,17 @@ import static com.nwawsoft.stac.model.VisualizationSettingsFileHandler.*;
 import static com.nwawsoft.stac.model.VisualizationTupelListFunctions.*;
 
 public class TrickVisualizationFrame extends JFrame {
-
   private final TrickControlPanelFrame tcpf;
-  
+
   public final static int FRAME_WIDTH = 340;
   public final static int TITLE_BAR_SIZE = 30;
-  
-  private ArrayList<VisualizationTupel> vts;
 
+  private ArrayList<VisualizationTupel> vts;
   private JLabel[] labels;
-  private int[] nonHiddenIndexes;
+  private int activeModules;
+  private final int initialOffset = 10;
 
   private final DecimalFormat df = new DecimalFormat("#.##");
-  
-  private final int initialOffset = 10;
 
   public TrickVisualizationFrame(final TrickControlPanelFrame tcpf) {
     super("Visualization");
@@ -46,10 +43,12 @@ public class TrickVisualizationFrame extends JFrame {
       save(mainVisualizationSettings, fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
     }
     VisualizationSettings vs = load(fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
-    vts = vs.getVisualizationTupels();
-  
+    vts = VisualizationTupelListFunctions.sortByIndex(
+        VisualizationTupelListFunctions.filterActive(vs.getVisualizationTupels()));
+    activeModules = getActiveMetricsAmount(vts);
+
     int frameHeight = calcHeight(vs);
-    
+
     // always opened to the right of TrickControlPanelFrame
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     setSize(FRAME_WIDTH, frameHeight);
@@ -60,7 +59,7 @@ public class TrickVisualizationFrame extends JFrame {
     setLocation(x + TrickControlPanelFrame.FRAME_WIDTH, y);
     Container cp = getContentPane();
     cp.setLayout(null);
-    
+
     this.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         if (!tcpf.getTrick().equals(TrickFileHandler.load(tcpf.getTrick().getFileName()))) {
@@ -73,53 +72,53 @@ public class TrickVisualizationFrame extends JFrame {
 
     df.setRoundingMode(RoundingMode.HALF_UP);
     int rowSpacing = vs.getSpacing();
-    nonHiddenIndexes = generateIndexArrayWithoutHiddenEntries();
-    labels = new JLabel[nonHiddenIndexes.length];
+    labels = new JLabel[activeModules];
     Font font = vs.getFont();
 
-    for (int i = 0; i < nonHiddenIndexes.length; i++) {
+    for (int i = 0; i < activeModules; i++) {
       labels[i] = new JLabel();
       labels[i].setFont(font);
       labels[i].setBounds(10, initialOffset + (i * rowSpacing) + (i * font.getSize()), 4096, font.getSize());
       cp.add(labels[i]);
     }
     updateStats();
-  
+
     cp.setBackground(Color.WHITE);
     setResizable(true);
     setVisible(true);
   }
 
   private int calcHeight(final VisualizationSettings vs) {
-    int activeModules = getActiveMetricsAmount(vts);
     int spacing = vs.getSpacing();
     int fontSize = vs.getFont().getSize();
-    return TITLE_BAR_SIZE + (activeModules*fontSize) + (spacing*activeModules) + (2 * initialOffset);
-  }
-  
-  public int[] generateIndexArrayWithoutHiddenEntries() {
-    int[] indexes = new int[getActiveMetricsAmount(vts)];
-    for (int i = 0; i < vts.size(); i++) {
-      VisualizationTupel vt = vts.get(i);
-      if (vt.isActive()) {
-        indexes[i] = vt.getIndex();
-      }
-    }
-    return indexes;
+    return TITLE_BAR_SIZE + (activeModules * fontSize) + (spacing * activeModules) + (2 * initialOffset);
   }
 
   public void updateStats() {
-    // ToDo: Fix ArrayOutOfBoundsException which occurs when not all metrics are active.
-    for (int i = 0; i < nonHiddenIndexes.length; i++) {
-      if (nonHiddenIndexes[i] == 0) {
-        labels[nonHiddenIndexes[i]].setText(vts.get(i).getName() + (String) tcpf.getTrick().getValueByMetricIndex(nonHiddenIndexes[i]));
-      } else if (nonHiddenIndexes[i] == 1 || nonHiddenIndexes[i] == 2 || nonHiddenIndexes[i] == 3 || nonHiddenIndexes[i] == 4 || nonHiddenIndexes[i] == 5) {
-        labels[nonHiddenIndexes[i]].setText(vts.get(i).getName() + (int) tcpf.getTrick().getValueByMetricIndex(nonHiddenIndexes[i]));
-      } else if (nonHiddenIndexes[i] == 6) {
-        labels[nonHiddenIndexes[i]].setText(vts.get(i).getName() + getSuccessPercentage());
-      } else {
-        System.err.println("Unknown index for metric: " + nonHiddenIndexes[i]);
+    int counter = 0;
+    for (VisualizationTupel vt : vts) {
+      Metric metric = vt.getMetric();
+      switch (metric) {
+        case TRICK_NAME:
+          //noinspection RedundantCast
+          labels[counter].setText(vt.getName() + (String) tcpf.getTrick().getValueByMetric(metric));
+          break;
+        case ATTEMPTS:
+        case FAILS:
+        case SUCCESSES:
+        case SUCCESSES_BACK_TO_BACK:
+        case SUCCESSES_HIGHSCORE:
+          labels[counter].setText(vt.getName() + (int) tcpf.getTrick().getValueByMetric(metric));
+          break;
+        case SUCCESS_PERCENTAGE:
+          labels[counter].setText(vt.getName() + getSuccessPercentage());
+          break;
+        default:
+          //noinspection UnnecessaryToStringCall
+          System.err.println("Unknown Metric: " + metric.toString());
+          break;
       }
+      counter++;
     }
   }
 
@@ -127,7 +126,7 @@ public class TrickVisualizationFrame extends JFrame {
     new SaveWarningDialog(this, "visualization", "close");
   }
 
-  public TrickControlPanelFrame getController() {
+  public TrickControlPanelFrame getControlPanel() {
     return tcpf;
   }
 

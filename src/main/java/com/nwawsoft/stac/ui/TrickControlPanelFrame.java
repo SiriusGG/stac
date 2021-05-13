@@ -160,8 +160,4 @@ public class TrickControlPanelFrame extends JFrame {
     t = TrickFileHandler.load(t.getFileName());
     tvf.updateStats();
   }
-
-  public Trick getT() {
-    return t;
-  }
 }

@@ -128,7 +128,7 @@ public class VisualizationSettingsFrame extends JFrame {
       cp.add(buttons[1][i]);
       cp.add(buttons[2][i]);
     }
-    updateHideShow();
+    updateAllHideShowGraphics();
     buttons[2][0].setVisible(false); // disables the "up" button of the metric in slot 1
     buttons[1][metricsAmount - 1].setVisible(false); // disables the "down" button of the metric in the last slot.
 
@@ -171,7 +171,7 @@ public class VisualizationSettingsFrame extends JFrame {
     JButton activeButton = (JButton) actionEvent.getSource();
     int i = Integer.parseInt(activeButton.getText().substring(1));
     VisualizationTupelListFunctions.updateShow(visualizationTupels, i);
-    updateHideShow(i);
+    updateHideShowGraphic(i);
     somethingChanged = true;
   }
 
@@ -182,7 +182,7 @@ public class VisualizationSettingsFrame extends JFrame {
     Metric[] metricsInOrder = getMetricsInInternalIndexOrder(visualizationTupels);
     textFields[i].setToolTipText("Name for metric " + metricsInOrder[i].toString());
     textFields[i + 1].setToolTipText("Name for metric " + metricsInOrder[i + 1].toString());
-    updateHideShow();
+    updateAllHideShowGraphics();
     updateNames();
     somethingChanged = true;
   }
@@ -194,7 +194,7 @@ public class VisualizationSettingsFrame extends JFrame {
     Metric[] metricsInOrder = getMetricsInInternalIndexOrder(visualizationTupels);
     textFields[i].setToolTipText("Name for metric " + metricsInOrder[i].toString());
     textFields[i - 1].setToolTipText("Name for metric " + metricsInOrder[i - 1].toString());
-    updateHideShow();
+    updateAllHideShowGraphics();
     updateNames();
     somethingChanged = true;
   }
@@ -220,22 +220,22 @@ public class VisualizationSettingsFrame extends JFrame {
     dispose();
   }
 
-  public void updateHideShow() {
+  public void updateAllHideShowGraphics() {
     for (VisualizationTupel tupel : visualizationTupels) {
-      updateHideShow(tupel.getIndex(), tupel.isActive());
+      updateHideShowGraphic(tupel.getIndex(), tupel.isActive());
     }
   }
 
-  public void updateHideShow(final int i) {
+  public void updateHideShowGraphic(final int i) {
     VisualizationTupel tupel = getByInternalIndex(visualizationTupels, i);
     if (tupel != null) {
-      updateHideShow(i, tupel.isActive());
+      updateHideShowGraphic(i, tupel.isActive());
     } else {
       System.err.println("Tupel " + i + " is null.");
     }
   }
 
-  public void updateHideShow(int i, boolean isActive) {
+  public void updateHideShowGraphic(final int i, final boolean isActive) {
     if (isActive) {
       buttons[0][i].setIcon(iiOn);
     } else {

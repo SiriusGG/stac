@@ -35,6 +35,48 @@ public class VisualizationTupelListFunctions {
     return null;
   }
 
+  public static ArrayList<VisualizationTupel> filterActive(final ArrayList<VisualizationTupel> visualizationTupels) {
+    ArrayList<VisualizationTupel> activeVts = new ArrayList<>();
+    for (VisualizationTupel vt : visualizationTupels) {
+      if (vt.isActive()) {
+        activeVts.add(vt);
+      }
+    }
+    return activeVts;
+  }
+
+  public static ArrayList<VisualizationTupel> sortByIndex(final ArrayList<VisualizationTupel> visualizationTupels) {
+    ArrayList<VisualizationTupel> sortedTupels = new ArrayList<>();
+    ArrayList<VisualizationTupel> remainingTupels = new ArrayList<>(visualizationTupels);
+    while (!remainingTupels.isEmpty()) {
+      VisualizationTupel vt = findTupelWithLowestIndex(remainingTupels);
+      sortedTupels.add(vt);
+      remainingTupels.remove(vt);
+    }
+    return sortedTupels;
+  }
+
+  private static VisualizationTupel findTupelWithLowestIndex(final ArrayList<VisualizationTupel> visualizationTupels) {
+    int lowest = Integer.MAX_VALUE;
+    for (VisualizationTupel visualizationTupel : visualizationTupels) {
+      if (visualizationTupel.getIndex() < lowest) {
+        lowest = visualizationTupel.getIndex();
+      }
+    }
+    for (VisualizationTupel vt : visualizationTupels) {
+      if (vt.getIndex() == lowest) {
+        return vt;
+      }
+    }
+    return null;
+  }
+
+  public static void print(final ArrayList<VisualizationTupel> visualizationTupels) {
+    for (VisualizationTupel vt : visualizationTupels) {
+      System.out.println(vt.getIndex() + ";" + vt.getName() + ";" + vt.getMetric() + ";" + vt.isActive());
+    }
+  }
+
   public static Metric[] getMetricsInInternalIndexOrder(final ArrayList<VisualizationTupel> visualizationTupels) {
     int amount = visualizationTupels.size();
     Metric[] metrics = new Metric[amount];

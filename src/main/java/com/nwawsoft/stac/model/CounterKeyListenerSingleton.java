@@ -1,8 +1,7 @@
 package com.nwawsoft.stac.model;
 
 import com.nwawsoft.stac.ui.TrickVisualizationFrame;
-import org.jnativehook.keyboard.NativeKeyEvent;
-import org.jnativehook.keyboard.NativeKeyListener;
+import org.jnativehook.keyboard.*;
 
 public class CounterKeyListenerSingleton implements NativeKeyListener {
   private String failedKey;
@@ -29,10 +28,10 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
   public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
     if (!(tvf == null)) {
       if (AvailableKeys.getKeyFromKeyCode(nativeEvent.getKeyCode()).equals(failedKey)) {
-        tvf.getController().getTrick().recordFail();
+        tvf.getControlPanel().getTrick().recordFail();
         tvf.updateStats();
       } else if (AvailableKeys.getKeyFromKeyCode(nativeEvent.getKeyCode()).equals(successfulKey)) {
-        tvf.getController().getTrick().recordSuccess();
+        tvf.getControlPanel().getTrick().recordSuccess();
         tvf.updateStats();
       }
     }

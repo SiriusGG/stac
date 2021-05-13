@@ -107,7 +107,7 @@ public class SaveWarningDialog extends JDialog {
         break;
       case "visualization, close":
         if (calledBy instanceof TrickVisualizationFrame) {
-          TrickFileHandler.save(((TrickVisualizationFrame)calledBy).getController().getTrick());
+          TrickFileHandler.save(((TrickVisualizationFrame)calledBy).getControlPanel().getTrick());
           System.exit(0);
         }
         break;
@@ -161,7 +161,7 @@ public class SaveWarningDialog extends JDialog {
         dispose();
         break;
       case "trick visualization settings, close":
-        new TrickControlPanelFrame(calledBy, ((TrickControlPanelFrame)calledBy).getT());
+        new TrickControlPanelFrame(calledBy, ((TrickControlPanelFrame)calledBy).getTrick());
         calledBy.dispose();
         dispose();
         break;

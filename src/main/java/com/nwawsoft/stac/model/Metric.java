@@ -30,8 +30,8 @@ public enum Metric {
     }
   }
   
-  public static Metric getMetric(final int i) {
-    switch (i) {
+  public static Metric getMetric(final int metricIndex) {
+    switch (metricIndex) {
       case 0:
         return TRICK_NAME;
       case 1:
@@ -48,6 +48,27 @@ public enum Metric {
         return SUCCESS_PERCENTAGE;
       default:
         return null;
+    }
+  }
+
+  public static int getMetricIndex(final Metric metric) {
+    switch (metric) {
+      case TRICK_NAME:
+        return 0;
+      case ATTEMPTS:
+        return 1;
+      case FAILS:
+        return 2;
+      case SUCCESSES:
+        return 3;
+      case SUCCESSES_BACK_TO_BACK:
+        return 4;
+      case SUCCESSES_HIGHSCORE:
+        return 5;
+      case SUCCESS_PERCENTAGE:
+        return 6;
+      default:
+        return -1;
     }
   }
 }
