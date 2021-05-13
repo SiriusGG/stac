@@ -7,6 +7,7 @@
       </element>
       <element id="directory" name="lib">
         <element id="library" level="project" name="jnativehook" />
+        <element id="library" level="project" name="jfontchooser-1.0.5" />
       </element>
     </root>
   </artifact>
