@@ -1,4 +1,6 @@
 Manifest-Version: 1.0
 Class-Path: lib/jnativehook-2.1.0.jar
+  lib/jfontchooser-1.0.5.jar
+  lib/nwawsoft-java-util-1.0.0.jar
 Main-Class: com.nwawsoft.stac.Starter
 

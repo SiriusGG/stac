@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/stac</output-path>
     <root id="root">
       <element id="archive" name="stac.jar">
-        <element id="module-output" name="stac" />
+        <element id="module-output" name="siris-trick-attempt-counter" />
         <element id="directory" name="META-INF">
           <element id="dir-copy" path="$PROJECT_DIR$/src/main/java/META-INF" />
         </element>
