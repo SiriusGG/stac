@@ -30,7 +30,7 @@ public class AboutFrame extends JFrame {
     JLabel labelAboutText3 = new JLabel(HTMLTagger.toHTML("Newest version at"), SwingConstants.CENTER);
     labelAboutText3.setBounds(0, 40, frameWidth, 20);
     cp.add(labelAboutText3);
-    JLabel labelAboutText4 = new JLabel(HTMLTagger.toLink(BuildData.GITHUB), SwingConstants.CENTER);
+    JLabel labelAboutText4 = new JLabel(HTMLTagger.toLink(BuildData.WEBSITE), SwingConstants.CENTER);
     labelAboutText4.setBounds(0, 60, frameWidth, 20);
     labelAboutText4.setForeground(Color.BLUE.darker());
     labelAboutText4.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -38,7 +38,7 @@ public class AboutFrame extends JFrame {
       @Override
       public void mouseClicked(MouseEvent e) {
         try {
-          Desktop.getDesktop().browse(new URI(BuildData.GITHUB_LINK));
+          Desktop.getDesktop().browse(new URI(BuildData.WEBSITE_LINK));
         } catch (IOException | URISyntaxException e1) {
           e1.printStackTrace();
         }
@@ -48,7 +48,7 @@ public class AboutFrame extends JFrame {
     JLabel labelAboutText5 = new JLabel(HTMLTagger.toHTML("and"), SwingConstants.CENTER);
     labelAboutText5.setBounds(0, 80, frameWidth, 20);
     cp.add(labelAboutText5);
-    JLabel labelAboutText6 = new JLabel(HTMLTagger.toLink(BuildData.WEBSITE), SwingConstants.CENTER);
+    JLabel labelAboutText6 = new JLabel(HTMLTagger.toLink(BuildData.GITHUB), SwingConstants.CENTER);
     labelAboutText6.setBounds(0, 100, frameWidth, 20);
     labelAboutText6.setForeground(Color.BLUE.darker());
     labelAboutText6.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -56,7 +56,7 @@ public class AboutFrame extends JFrame {
       @Override
       public void mouseClicked(MouseEvent e) {
         try {
-          Desktop.getDesktop().browse(new URI(BuildData.WEBSITE_LINK));
+          Desktop.getDesktop().browse(new URI(BuildData.GITHUB_LINK));
         } catch (IOException | URISyntaxException e1) {
           e1.printStackTrace();
         }
