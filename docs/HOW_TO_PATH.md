@@ -48,7 +48,7 @@ If you followed the optional steps 1 and 2 (recommended), add the directory you 
 
 If you only followed the optional step 1 but not 2, add the directory you created in step 1.
 
-If you only followed step 3 and forward, add whatever directory the STAC jar is currently located in.
+If you only followed step 3 and forward, add whatever directory ```stac.jar``` is currently located in.
 
 ### 6) Done.
 

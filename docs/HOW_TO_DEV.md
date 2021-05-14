@@ -8,12 +8,11 @@ To compile STAC from its source code or make changes to it, you should follow th
 
 1) Clone the repository, e.g. with ```git clone https://github.com/JGC-Sirius/siris-trick-attempt-counter.git```.
 
-2) Load all dependencies with ```git submodule update --init```.
+2) Open the project directory in any IDE. I recommend using the free [IntelliJ IDEA Community Edition](https://www.jetbrains.com/de-de/idea/download/).
 
-3) Open the project directory in any IDE. I recommend using the free [IntelliJ IDEA Community Edition](https://www.jetbrains.com/de-de/idea/download/).
-
-4) If not all dependencies were found, make sure all directories named ```java``` are marked as sources roots and the libraries in the ```lib``` directory are in the classpath.
+3) If not all classes/packages are found, make sure that the ```src/main/java``` directory is marked as sources root and that the libraries in the ```lib``` directory are in the classpath.
 
 ## Libraries used:
 - [jnativehook](https://github.com/kwhat/jnativehook)
 - [nwawsoft-java-util](https://java-util.nwawsoft.com/)
+- [JFontChooser](https://de.osdn.net/projects/jfontchooser/)

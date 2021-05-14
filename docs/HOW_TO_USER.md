@@ -6,9 +6,9 @@
 
 ## Installing STAC
 
-STAC does not need to be installed to a proper location.
+STAC does not need to be installed via a setup.
 
-Just unzip the downloaded file with any archive manager like WinZIP, WinRAR, 7-Zip or tar/untar.
+Just unzip the downloaded file with your OS's default archive manager or software like WinRAR, 7-Zip or tar/untar.
 
 [Optionally, you can add a link somewhere within your PATH to start STAC even faster.](../docs/HOW_TO_PATH.md)
 
