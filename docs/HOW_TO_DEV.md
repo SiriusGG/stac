@@ -13,6 +13,6 @@ To compile STAC from its source code or make changes to it, you should follow th
 3) If not all classes/packages are found, make sure that the ```src/main/java``` directory is marked as sources root and that the libraries in the ```lib``` directory are in the classpath.
 
 ## Libraries used:
-- [JNativeJook](https://github.com/kwhat/jnativehook)
+- [JNativeHook](https://github.com/kwhat/jnativehook)
 - [nwawsoft-java-util](https://java-util.nwawsoft.com/)
 - [JFontChooser](https://de.osdn.net/projects/jfontchooser/)
