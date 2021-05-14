@@ -20,8 +20,8 @@ public class Starter {
     
     // START OF BACKWARDS COMPATIBILITY ROUTINE
     
-    BackwardsCompatibility.convertTrickFiles(); // Introduced in v1.3.0 / 2.0.0
-    BackwardsCompatibility.convertKeyBindingsFile(); // Introduced in v1.3.0 / 2.0.0
+    BackwardsCompatibility.convertTrickFiles(); // Introduced in v1.3.0
+    BackwardsCompatibility.convertKeyBindingsFile(); // Introduced in v1.3.0
     
     // END OF BACKWARDS COMPATIBILITY ROUTINE
     
