@@ -1,5 +1,7 @@
 package com.nwawsoft.stac.model;
 
+import com.nwawsoft.util.ui.FontFunctions;
+
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class VisualizationSettingsFileHandler {
       FileWriter fw = new FileWriter(f);
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write("SPACING=" + vs.getSpacing() + "\n");
-      bw.write("FONT=" + toFontString(vs.getFont()) + "\n");
+      bw.write("FONT=" + FontFunctions.toFontString(vs.getFont()) + "\n");
       bw.write("#TUPELS_START\n");
       for (VisualizationTupel vt : vs.getVisualizationTupels()) {
         bw.write(toTupelString(vt) + "\n");
@@ -43,6 +45,7 @@ public class VisualizationSettingsFileHandler {
     }
   }
   
+  @SuppressWarnings("StringConcatenationInLoop")
   public static VisualizationSettings load(final String fileName) {
     int spacing = 0;
     Font font = null;
@@ -57,7 +60,7 @@ public class VisualizationSettingsFileHandler {
         if (currentLine.startsWith("SPACING")) {
           spacing = Integer.parseInt(currentLine.substring(currentLine.lastIndexOf("=") + 1));
         } else if (currentLine.startsWith("FONT")) {
-          font = parseFont(currentLine.substring(currentLine.lastIndexOf("=") + 1));
+          font = FontFunctions.parseFont(currentLine.substring(currentLine.lastIndexOf("=") + 1));
         } else if (currentLine.contains("TUPELS_START")) {
           tupelsString = tupelsString + currentLine + "\n";
           while (!(currentLine = br.readLine()).contains("TUPELS_END")) {
@@ -76,26 +79,6 @@ public class VisualizationSettingsFileHandler {
       return new VisualizationSettings(null, 0, null);
     }
     return new VisualizationSettings(visualizationTupels, spacing, font);
-  }
-  
-  public static Font parseFont(final String fontString) { // ToDo replace by util
-    String name;
-    int style;
-    int size;
-    name = fontString.substring(0, fontString.indexOf(";"));
-    style = Integer.parseInt(fontString.substring(fontString.indexOf(";") + 1, fontString.lastIndexOf(";")));
-    size = Integer.parseInt(fontString.substring(fontString.lastIndexOf(";") + 1));
-    return new Font(name, style, size);
-  }
-  
-  public static String toFontString(final Font font) { // ToDo replace by util
-    String name;
-    int style;
-    int size;
-    name = font.getName();
-    style = font.getStyle();
-    size = font.getSize();
-    return name + ";" + style + ";" + size;
   }
   
   public static ArrayList<VisualizationTupel> parseTupels(final String tupelsString) {
@@ -139,31 +122,7 @@ public class VisualizationSettingsFileHandler {
     }
     File f = new File(USER_HOME + "/" + DIRECTORY_NAME + "/" + VISUALIZATION_FILE_FULL_NAME);
     if (!f.exists()) {
-      save(createDefaults(), VISUALIZATION_FILE_FULL_NAME);
+      save(VisualizationSettings.createDefaults(), VISUALIZATION_FILE_FULL_NAME);
     }
-  }
-  
-  private static VisualizationSettings createDefaults() {
-    return new VisualizationSettings(getDefaultVisualizationTupels(), getDefaultSpacing(), getDefaultFont());
-  }
-  
-  private static ArrayList<VisualizationTupel> getDefaultVisualizationTupels() {
-    ArrayList<VisualizationTupel> visualizationTupels = new ArrayList<>();
-    visualizationTupels.add(new VisualizationTupel(0, "Trick name: ", Metric.TRICK_NAME, true));
-    visualizationTupels.add(new VisualizationTupel(1, "Attempts: ", Metric.ATTEMPTS, true));
-    visualizationTupels.add(new VisualizationTupel(2, "Fails: ", Metric.FAILS, false));
-    visualizationTupels.add(new VisualizationTupel(3, "Successes: ", Metric.SUCCESSES, true));
-    visualizationTupels.add(new VisualizationTupel(4, "Successes in a row: ", Metric.SUCCESSES_BACK_TO_BACK, true));
-    visualizationTupels.add(new VisualizationTupel(5, "Max successes in a row: ", Metric.SUCCESSES_HIGHSCORE, true));
-    visualizationTupels.add(new VisualizationTupel(6, "Success rate: ", Metric.SUCCESS_PERCENTAGE, true));
-    return visualizationTupels;
-  }
-  
-  private static int getDefaultSpacing() {
-    return 20;
-  }
-  
-  private static Font getDefaultFont() {
-    return new Font("Dialog", Font.PLAIN, 12);
   }
 }

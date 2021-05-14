@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="jnativehook">
+  <library name="jnativehook-2.1.0">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/jnativehook-2.1.0.jar!/" />
     </CLASSES>
