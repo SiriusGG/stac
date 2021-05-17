@@ -1,31 +1,24 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.BuildData;
-import com.nwawsoft.stac.controller.TrickChooserController;
-import com.nwawsoft.stac.model.*;
+import com.nwawsoft.stac.controller.MainMenuController;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.*;
-
-import static com.nwawsoft.stac.BuildData.DIRECTORY_NAME;
 
 public class MainMenuFrame extends JFrame {
+  private final MainMenuController mmc;
 
   public MainMenuFrame() {
     super("STAC");
+    mmc = new MainMenuController(this);
     init();
   }
 
   public void init() {
-    try {
-      KeyBindingsFileHandler.guaranteeSettings();
-      VisualizationSettingsFileHandler.guaranteeSettings();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    mmc.prepareSettings();
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     int frameWidth = 240;
     int frameHeight = 320;
@@ -78,50 +71,34 @@ public class MainMenuFrame extends JFrame {
   }
   
   private void buttonNewActionPerformed(final ActionEvent actionEvent) {
-    new CreateTrickFrame(this);
-    dispose();
+    mmc.newTrick();
   }
   
   private void buttonEditActionPerformed(final ActionEvent actionEvent) {
-    Trick t = TrickChooserController.createTrickFromJFileChooser();
-    if (t != null) {
-      new EditTrickFrame(this, t);
-      dispose();
-    }
+    mmc.editTrick();
   }
 
   private void buttonLoadActionPerformed(final ActionEvent actionEvent) {
-    Trick t = TrickChooserController.createTrickFromJFileChooser();
-    if (t != null) {
-      new TrickControlPanelFrame(this, t);
-      dispose();
-    }
+    mmc.loadTrick();
   }
 
   private void buttonKeyBindingsActionPerformed(final ActionEvent actionEvent) {
-    new KeyBindingFrame(this);
-    dispose();
+    mmc.openKeyBindingsConfiguration();
   }
   
   private void buttonVisualizationSettingsActionPerformed(final ActionEvent actionEvent) {
-    new VisualizationSettingsFrame();
-    dispose();
+    mmc.openVisualizationSettings();
   }
   
   private void buttonBrowseActionPerformed(final ActionEvent actionEvent) {
-    try {
-      File d = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME);
-      Desktop.getDesktop().open(d);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    mmc.browseDirectory();
   }
 
   private void buttonAboutActionPerformed(final ActionEvent actionEvent) {
-    new AboutFrame();
+    mmc.openAbout();
   }
   
   private void buttonExitActionPerformed(final ActionEvent actionEvent) {
-    System.exit(0);
+    mmc.doClose();
   }
 }
