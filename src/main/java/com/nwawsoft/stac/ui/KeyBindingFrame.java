@@ -77,13 +77,14 @@ public class KeyBindingFrame extends JFrame {
   }
   
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
-    KeyBindingsFileHandler.save((String)comboBoxFailed.getSelectedItem(), (String)comboBoxSuccessful.getSelectedItem());
+    KeyBindingsFileHandler.save((String) comboBoxFailed.getSelectedItem(),
+        (String) comboBoxSuccessful.getSelectedItem());
     CounterKeyListenerSingleton.getCounterKeyListener().reset();
-    new MainMenuFrame(this);
+    new MainMenuFrame();
   }
   
   private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
-    new MainMenuFrame(this);
+    new MainMenuFrame();
     dispose();
   }
 }

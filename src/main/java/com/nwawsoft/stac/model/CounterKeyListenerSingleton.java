@@ -22,15 +22,16 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
   }
 
   @Override
-  public void nativeKeyTyped(NativeKeyEvent nativeEvent) {}
+  public void nativeKeyTyped(final NativeKeyEvent nativeEvent) {}
 
   @Override
-  public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
+  public void nativeKeyPressed(final NativeKeyEvent nativeEvent) {
     if (!(tvf == null)) {
-      if (AvailableKeys.getKeyFromKeyCode(nativeEvent.getKeyCode()).equals(failedKey)) {
+      String keyString = AvailableKeys.getKeyStringFromKeyCode(nativeEvent.getKeyCode());
+      if (keyString.equals(failedKey)) {
         tvf.getControlPanel().getTrick().recordFail();
         tvf.updateStats();
-      } else if (AvailableKeys.getKeyFromKeyCode(nativeEvent.getKeyCode()).equals(successfulKey)) {
+      } else if (keyString.equals(successfulKey)) {
         tvf.getControlPanel().getTrick().recordSuccess();
         tvf.updateStats();
       }
@@ -38,13 +39,13 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
   }
 
   @Override
-  public void nativeKeyReleased(NativeKeyEvent nativeEvent) {}
+  public void nativeKeyReleased(final NativeKeyEvent nativeEvent) {}
 
   public static CounterKeyListenerSingleton getCounterKeyListener() {
     return ckl;
   }
 
-  public void setActive(boolean active) {
+  public void setActive(final boolean active) {
     this.active = active;
   }
 

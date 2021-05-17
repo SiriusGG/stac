@@ -19,29 +19,6 @@ public class MainMenuFrame extends JFrame {
     init();
   }
 
-  public MainMenuFrame(final SaveWarningDialog calledBy) {
-    super("STAC");
-    if (calledBy.getCalledBy() instanceof TrickControlPanelFrame) {
-      ((TrickControlPanelFrame)calledBy.getCalledBy()).getVisualization().dispose();
-      calledBy.getCalledBy().dispose();
-      calledBy.dispose();
-      init();
-    }
-  }
-
-  public MainMenuFrame(final TrickControlPanelFrame calledBy) {
-    super("STAC");
-    calledBy.getVisualization().dispose();
-    calledBy.dispose();
-    init();
-  }
-
-  public MainMenuFrame(final KeyBindingFrame calledBy) {
-    super("STAC");
-    calledBy.dispose();
-    init();
-  }
-
   public void init() {
     try {
       KeyBindingsFileHandler.guaranteeSettings();
@@ -126,12 +103,12 @@ public class MainMenuFrame extends JFrame {
     dispose();
   }
   
-  private void buttonVisualizationSettingsActionPerformed(ActionEvent actionEvent) {
+  private void buttonVisualizationSettingsActionPerformed(final ActionEvent actionEvent) {
     new VisualizationSettingsFrame();
     dispose();
   }
   
-  private void buttonBrowseActionPerformed(ActionEvent actionEvent) {
+  private void buttonBrowseActionPerformed(final ActionEvent actionEvent) {
     try {
       File d = new File(System.getProperty("user.home") + "/" + DIRECTORY_NAME);
       Desktop.getDesktop().open(d);
@@ -144,7 +121,7 @@ public class MainMenuFrame extends JFrame {
     new AboutFrame();
   }
   
-  private void buttonExitActionPerformed(ActionEvent actionEvent) {
+  private void buttonExitActionPerformed(final ActionEvent actionEvent) {
     System.exit(0);
   }
 }

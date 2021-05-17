@@ -60,7 +60,7 @@ public class AvailableKeys {
     return keys;
   }
 
-  public static String getKeyFromKeyCode(final int keyCode) {
+  public static String getKeyStringFromKeyCode(final int keyCode) {
     switch (keyCode) {
       case 30:
         return "A";

@@ -113,7 +113,8 @@ public class TrickControlPanelFrame extends JFrame {
       new SaveWarningDialog(this, "controlpanel", "menu");
     } else {
       tvf.dispose();
-      new MainMenuFrame(this);
+      new MainMenuFrame();
+      dispose();
     }
   }
 

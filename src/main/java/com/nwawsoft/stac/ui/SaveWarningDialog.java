@@ -90,8 +90,8 @@ public class SaveWarningDialog extends JDialog {
         if (calledBy instanceof TrickControlPanelFrame) {
           TrickFileHandler.save(((TrickControlPanelFrame)calledBy).getTrick());
           ((TrickControlPanelFrame)calledBy).getVisualization().dispose();
-          new MainMenuFrame(this);
           (calledBy).dispose();
+          new MainMenuFrame();
           dispose();
         }
         break;
@@ -141,8 +141,8 @@ public class SaveWarningDialog extends JDialog {
       case "controlpanel, menu":
         if (calledBy instanceof TrickControlPanelFrame) {
           ((TrickControlPanelFrame)calledBy).getVisualization().dispose();
-          new MainMenuFrame(this);
           calledBy.dispose();
+          new MainMenuFrame();
           dispose();
         }
         break;
@@ -169,9 +169,5 @@ public class SaveWarningDialog extends JDialog {
 
   public void buttonCancel_ActionPerformed(final ActionEvent evt) {
     dispose();
-  }
-
-  public JFrame getCalledBy() {
-    return calledBy;
   }
 }
