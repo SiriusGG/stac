@@ -1,7 +1,9 @@
 package com.nwawsoft.stac.controller;
 
+import com.nwawsoft.stac.BuildData;
 import com.nwawsoft.stac.model.*;
 import com.nwawsoft.stac.ui.*;
+import com.nwawsoft.util.ui.ComponentFunctions;
 
 import java.awt.*;
 import java.io.*;
@@ -10,7 +12,7 @@ import static com.nwawsoft.stac.BuildData.DIRECTORY_NAME;
 
 public class MainMenuController {
   private final MainMenuFrame mmf;
-  
+
   public MainMenuController(final MainMenuFrame mmf) {
     this.mmf = mmf;
   }
@@ -22,6 +24,14 @@ public class MainMenuController {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void center() {
+    ComponentFunctions.center(mmf);
+  }
+
+  public String getBrowseText() {
+    return "Browse " + BuildData.DIRECTORY_NAME + " directory";
   }
 
   public void newTrick() {

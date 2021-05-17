@@ -1,8 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.BuildData;
 import com.nwawsoft.stac.controller.MainMenuController;
-import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +22,7 @@ public class MainMenuFrame extends JFrame {
     int frameHeight = 320;
     int modules = 8;
     setSize(frameWidth, frameHeight);
-    ComponentFunctions.center(this);
+    mmc.center();
     Container cp = getContentPane();
     cp.setLayout(null);
     int buttonWidth = frameWidth-16;
@@ -40,7 +38,7 @@ public class MainMenuFrame extends JFrame {
     buttons[3] = buttonKeyBindings;
     JButton buttonVisualizationSettings = new JButton("Visualization Settings");
     buttons[4] = buttonVisualizationSettings;
-    JButton buttonBrowse = new JButton("Browse " + BuildData.DIRECTORY_NAME + " directory");
+    JButton buttonBrowse = new JButton(mmc.getBrowseText());
     buttons[5] = buttonBrowse;
     JButton buttonAbout = new JButton("About");
     buttons[6] = buttonAbout;
