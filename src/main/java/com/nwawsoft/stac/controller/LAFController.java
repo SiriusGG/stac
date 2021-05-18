@@ -2,11 +2,11 @@ package com.nwawsoft.stac.controller;
 
 import javax.swing.*;
 
-public class LAFChanger {
+public class LAFController {
   private LookAndFeel defaultLAF;
   private String mode;
 
-  public LAFChanger() {
+  public LAFController() {
     defaultLAF = UIManager.getLookAndFeel();
     mode = "default";
   }

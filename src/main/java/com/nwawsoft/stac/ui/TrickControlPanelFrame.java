@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.LAFChanger;
+import com.nwawsoft.stac.controller.LAFController;
 import com.nwawsoft.stac.model.*;
 import org.jnativehook.GlobalScreen;
 
@@ -87,7 +87,7 @@ public class TrickControlPanelFrame extends JFrame {
     setResizable(false);
     setVisible(true);
     
-    LAFChanger lc = new LAFChanger();
+    LAFController lc = new LAFController();
     lc.setMotif();
     tvf = new TrickVisualizationFrame(this);
     lc.setDefault();
