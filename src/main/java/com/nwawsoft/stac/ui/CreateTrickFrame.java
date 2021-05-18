@@ -1,21 +1,14 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.controller.CreateTrickController;
-import com.nwawsoft.stac.model.TrickFileHandler;
-import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class CreateTrickFrame extends JFrame {
-  private static final String TRICK_FILE_NAME_RULES = "Trick file name may only contain lower and upper case " +
-      "characters from a to z, digits from 0 to 9, - (minus) and _ (underscore)";
-  private static final String TRICK_NAME_RULES = "Trick name may be almost anything except empty";
-
   private JTextField textFieldName;
   private JTextField textFieldFileName;
-  private boolean defaultName = true;
 
   private CreateTrickController ctc;
 
@@ -30,9 +23,13 @@ public class CreateTrickFrame extends JFrame {
     int frameWidth = 280;
     int frameHeight = 150;
     setSize(frameWidth, frameHeight);
-    ComponentFunctions.center(this);
+    ctc.center();
     Container cp = getContentPane();
     cp.setLayout(null);
+
+    String trickNameRules = "Trick name may be almost anything except empty";
+    String trickFileNameRules = "Trick file name may only contain lower and upper case characters from a to z, " +
+        "digits from 0 to 9, - (minus) and _ (underscore)";
 
     JLabel labelName = new JLabel("Trick name: ");
     textFieldName = new JTextField("");
@@ -48,66 +45,21 @@ public class CreateTrickFrame extends JFrame {
     buttonAddTrick.setBounds(10, 70, 110, 30);
     buttonCancel.setBounds(130, 70, 110, 30);
 
-    labelName.setToolTipText(TRICK_NAME_RULES);
-    textFieldName.setToolTipText(TRICK_NAME_RULES);
-    labelFileName.setToolTipText(TRICK_FILE_NAME_RULES);
-    textFieldFileName.setToolTipText(TRICK_FILE_NAME_RULES);
+    labelName.setToolTipText(trickNameRules);
+    textFieldName.setToolTipText(trickNameRules);
+    labelFileName.setToolTipText(trickFileNameRules);
+    textFieldFileName.setToolTipText(trickFileNameRules);
 
     textFieldFileName.setForeground(Color.GRAY);
 
     buttonAddTrick.addActionListener(this::buttonAddTrickActionPerformed);
     buttonCancel.addActionListener(this::buttonCancelActionPerformed);
 
-    KeyListener nameListener = new KeyListener() {
-      public void keyTyped(KeyEvent e) {
-      }
+    textFieldName.addKeyListener(ctc.getNameKeyListener(textFieldName, textFieldFileName));
 
-      public void keyPressed(KeyEvent e) {
-      }
-
-      public void keyReleased(KeyEvent e) {
-        if (defaultName) {
-          textFieldFileName.setText(TrickFileHandler.trimmedFileString(textFieldName.getText()));
-        }
-      }
-    };
-    textFieldName.addKeyListener(nameListener);
-
-    KeyListener fileNameListener = new KeyListener() {
-      public void keyTyped(KeyEvent e) {
-        defaultName = false;
-      }
-
-      public void keyPressed(KeyEvent e) {
-        defaultName = false;
-      }
-
-      public void keyReleased(KeyEvent e) {
-        defaultName = false;
-      }
-    };
-    textFieldFileName.addKeyListener(fileNameListener);
-
-    textFieldFileName.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        if (defaultName) {
-          textFieldFileName.selectAll();
-          textFieldFileName.setForeground(Color.BLACK);
-        }
-      }
-    });
-
-    textFieldFileName.addFocusListener(new FocusAdapter() {
-      @Override
-      public void focusGained(FocusEvent e) {
-        super.focusGained(e);
-        if (defaultName) {
-          textFieldFileName.selectAll();
-          textFieldFileName.setForeground(Color.BLACK);
-        }
-      }
-    });
+    textFieldFileName.addKeyListener(ctc.getFileNameKeyListener());
+    textFieldFileName.addMouseListener(ctc.getFileNameMouseListener(textFieldFileName));
+    textFieldFileName.addFocusListener(ctc.getFileNameFocusAdapter(textFieldFileName));
 
     cp.add(labelName);
     cp.add(textFieldName);
