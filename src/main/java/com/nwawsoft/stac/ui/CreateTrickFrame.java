@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.AddTrickController;
+import com.nwawsoft.stac.controller.CreateTrickController;
 import com.nwawsoft.stac.model.TrickFileHandler;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
@@ -13,13 +13,19 @@ public class CreateTrickFrame extends JFrame {
       "characters from a to z, digits from 0 to 9, - (minus) and _ (underscore)";
   private static final String TRICK_NAME_RULES = "Trick name may be almost anything except empty";
 
-  private final JTextField textFieldName;
-  private final JTextField textFieldFileName;
+  private JTextField textFieldName;
+  private JTextField textFieldFileName;
   private boolean defaultName = true;
 
-  public CreateTrickFrame(final JFrame calledBy) {
+  private CreateTrickController ctc;
+
+  public CreateTrickFrame() {
     super("Add new trick");
-    calledBy.dispose();
+    init();
+  }
+
+  private void init() {
+    ctc = new CreateTrickController(this);
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     int frameWidth = 280;
     int frameHeight = 150;
@@ -48,7 +54,7 @@ public class CreateTrickFrame extends JFrame {
     textFieldFileName.setToolTipText(TRICK_FILE_NAME_RULES);
 
     textFieldFileName.setForeground(Color.GRAY);
-  
+
     buttonAddTrick.addActionListener(this::buttonAddTrickActionPerformed);
     buttonCancel.addActionListener(this::buttonCancelActionPerformed);
 
@@ -113,14 +119,12 @@ public class CreateTrickFrame extends JFrame {
     setResizable(false);
     setVisible(true);
   }
-  
+
   private void buttonAddTrickActionPerformed(final ActionEvent actionEvent) {
-    AddTrickController.addTrick(textFieldName.getText().trim(),
-        TrickFileHandler.trimmedFileString(textFieldFileName.getText()), this);
+    ctc.addTrick(textFieldName, textFieldFileName);
   }
   
   private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
-    new MainMenuFrame();
-    dispose();
+    ctc.doCancel();
   }
 }

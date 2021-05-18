@@ -35,7 +35,7 @@ public class MainMenuController {
   }
 
   public void newTrick() {
-    new CreateTrickFrame(mmf);
+    new CreateTrickFrame();
     mmf.dispose();
   }
 

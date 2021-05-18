@@ -13,6 +13,10 @@ import java.net.*;
 public class AboutFrame extends JFrame {
   public AboutFrame() {
     super("About");
+    init();
+  }
+
+  private void init() {
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     int frameWidth = 300;
     int frameHeight = 180;
