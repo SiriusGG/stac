@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.util.ui.ComponentFunctions;
+import com.nwawsoft.stac.controller.FileNameDialogController;
 
 import javax.swing.*;
 import javax.swing.text.*;
@@ -8,13 +8,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class FileNameDialog extends JDialog {
+  private final FileNameDialogController fndc;
+
   public FileNameDialog(final JFrame calledBy) {
     super(calledBy, true);
+    this.fndc = new FileNameDialogController(this);
+    init();
+  }
+
+  public void init() {
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     int frameWidth = 300;
     int frameHeight = 180;
     setSize(frameWidth, frameHeight);
-    ComponentFunctions.center(this);
+    fndc.center();
     setTitle("Illegal file name");
     Container cp = getContentPane();
     cp.setLayout(null);
@@ -46,6 +53,6 @@ public class FileNameDialog extends JDialog {
   }
 
   public void buttonOK_ActionPerformed(final ActionEvent evt) {
-    dispose();
+    fndc.doOK();
   }
 }
