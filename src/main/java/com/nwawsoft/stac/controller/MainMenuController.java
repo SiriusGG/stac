@@ -56,7 +56,7 @@ public class MainMenuController {
   }
 
   public void openKeyBindingsConfiguration() {
-    new KeyBindingFrame(mmf);
+    new KeyBindingsFrame();
     mmf.dispose();
   }
 

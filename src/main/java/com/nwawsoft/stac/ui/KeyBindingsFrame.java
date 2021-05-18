@@ -1,24 +1,28 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.model.*;
-import com.nwawsoft.util.ui.ComponentFunctions;
+import com.nwawsoft.stac.controller.KeyBindingsController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class KeyBindingFrame extends JFrame {
-  private final JComboBox<String> comboBoxFailed;
-  private final JComboBox<String> comboBoxSuccessful;
+public class KeyBindingsFrame extends JFrame {
+  private JComboBox<String> comboBoxFailed;
+  private JComboBox<String> comboBoxSuccessful;
+  private final KeyBindingsController kbc;
 
-  public KeyBindingFrame(final JFrame calledBy) {
+  public KeyBindingsFrame() {
     super("Key Bindings");
-    calledBy.dispose();
+    this.kbc = new KeyBindingsController(this);
+    init();
+  }
+
+  public void init() {
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     int frameWidth = 300;
     int frameHeight = 170;
     setSize(frameWidth, frameHeight);
-    ComponentFunctions.center(this);
+    kbc.center();
     Container cp = getContentPane();
     cp.setLayout(null);
 
@@ -28,14 +32,8 @@ public class KeyBindingFrame extends JFrame {
     comboBoxFailed = new JComboBox<>();
     comboBoxSuccessful = new JComboBox<>();
 
-    AvailableKeys ak = new AvailableKeys();
-    for (String currentKeyString : ak.getKeys()) {
-      comboBoxFailed.addItem(currentKeyString);
-    }
-    for (String currentKeyString : ak.getKeys()) {
-      comboBoxSuccessful.addItem(currentKeyString);
-    }
-  
+    kbc.setAvailableKeys(comboBoxFailed, comboBoxSuccessful);
+
     JButton buttonSave = new JButton("Save");
     JButton buttonCancel = new JButton("Cancel");
 
@@ -57,13 +55,11 @@ public class KeyBindingFrame extends JFrame {
     comboBoxSuccessful.setBounds(right_x, medium_y, rightWidth, height);
     buttonSave.setBounds(leftButtonX, lower_y, buttonWidth, height);
     buttonCancel.setBounds(rightButtonX, lower_y, buttonWidth, height);
-  
+
     buttonSave.addActionListener(this::buttonSaveActionPerformed);
     buttonCancel.addActionListener(this::buttonCancelActionPerformed);
 
-    String[] settings = KeyBindingsFileHandler.load();
-    comboBoxFailed.setSelectedItem(settings[0]);
-    comboBoxSuccessful.setSelectedItem(settings[1]);
+    kbc.loadSelectedItems(comboBoxFailed, comboBoxSuccessful);
 
     cp.add(labelFailedKey);
     cp.add(labelSuccessfulKey);
@@ -75,16 +71,12 @@ public class KeyBindingFrame extends JFrame {
     setResizable(false);
     setVisible(true);
   }
-  
+
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
-    KeyBindingsFileHandler.save((String) comboBoxFailed.getSelectedItem(),
-        (String) comboBoxSuccessful.getSelectedItem());
-    CounterKeyListenerSingleton.getCounterKeyListener().reset();
-    new MainMenuFrame();
+    kbc.doSave(comboBoxFailed, comboBoxSuccessful);
   }
   
   private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
-    new MainMenuFrame();
-    dispose();
+    kbc.doCancel();
   }
 }
