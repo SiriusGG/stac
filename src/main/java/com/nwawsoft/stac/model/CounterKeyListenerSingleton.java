@@ -6,15 +6,23 @@ import org.jnativehook.keyboard.*;
 public class CounterKeyListenerSingleton implements NativeKeyListener {
   private String failedKey;
   private String successfulKey;
+  private boolean multiMappingActive;
+  private KeyMapping km;
   private TrickVisualizationFrame tvf = null;
   private boolean active = false;
 
   private static final CounterKeyListenerSingleton ckl = new CounterKeyListenerSingleton();
 
   private CounterKeyListenerSingleton() {
+    init();
+  }
+
+  private void init() {
     String[] settings = KeyBindingsFileHandler.load();
     failedKey = settings[0];
     successfulKey = settings[1];
+    multiMappingActive = Boolean.parseBoolean(settings[2]);
+    km = new KeyMapping(settings[3]);
   }
 
   public void setVisualization(final TrickVisualizationFrame tvf) {
@@ -26,14 +34,20 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
 
   @Override
   public void nativeKeyPressed(final NativeKeyEvent nativeEvent) {
-    if (!(tvf == null)) {
-      String keyString = AvailableKeys.getKeyStringFromKeyCode(nativeEvent.getKeyCode());
-      if (keyString.equals(failedKey)) {
-        tvf.getControlPanel().getTrick().recordFail();
-        tvf.updateStats();
-      } else if (keyString.equals(successfulKey)) {
-        tvf.getControlPanel().getTrick().recordSuccess();
-        tvf.updateStats();
+    if (active) {
+      if (!(tvf == null)) {
+        if (!multiMappingActive) { // case no multi mapping ("old mode")
+          String keyString = AvailableKeys.getKeyStringFromKeyCode(nativeEvent.getKeyCode());
+          if (keyString.equals(failedKey)) {
+            tvf.getControlPanel().getTrick().recordFail();
+            tvf.updateStats();
+          } else if (keyString.equals(successfulKey)) {
+            tvf.getControlPanel().getTrick().recordSuccess();
+            tvf.updateStats();
+          }
+        } else { // case multi mapping active
+          // ToDo
+        }
       }
     }
   }
@@ -54,8 +68,6 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
   }
 
   public void reset() {
-    String[] settings = KeyBindingsFileHandler.load();
-    failedKey = settings[0];
-    successfulKey = settings[1];
+    init();
   }
 }
