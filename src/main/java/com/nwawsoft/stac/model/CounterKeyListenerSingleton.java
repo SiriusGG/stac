@@ -47,6 +47,7 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
           }
         } else { // case multi mapping active
           // ToDo
+          // also remember this needs to record fails AND successes, not ONLY send the keys!
         }
       }
     }
