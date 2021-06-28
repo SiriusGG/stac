@@ -5,6 +5,7 @@ import com.nwawsoft.stac.ui.*;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
+import java.awt.event.ItemEvent;
 
 public class KeyBindingsController {
   private final KeyBindingsFrame kbf;
@@ -38,13 +39,31 @@ public class KeyBindingsController {
     comboBoxSuccessful.setSelectedItem(settings[1]);
   }
 
-  public void loadMultiMappingKeys(final JComboBox<String> comboBoxFrom, final JComboBox<String> comboBoxTo) {
+  public void loadMultiMappingKeys(final JCheckBox checkBoxActive, final JComboBox<String> comboBoxFrom,
+                                   final JComboBox<String> comboBoxTo) {
     KeyMapping mapping = new KeyMapping(settings[3]);
+    checkBoxActive.setSelected(Boolean.parseBoolean(settings[2]));
     comboBoxFrom.setSelectedItem(mapping.getKeyFrom());
     comboBoxTo.setSelectedItem(mapping.getKeyTo());
   }
 
-  // ToDo enable/disable keymapping feature
+  public void setMultiMappingStatus(final JCheckBox checkBoxActive, final JComboBox<String> comboBoxFrom,
+                                    final JComboBox<String> comboBoxTo) {
+    boolean status = checkBoxActive.isSelected();
+    comboBoxFrom.setEnabled(status);
+    comboBoxTo.setEnabled(status);
+  }
+
+  public void addMultiMappingItemListener(final JCheckBox checkBoxActive, final JComboBox<String> comboBoxFrom,
+                                          final JComboBox<String> comboBoxTo) {
+    checkBoxActive.addItemListener(e -> {
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        setMultiMappingStatus(checkBoxActive, comboBoxFrom, comboBoxTo);
+      } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+        setMultiMappingStatus(checkBoxActive, comboBoxFrom, comboBoxTo);
+      }
+    });
+  }
 
   public void doSave(final JComboBox<String> comboBoxFailed, final JComboBox<String> comboBoxSuccessful,
                      final JCheckBox checkBoxMultiMappingStatus, final JComboBox<String> comboBoxFrom,

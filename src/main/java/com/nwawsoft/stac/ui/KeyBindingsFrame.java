@@ -83,7 +83,9 @@ public class KeyBindingsFrame extends JFrame {
     buttonCancel.addActionListener(this::buttonCancelActionPerformed);
 
     kbc.loadPrimaryKeys(comboBoxFailed, comboBoxSuccessful);
-    kbc.loadMultiMappingKeys(comboBoxFrom, comboBoxTo);
+    kbc.loadMultiMappingKeys(checkBoxMultiMapping, comboBoxFrom, comboBoxTo);
+    kbc.setMultiMappingStatus(checkBoxMultiMapping, comboBoxFrom, comboBoxTo);
+    kbc.addMultiMappingItemListener(checkBoxMultiMapping, comboBoxFrom, comboBoxTo);
 
     cp.add(labelFailedKey);
     cp.add(comboBoxFailed);
