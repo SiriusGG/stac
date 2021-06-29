@@ -6,20 +6,23 @@ import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
+import java.io.IOException;
 
 public class KeyBindingsController {
   private final KeyBindingsFrame kbf;
-  /**
-   * Settings:
-   * settings[0]: "failed attempt" key string representation
-   * settings[1]: "successful attempt" key string representation
-   * settings[2]: multi mapping status string representation (true or false)
-   * settings[3]: KeyMapping string representation
-   */
-  private final String[] settings;
+  private String[] settings;
 
   public KeyBindingsController(final KeyBindingsFrame kbf) {
     this.kbf = kbf;
+    init();
+  }
+
+  public void init() {
+    try {
+      KeyBindingsFileHandler.guaranteeSettings();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     settings = KeyBindingsFileHandler.load();
   }
 
@@ -28,8 +31,7 @@ public class KeyBindingsController {
   }
 
   public void setAvailableKeys(final JComboBox<String> comboBox) {
-    AvailableKeys ak = new AvailableKeys();
-    for (String currentKeyString : ak.getKeys()) {
+    for (String currentKeyString : KeyHandler.getKeys()) {
       comboBox.addItem(currentKeyString);
     }
   }
@@ -39,41 +41,33 @@ public class KeyBindingsController {
     comboBoxSuccessful.setSelectedItem(settings[1]);
   }
 
-  public void loadMultiMappingKeys(final JCheckBox checkBoxActive, final JComboBox<String> comboBoxFrom,
-                                   final JComboBox<String> comboBoxTo) {
-    KeyMapping mapping = new KeyMapping(settings[3]);
+  public void loadRemappingKey(final JCheckBox checkBoxActive, final JComboBox<String> comboBoxSimulated) {
+    String simulatedKey = settings[3];
     checkBoxActive.setSelected(Boolean.parseBoolean(settings[2]));
-    comboBoxFrom.setSelectedItem(mapping.getKeyFrom());
-    comboBoxTo.setSelectedItem(mapping.getKeyTo());
+    comboBoxSimulated.setSelectedItem(simulatedKey);
   }
 
-  public void setMultiMappingStatus(final JCheckBox checkBoxActive, final JComboBox<String> comboBoxFrom,
-                                    final JComboBox<String> comboBoxTo) {
-    boolean status = checkBoxActive.isSelected();
-    comboBoxFrom.setEnabled(status);
-    comboBoxTo.setEnabled(status);
+  public void setRemappingStatus(final JCheckBox checkBoxActive, final JComboBox<String> comboBoxSimulated) {
+    comboBoxSimulated.setEnabled(checkBoxActive.isSelected());
   }
 
-  public void addMultiMappingItemListener(final JCheckBox checkBoxActive, final JComboBox<String> comboBoxFrom,
-                                          final JComboBox<String> comboBoxTo) {
+  public void addRemappingItemListener(final JCheckBox checkBoxActive, final JComboBox<String> comboBoxSimulated) {
     checkBoxActive.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        setMultiMappingStatus(checkBoxActive, comboBoxFrom, comboBoxTo);
+        setRemappingStatus(checkBoxActive, comboBoxSimulated);
       } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-        setMultiMappingStatus(checkBoxActive, comboBoxFrom, comboBoxTo);
+        setRemappingStatus(checkBoxActive, comboBoxSimulated);
       }
     });
   }
 
   public void doSave(final JComboBox<String> comboBoxFailed, final JComboBox<String> comboBoxSuccessful,
-                     final JCheckBox checkBoxMultiMappingStatus, final JComboBox<String> comboBoxFrom,
-                     final JComboBox<String> comboBoxTo) {
+                     final JCheckBox checkBoxRemappingStatus, final JComboBox<String> comboBoxSimulated) {
     KeyBindingsFileHandler.save(
         (String) comboBoxFailed.getSelectedItem(),
         (String) comboBoxSuccessful.getSelectedItem(),
-        checkBoxMultiMappingStatus.isSelected(),
-        new KeyMapping((String) comboBoxFrom.getSelectedItem(), (String) comboBoxTo.getSelectedItem())
-    );
+        checkBoxRemappingStatus.isSelected(),
+        (String) comboBoxSimulated.getSelectedItem());
     CounterKeyListenerSingleton.getCounterKeyListener().reset();
     new MainMenuFrame();
     kbf.dispose();

@@ -6,10 +6,11 @@ import org.jnativehook.keyboard.*;
 public class CounterKeyListenerSingleton implements NativeKeyListener {
   private String failedKey;
   private String successfulKey;
-  private boolean multiMappingActive;
-  private KeyMapping km;
+  private boolean remappingActive;
+  private String simulatedKey;
   private TrickVisualizationFrame tvf = null;
   private boolean active = false;
+  private KeyHandler kp;
 
   private static final CounterKeyListenerSingleton ckl = new CounterKeyListenerSingleton();
 
@@ -21,8 +22,9 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
     String[] settings = KeyBindingsFileHandler.load();
     failedKey = settings[0];
     successfulKey = settings[1];
-    multiMappingActive = Boolean.parseBoolean(settings[2]);
-    km = new KeyMapping(settings[3]);
+    remappingActive = Boolean.parseBoolean(settings[2]);
+    simulatedKey = settings[3];
+    kp = new KeyHandler();
   }
 
   public void setVisualization(final TrickVisualizationFrame tvf) {
@@ -36,18 +38,20 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
   public void nativeKeyPressed(final NativeKeyEvent nativeEvent) {
     if (active) {
       if (!(tvf == null)) {
-        if (!multiMappingActive) { // case no multi mapping ("old mode")
-          String keyString = AvailableKeys.getKeyStringFromKeyCode(nativeEvent.getKeyCode());
-          if (keyString.equals(failedKey)) {
-            tvf.getControlPanel().getTrick().recordFail();
-            tvf.updateStats();
-          } else if (keyString.equals(successfulKey)) {
-            tvf.getControlPanel().getTrick().recordSuccess();
-            tvf.updateStats();
+        String keyString = KeyHandler.getKeyStringFromNativeKeyCode(nativeEvent.getKeyCode());
+        if (keyString.equals(failedKey)) {
+          tvf.getControlPanel().getTrick().recordFail();
+          if (remappingActive) {
+            kp.sendKey(simulatedKey);
           }
-        } else { // case multi mapping active
-          // ToDo
-          // also remember this needs to record fails AND successes, not ONLY send the keys!
+        } else if (keyString.equals(successfulKey)) {
+          tvf.getControlPanel().getTrick().recordSuccess();
+          if (remappingActive) {
+            kp.sendKey(simulatedKey);
+          }
+        }
+        if (keyString.equals(failedKey) || keyString.equals(successfulKey)) {
+          tvf.updateStats();
         }
       }
     }

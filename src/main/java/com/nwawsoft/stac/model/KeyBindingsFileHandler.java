@@ -5,8 +5,8 @@ import java.io.*;
 import static com.nwawsoft.stac.BuildData.*;
 
 public class KeyBindingsFileHandler {
-  public static void save(final String failedKey, final String successfulKey, final boolean multiMappingStatus,
-                          final KeyMapping mapping) {
+  public static void save(final String failedKey, final String successfulKey, final boolean remappingActive,
+                          final String simulatedKey) {
     try {
       File d = new File(USER_HOME + "/" + DIRECTORY_NAME);
       if (!d.exists()) {
@@ -19,8 +19,8 @@ public class KeyBindingsFileHandler {
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write("FAILED_KEY=" + failedKey + "\n");
       bw.write("SUCCESSFUL_KEY=" + successfulKey + "\n");
-      bw.write("MULTI_MAPPING_STATUS=" + Boolean.toString(multiMappingStatus) + "\n");
-      bw.write("MAPPING=" + mapping.getMappingString() + "\n");
+      bw.write("REMAPPING_ACTIVE=" + Boolean.toString(remappingActive) + "\n");
+      bw.write("SIMULATED_KEY=" + simulatedKey + "\n");
       bw.flush();
       bw.close();
     } catch (IOException e) {
@@ -40,9 +40,9 @@ public class KeyBindingsFileHandler {
           settings[0] = currentLine.substring(currentLine.lastIndexOf("=") + 1);
         } else if (currentLine.startsWith("SUCCESSFUL_KEY")) {
           settings[1] = currentLine.substring(currentLine.lastIndexOf("=") + 1);
-        } else if (currentLine.startsWith("MULTI_MAPPING_STATUS")) {
+        } else if (currentLine.startsWith("REMAPPING_ACTIVE")) {
           settings[2] = currentLine.substring(currentLine.lastIndexOf("=") + 1);
-        } else if (currentLine.startsWith("MAPPING")) {
+        } else if (currentLine.startsWith("SIMULATED_KEY")) {
           settings[3] = currentLine.substring(currentLine.lastIndexOf("=") + 1);
         }
       }
@@ -62,7 +62,7 @@ public class KeyBindingsFileHandler {
     }
     File f = new File(USER_HOME + "/" + DIRECTORY_NAME + "/" + KEY_BINDINGS_FILE_FULL_NAME);
     if (!f.exists()) {
-      save("F7", "F8", false, new KeyMapping("F7", "F8"));
+      save("F7", "F8", false, "F4");
     }
   }
 }
