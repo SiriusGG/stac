@@ -26,16 +26,24 @@ public class FileNameDialog extends JDialog {
     Container cp = getContentPane();
     cp.setLayout(null);
 
+    String fileNameRulesPlain = "Please enter a legal file name in the second\n" +
+        "text field. Names must be non-empty and may\n" +
+        "only consist of letters from a to Z,\n" +
+        "digits from 0 to 9 and the symbols\n" +
+        "\"_\" (underscore) and \"-\" (minus)";
+    String fileNameRulesHTML = "<html><p width=\"290\">" +
+        "Please enter a legal file name in the second text field." +
+        "<br>" +
+        "Names must be non-empty and may only consist of letters from a to Z, digits from 0 to 9 and the symbols " +
+        "\"_\" (underscore) and \"-\" (minus)." +
+        "</p></html>";
+
     int buttonReservedSpace = 70;
     int heightSpacer = 10;
     int buttonWidth = 100;
     int buttonHeight = 30;
     JTextPane textPaneMessage = new JTextPane();
-    textPaneMessage.setText("Please enter a legal file name in the second\n" +
-        "text field. Names must be non-empty and may\n" +
-        "only consist of letters from a to Z,\n" +
-        "digits from 0 to 9 and the symbols\n" +
-        "\"_\" (underscore) and \"-\" (minus)");
+    textPaneMessage.setText(fileNameRulesPlain);
     textPaneMessage.setBounds(0, 0, frameWidth, frameHeight - buttonReservedSpace - heightSpacer);
     StyledDocument doc = textPaneMessage.getStyledDocument();
     SimpleAttributeSet center = new SimpleAttributeSet();
