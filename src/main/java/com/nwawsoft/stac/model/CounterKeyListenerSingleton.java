@@ -41,16 +41,13 @@ public class CounterKeyListenerSingleton implements NativeKeyListener {
         String keyString = KeyHandler.getKeyStringFromNativeKeyCode(nativeEvent.getKeyCode());
         if (keyString.equals(failedKey)) {
           tvf.getControlPanel().getTrick().recordFail();
-          if (remappingActive) {
-            kp.sendKey(simulatedKey);
-          }
         } else if (keyString.equals(successfulKey)) {
           tvf.getControlPanel().getTrick().recordSuccess();
+        }
+        if (keyString.equals(failedKey) || keyString.equals(successfulKey)) {
           if (remappingActive) {
             kp.sendKey(simulatedKey);
           }
-        }
-        if (keyString.equals(failedKey) || keyString.equals(successfulKey)) {
           tvf.updateStats();
         }
       }
