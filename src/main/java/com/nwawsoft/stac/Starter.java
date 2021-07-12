@@ -9,13 +9,13 @@ import java.util.logging.*;
 
 public class Starter {
   public static void main (String[] args) {
-    suppressLogging();
+    registerNativeHookAndSuppressLogging();
     setToolTipDuration();
     ensureBackwardsCompatibility();
     new MainMenuFrame();
   }
 
-  private static void suppressLogging() {
+  private static void registerNativeHookAndSuppressLogging() {
     try {
       LogManager.getLogManager().reset();
       Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
