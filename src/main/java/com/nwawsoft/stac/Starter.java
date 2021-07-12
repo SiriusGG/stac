@@ -8,6 +8,12 @@ import java.util.logging.*;
 
 public class Starter {
   public static void main (String[] args) {
+    suppressLogging();
+    ensureBackwardsCompatibility();
+    new MainMenuFrame();
+  }
+
+  private static void suppressLogging() {
     try {
       LogManager.getLogManager().reset();
       Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
@@ -17,14 +23,11 @@ public class Starter {
     catch (NativeHookException e) {
       e.printStackTrace();
     }
-    
-    // START OF BACKWARDS COMPATIBILITY ROUTINE
-    
-    BackwardsCompatibility.convertTrickFiles(); // Introduced in v1.3.0
-    BackwardsCompatibility.convertKeyBindingsFile(); // Introduced in v1.3.0
-    
-    // END OF BACKWARDS COMPATIBILITY ROUTINE
-    
-    new MainMenuFrame();
+  }
+
+  private static void ensureBackwardsCompatibility() {
+    BackwardsCompatibility.convertTrickFiles_1_3_0();
+    BackwardsCompatibility.convertKeyBindingsFile_1_3_0();
+    BackwardsCompatibility.addKeyRemapping_2_1_0();
   }
 }
