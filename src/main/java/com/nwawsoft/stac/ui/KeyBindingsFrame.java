@@ -30,18 +30,37 @@ public class KeyBindingsFrame extends JFrame {
 
     JLabel labelFailedKey = new JLabel("Key for failed attempts: ");
     comboBoxFailed = new JComboBox<>();
+    String failedAttemptsToolTip = "Specify the key you want to press on failed attempts.";
     JLabel labelSuccessfulKey = new JLabel("Key for successful attempts: ");
     comboBoxSuccessful = new JComboBox<>();
+    String successfulAttemptsToolTip = "Specify the key you want to press on successful attempts.";
     checkBoxRemapping = new JCheckBox("Activate remapping");
+    String remappingToolTip = "<html><p width=\"400\">" +
+        "Activate this to enable key remapping." +
+        "<br>" +
+        "If this option is checked, all inputs from the \"failed\" key and the \"successful\" key will be redirected " +
+        "to the simulated key." +
+        "<br>" +
+        "This is especially useful for emulators or other games and programs where you can map only one " +
+        "\"load state\" key." +
+        "</p></html>";
     JLabel labelSimulatedKey = new JLabel("Key to simulate: ");
     comboBoxSimulatedKey = new JComboBox<>();
+    String simulatedKeyToolTip = "<html><p width=\"400\">" +
+        "Specify the key, to which all inputs from the \"failed\" key and the \"successful\" key will be redirected " +
+        "to." +
+        "<br>" +
+        "This is especially useful for emulators or other games and programs where you can map only one " +
+        "\"load state\" key." +
+        "</p></html>";
+    JButton buttonSave = new JButton("Save");
+    String saveToolTip = "Save settings and return to the main menu.";
+    JButton buttonCancel = new JButton("Cancel");
+    String cancelToolTip = "Return to the main menu.";
 
     kbc.setAvailableKeys(comboBoxFailed);
     kbc.setAvailableKeys(comboBoxSuccessful);
     kbc.setAvailableKeys(comboBoxSimulatedKey);
-
-    JButton buttonSave = new JButton("Save");
-    JButton buttonCancel = new JButton("Cancel");
 
     int headerSpacer = 30;
     int column_1_x = 10;
@@ -71,6 +90,16 @@ public class KeyBindingsFrame extends JFrame {
         buttonWidth, defaultElementHeight);
     buttonCancel.setBounds(rightButtonX, frameHeight - headerSpacer - defaultElementHeight - bottomSpacer,
         buttonWidth, defaultElementHeight);
+
+    labelFailedKey.setToolTipText(failedAttemptsToolTip);
+    comboBoxFailed.setToolTipText(failedAttemptsToolTip);
+    labelSuccessfulKey.setToolTipText(successfulAttemptsToolTip);
+    comboBoxSuccessful.setToolTipText(successfulAttemptsToolTip);
+    checkBoxRemapping.setToolTipText(remappingToolTip);
+    labelSimulatedKey.setToolTipText(simulatedKeyToolTip);
+    comboBoxSimulatedKey.setToolTipText(simulatedKeyToolTip);
+    buttonSave.setToolTipText(saveToolTip);
+    buttonCancel.setToolTipText(cancelToolTip);
 
     buttonSave.addActionListener(this::buttonSaveActionPerformed);
     buttonCancel.addActionListener(this::buttonCancelActionPerformed);
