@@ -4,11 +4,13 @@ import com.nwawsoft.stac.model.BackwardsCompatibility;
 import com.nwawsoft.stac.ui.MainMenuFrame;
 import org.jnativehook.*;
 
+import javax.swing.*;
 import java.util.logging.*;
 
 public class Starter {
   public static void main (String[] args) {
     suppressLogging();
+    setToolTipDuration();
     ensureBackwardsCompatibility();
     new MainMenuFrame();
   }
@@ -23,6 +25,10 @@ public class Starter {
     catch (NativeHookException e) {
       e.printStackTrace();
     }
+  }
+
+  private static void setToolTipDuration() {
+    ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
   }
 
   private static void ensureBackwardsCompatibility() {
