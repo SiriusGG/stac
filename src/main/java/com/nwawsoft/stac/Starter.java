@@ -1,18 +1,20 @@
 package com.nwawsoft.stac;
 
+import com.nwawsoft.stac.controller.MainMenuController;
 import com.nwawsoft.stac.model.BackwardsCompatibility;
-import com.nwawsoft.stac.ui.MainMenuFrame;
 import org.jnativehook.*;
 
 import javax.swing.*;
 import java.util.logging.*;
 
 public class Starter {
-  public static void main (String[] args) {
+  public static void main(String[] args) {
     registerNativeHookAndSuppressLogging();
     setToolTipDuration();
     ensureBackwardsCompatibility();
-    new MainMenuFrame();
+    MainMenuController mmc = new MainMenuController();
+    mmc.createFrame();
+    mmc.centerFrame();
   }
 
   private static void registerNativeHookAndSuppressLogging() {
@@ -21,8 +23,7 @@ public class Starter {
       Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
       logger.setLevel(Level.OFF);
       GlobalScreen.registerNativeHook();
-    }
-    catch (NativeHookException e) {
+    } catch (NativeHookException e) {
       e.printStackTrace();
     }
   }

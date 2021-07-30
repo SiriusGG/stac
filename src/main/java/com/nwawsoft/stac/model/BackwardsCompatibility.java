@@ -1,9 +1,6 @@
 package com.nwawsoft.stac.model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Objects;
 
 import static com.nwawsoft.stac.BuildData.*;
@@ -25,12 +22,15 @@ public class BackwardsCompatibility {
       }
     }
   }
-  
+
   /**
    * Changes the file ending of a specified file to the current trick file ending if the file was in the specified
    * format.
+   * <p>
+   * THIS IS A PART OF THE FUNCTION "convertTrickFiles_1_3_0()"!
+   * IT MUST NOT NEED TO BE INCLUDED IN THE BACKWARDS-COMPATIBILITY ROUTINE IN CLASS "Starter"!
    *
-   * @param f any file within the .stac directory.
+   * @param f      any file within the .stac directory.
    * @param format any file format (so far only .staf makes sense).
    */
   private static void renameTrickFiles_1_3_0(final File f, final String format) {
@@ -69,39 +69,41 @@ public class BackwardsCompatibility {
 
   public static void addKeyRemapping_2_1_0() {
     boolean old = true;
-    try {
-      File f = new File(USER_HOME + "/" + DIRECTORY_NAME + "/" + KEY_BINDINGS_FILE_FULL_NAME);
-      FileReader fr = new FileReader(f);
-      BufferedReader br = new BufferedReader(fr);
-      String currentLine;
-      while ((currentLine = br.readLine()) != null) {
-        if (currentLine.startsWith("REMAPPING_ACTIVE")) {
-          old = false;
-        }
-      }
-      br.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    if (old) {
-      String[] settings = new String[2];
+    if (new File(USER_HOME + "/" + DIRECTORY_NAME + "/" + KEY_BINDINGS_FILE_FULL_NAME).exists()) {
       try {
         File f = new File(USER_HOME + "/" + DIRECTORY_NAME + "/" + KEY_BINDINGS_FILE_FULL_NAME);
         FileReader fr = new FileReader(f);
         BufferedReader br = new BufferedReader(fr);
         String currentLine;
         while ((currentLine = br.readLine()) != null) {
-          if (currentLine.startsWith("FAILED_KEY")) {
-            settings[0] = currentLine.substring(currentLine.lastIndexOf("=") + 1);
-          } else if (currentLine.startsWith("SUCCESSFUL_KEY")) {
-            settings[1] = currentLine.substring(currentLine.lastIndexOf("=") + 1);
+          if (currentLine.startsWith("REMAPPING_ACTIVE")) {
+            old = false;
           }
         }
         br.close();
       } catch (IOException e) {
         e.printStackTrace();
       }
-      KeyBindingsFileHandler.save(settings[0], settings[1], false, "F4");
+      if (old) {
+        String[] settings = new String[2];
+        try {
+          File f = new File(USER_HOME + "/" + DIRECTORY_NAME + "/" + KEY_BINDINGS_FILE_FULL_NAME);
+          FileReader fr = new FileReader(f);
+          BufferedReader br = new BufferedReader(fr);
+          String currentLine;
+          while ((currentLine = br.readLine()) != null) {
+            if (currentLine.startsWith("FAILED_KEY")) {
+              settings[0] = currentLine.substring(currentLine.lastIndexOf("=") + 1);
+            } else if (currentLine.startsWith("SUCCESSFUL_KEY")) {
+              settings[1] = currentLine.substring(currentLine.lastIndexOf("=") + 1);
+            }
+          }
+          br.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        KeyBindingsFileHandler.save(settings[0], settings[1], false, "F4");
+      }
     }
   }
 }

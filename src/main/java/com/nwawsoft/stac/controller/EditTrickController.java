@@ -1,33 +1,25 @@
 package com.nwawsoft.stac.controller;
 
 import com.nwawsoft.stac.model.*;
-import com.nwawsoft.stac.ui.*;
+import com.nwawsoft.stac.ui.EditTrickFrame;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
-
 import java.util.ArrayList;
 
-import static com.nwawsoft.stac.BuildData.TRICK_VISUALIZATION_FILE_FORMAT;
-import static com.nwawsoft.stac.BuildData.VERSION;
+import static com.nwawsoft.stac.BuildData.*;
 
-public class EditTrickController {
-  private final EditTrickFrame etf;
-  private final JFrame calledBy;
+public class EditTrickController implements STACFrameController {
   private final Trick trick;
   private final ArrayList<VisualizationTupel> vts;
+  private final String mode;
+  private EditTrickFrame etf;
 
-  public EditTrickController(final EditTrickFrame etf, final JFrame calledBy, final Trick trick) {
-    this.etf = etf;
-    this.calledBy = calledBy;
+  public EditTrickController(final Trick trick, final String mode) {
     this.trick = trick;
     this.vts = VisualizationSettingsFileHandler.load(
         trick.getFileName() + "." + TRICK_VISUALIZATION_FILE_FORMAT).getVisualizationTupels();
-  }
-
-
-  public void center() {
-    ComponentFunctions.center(etf);
+    this.mode = mode;
   }
 
   public String getLabelNameText() {
@@ -85,18 +77,47 @@ public class EditTrickController {
       trick.setSuccessesBackToBack(Integer.parseInt(etf.getSuccessesBackToBackFieldContent()));
       trick.setSuccessesHighscore(Integer.parseInt(etf.getSuccessesHighscoreFieldContent()));
       TrickFileHandler.save(trick);
-      new TrickControlPanelFrame(etf, trick);
+      TrickControlPanelController tcpc = new TrickControlPanelController(trick);
+      tcpc.createFrame();
+      tcpc.centerFrame();
+      tcpc.handleOnClose();
+      tcpc.createVisualization();
+      tcpc.addNativeHook();
+      etf.dispose();
     } else {
-      new FileNameDialog(etf);
+      FileNameController fnc = new FileNameController(etf);
+      fnc.createDialog();
     }
   }
 
   public void doCancel() {
-    if (calledBy instanceof MainMenuFrame) {
-      new MainMenuFrame();
-    } else if (calledBy instanceof TrickControlPanelFrame) {
-      new TrickControlPanelFrame(etf, trick);
+    if (mode.equals("main menu")) {
+      MainMenuController mmc = new MainMenuController();
+      mmc.createFrame();
+      mmc.centerFrame();
+    } else if (mode.equals("trick control panel")) {
+      TrickControlPanelController tcpc = new TrickControlPanelController(trick);
+      tcpc.createFrame();
+      tcpc.centerFrame();
+      tcpc.handleOnClose();
+      tcpc.createVisualization();
+      tcpc.addNativeHook();
     }
     etf.dispose();
+  }
+
+  @Override
+  public JFrame getFrame() {
+    return etf;
+  }
+
+  @Override
+  public void centerFrame() {
+    ComponentFunctions.center(etf);
+  }
+
+  @Override
+  public void createFrame() {
+    etf = new EditTrickFrame(this);
   }
 }

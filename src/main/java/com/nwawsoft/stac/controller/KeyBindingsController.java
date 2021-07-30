@@ -1,19 +1,18 @@
 package com.nwawsoft.stac.controller;
 
 import com.nwawsoft.stac.model.*;
-import com.nwawsoft.stac.ui.*;
+import com.nwawsoft.stac.ui.KeyBindingsFrame;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.io.IOException;
 
-public class KeyBindingsController {
-  private final KeyBindingsFrame kbf;
+public class KeyBindingsController implements STACFrameController {
+  private KeyBindingsFrame kbf;
   private String[] settings;
 
-  public KeyBindingsController(final KeyBindingsFrame kbf) {
-    this.kbf = kbf;
+  public KeyBindingsController() {
     init();
   }
 
@@ -24,10 +23,6 @@ public class KeyBindingsController {
       e.printStackTrace();
     }
     settings = KeyBindingsFileHandler.load();
-  }
-
-  public void center() {
-    ComponentFunctions.center(kbf);
   }
 
   public void setAvailableKeys(final JComboBox<String> comboBox) {
@@ -69,12 +64,31 @@ public class KeyBindingsController {
         checkBoxRemappingStatus.isSelected(),
         (String) comboBoxSimulated.getSelectedItem());
     CounterKeyListenerSingleton.getCounterKeyListener().reset();
-    new MainMenuFrame();
+    MainMenuController mmc = new MainMenuController();
+    mmc.createFrame();
+    mmc.centerFrame();
     kbf.dispose();
   }
 
   public void doCancel() {
-    new MainMenuFrame();
+    MainMenuController mmc = new MainMenuController();
+    mmc.createFrame();
+    mmc.centerFrame();
     kbf.dispose();
+  }
+
+  @Override
+  public JFrame getFrame() {
+    return kbf;
+  }
+
+  @Override
+  public void centerFrame() {
+    ComponentFunctions.center(kbf);
+  }
+
+  @Override
+  public void createFrame() {
+    kbf = new KeyBindingsFrame(this);
   }
 }

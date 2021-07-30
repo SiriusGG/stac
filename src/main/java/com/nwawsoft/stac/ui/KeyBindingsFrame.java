@@ -7,15 +7,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class KeyBindingsFrame extends JFrame {
+  private final KeyBindingsController kbc;
   private JComboBox<String> comboBoxFailed;
   private JComboBox<String> comboBoxSuccessful;
   private JCheckBox checkBoxRemapping;
   private JComboBox<String> comboBoxSimulatedKey;
-  private final KeyBindingsController kbc;
 
-  public KeyBindingsFrame() {
+  public KeyBindingsFrame(final KeyBindingsController kbc) {
     super("Key Bindings");
-    this.kbc = new KeyBindingsController(this);
+    this.kbc = kbc;
     init();
   }
 
@@ -24,7 +24,6 @@ public class KeyBindingsFrame extends JFrame {
     int frameWidth = 300;
     int frameHeight = 240;
     setSize(frameWidth, frameHeight);
-    kbc.center();
     Container cp = getContentPane();
     cp.setLayout(null);
 
@@ -126,7 +125,7 @@ public class KeyBindingsFrame extends JFrame {
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
     kbc.doSave(comboBoxFailed, comboBoxSuccessful, checkBoxRemapping, comboBoxSimulatedKey);
   }
-  
+
   private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
     kbc.doCancel();
   }

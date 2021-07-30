@@ -11,31 +11,6 @@ public class KeyHandler {
     init();
   }
 
-  private void init() {
-    try {
-      robot = new Robot();
-    } catch (final AWTException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Simulates a key press.
-   * Does not send the key if the keyEvent value is -1.
-   *
-   * @param keyEvent the key to be pressed.
-   */
-  public void sendKey(final int keyEvent) {
-    if (keyEvent != -1) {
-      robot.keyPress(keyEvent);
-      robot.keyRelease(keyEvent);
-    }
-  }
-
-  public void sendKey(final String key) {
-    sendKey(getKeyCodeFromKeyString(key));
-  }
-
   public static ArrayList<String> getKeys() {
     ArrayList<String> keys = new ArrayList<>();
     keys.add("A");
@@ -187,7 +162,8 @@ public class KeyHandler {
         return "F11";
       case 88:
         return "F12";
-      default: return "";
+      default:
+        return "";
     }
   }
 
@@ -289,7 +265,33 @@ public class KeyHandler {
         return KeyEvent.VK_F11;
       case "F12":
         return KeyEvent.VK_F12;
-      default: return -1;
+      default:
+        return -1;
     }
+  }
+
+  private void init() {
+    try {
+      robot = new Robot();
+    } catch (final AWTException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Simulates a key press.
+   * Does not send the key if the keyEvent value is -1.
+   *
+   * @param keyEvent the key to be pressed.
+   */
+  public void sendKey(final int keyEvent) {
+    if (keyEvent != -1) {
+      robot.keyPress(keyEvent);
+      robot.keyRelease(keyEvent);
+    }
+  }
+
+  public void sendKey(final String key) {
+    sendKey(getKeyCodeFromKeyString(key));
   }
 }

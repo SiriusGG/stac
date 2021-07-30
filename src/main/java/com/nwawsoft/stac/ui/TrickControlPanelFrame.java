@@ -1,46 +1,27 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.LAFController;
-import com.nwawsoft.stac.model.*;
-import org.jnativehook.GlobalScreen;
+import com.nwawsoft.stac.controller.TrickControlPanelController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 
 public class TrickControlPanelFrame extends JFrame {
-  public final static int FRAME_WIDTH = 280;
-  public final static int FRAME_HEIGHT = 270;
-
   private static final String FAILED_PREFIX = "Key for failed attempt: ";
   private static final String SUCCESSFUL_PREFIX = "Key for successful attempt: ";
 
-  private Trick t;
-  private final TrickVisualizationFrame tvf;
-  
-  public TrickControlPanelFrame(final JFrame calledBy, final Trick t) {
+  private final TrickControlPanelController tcpc;
+
+  public TrickControlPanelFrame(final TrickControlPanelController tcpc) {
     super("Control Panel");
-    calledBy.dispose();
-    this.t = t;
+    this.tcpc = tcpc;
+    init();
+  }
+
+  private void init() {
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    setSize(FRAME_WIDTH, FRAME_HEIGHT);
-    Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-    int width = FRAME_WIDTH + TrickVisualizationFrame.FRAME_WIDTH;
-    int x = ((d.width - width) / 2) ;
-    int y = (d.height - FRAME_HEIGHT) / 2;
-    setLocation(x, y);
     Container cp = getContentPane();
     cp.setLayout(null);
-
-    this.addWindowListener(new WindowAdapter() {
-      public void windowClosing(WindowEvent e) {
-        if (!getTrick().equals(TrickFileHandler.load(getTrick().getFileName()))) {
-          openSaveDialogOnClose();
-        } else {
-          System.exit(0);
-        }
-      }
-    });
 
     int buttonHeight = 30;
     JLabel labelFailedKey = new JLabel();
@@ -52,9 +33,9 @@ public class TrickControlPanelFrame extends JFrame {
     labelSuccessfulKey.setBounds(10, 40, 170, 20);
     labelSuccessfulKeyValue.setBounds(180, 40, 30, 20);
     labelFailedKey.setText(FAILED_PREFIX);
-    labelFailedKeyValue.setText(KeyBindingsFileHandler.load()[0]);
+    labelFailedKeyValue.setText(tcpc.loadFailedKeyText());
     labelSuccessfulKey.setText(SUCCESSFUL_PREFIX);
-    labelSuccessfulKeyValue.setText(KeyBindingsFileHandler.load()[1]);
+    labelSuccessfulKeyValue.setText(tcpc.loadSuccessfulKeyText());
     JButton buttonMenu = new JButton("Back to Menu");
     buttonMenu.setBounds(10, 70, 140, buttonHeight);
     buttonMenu.addActionListener(this::buttonMenuActionPerformed);
@@ -86,74 +67,29 @@ public class TrickControlPanelFrame extends JFrame {
 
     setResizable(false);
     setVisible(true);
-    
-    LAFController lc = new LAFController();
-    lc.setMotif();
-    tvf = new TrickVisualizationFrame(this);
-    lc.setDefault();
-  
-    CounterKeyListenerSingleton ckl = CounterKeyListenerSingleton.getCounterKeyListener();
-    ckl.setVisualization(tvf);
-    if (!CounterKeyListenerSingleton.getCounterKeyListener().isActive()) {
-      GlobalScreen.addNativeKeyListener(ckl);
-    }
-    ckl.setActive(true);
   }
 
   private void buttonSaveActionPerformed(final ActionEvent actionEvent) {
-    TrickFileHandler.save(t);
-  }
-
-  public Trick getTrick() {
-    return t;
+    tcpc.doSave();
   }
 
   private void buttonMenuActionPerformed(final ActionEvent actionEvent) {
-    if (!t.equals(TrickFileHandler.load(t.getFileName()))) {
-      new SaveWarningDialog(this, "controlpanel", "menu");
-    } else {
-      tvf.dispose();
-      new MainMenuFrame();
-      dispose();
-    }
+    tcpc.goToMenu();
   }
 
   private void buttonManualFailActionPerformed(final ActionEvent actionEvent) {
-    t.recordFail();
-    tvf.updateStats();
+    tcpc.doManualFail();
   }
 
   private void buttonManualSuccessActionPerformed(final ActionEvent actionEvent) {
-    t.recordSuccess();
-    tvf.updateStats();
+    tcpc.doManualSuccess();
   }
 
   private void buttonResetActionPerformed(final ActionEvent actionEvent) {
-    if (!t.equals(TrickFileHandler.load(t.getFileName()))) {
-      new ResetWarningDialog(this);
-    }
+    tcpc.doReset();
   }
 
   private void buttonVisualizationSettingsActionPerformed(final ActionEvent actionEvent) {
-    if (!t.equals(TrickFileHandler.load(t.getFileName()))) {
-      new SaveWarningDialog(this, "controlpanel", "visualization settings");
-    } else {
-      tvf.dispose();
-      new VisualizationSettingsFrame(this);
-      dispose();
-    }
-  }
-
-  public TrickVisualizationFrame getVisualization() {
-    return tvf;
-  }
-
-  public void openSaveDialogOnClose() {
-    new SaveWarningDialog(this, "controlpanel", "close");
-  }
-
-  public void reloadTrick() {
-    t = TrickFileHandler.load(t.getFileName());
-    tvf.updateStats();
+    tcpc.openVisualizationSettings();
   }
 }

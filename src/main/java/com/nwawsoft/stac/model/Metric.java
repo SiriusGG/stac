@@ -2,7 +2,7 @@ package com.nwawsoft.stac.model;
 
 public enum Metric {
   TRICK_NAME, ATTEMPTS, FAILS, SUCCESSES, SUCCESSES_BACK_TO_BACK, SUCCESSES_HIGHSCORE, SUCCESS_PERCENTAGE;
-  
+
   public static Metric toMetric(final String metricString) {
     switch (metricString) {
       case "TRICK_NAME":
@@ -23,13 +23,13 @@ public enum Metric {
         return null;
     }
   }
-  
+
   public static void printMetrics(final Metric[] metrics) {
     for (Metric metric : metrics) {
       System.out.println(metric.toString());
     }
   }
-  
+
   public static Metric getMetric(final int metricIndex) {
     switch (metricIndex) {
       case 0:

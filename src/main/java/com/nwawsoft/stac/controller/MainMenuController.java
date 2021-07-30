@@ -2,19 +2,24 @@ package com.nwawsoft.stac.controller;
 
 import com.nwawsoft.stac.BuildData;
 import com.nwawsoft.stac.model.*;
-import com.nwawsoft.stac.ui.*;
+import com.nwawsoft.stac.ui.MainMenuFrame;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 
 import static com.nwawsoft.stac.BuildData.DIRECTORY_NAME;
 
-public class MainMenuController {
-  private final MainMenuFrame mmf;
+public class MainMenuController implements STACFrameController {
+  private MainMenuFrame mmf;
 
-  public MainMenuController(final MainMenuFrame mmf) {
-    this.mmf = mmf;
+  public MainMenuController() {
+  }
+
+  @Override
+  public void createFrame() {
+    mmf = new MainMenuFrame(this);
   }
 
   public void prepareSettings() {
@@ -26,23 +31,23 @@ public class MainMenuController {
     }
   }
 
-  public void center() {
-    ComponentFunctions.center(mmf);
-  }
-
   public String getBrowseText() {
     return "Browse " + BuildData.DIRECTORY_NAME + " directory";
   }
 
   public void newTrick() {
-    new CreateTrickFrame();
+    CreateTrickController ctc = new CreateTrickController();
+    ctc.createFrame();
+    ctc.centerFrame();
     mmf.dispose();
   }
 
   public void editTrick() {
     Trick t = TrickChooserController.createTrickFromJFileChooser();
     if (t != null) {
-      new EditTrickFrame(mmf, t);
+      EditTrickController etc = new EditTrickController(t, "main menu");
+      etc.createFrame();
+      etc.centerFrame();
       mmf.dispose();
     }
   }
@@ -50,18 +55,27 @@ public class MainMenuController {
   public void loadTrick() {
     Trick t = TrickChooserController.createTrickFromJFileChooser();
     if (t != null) {
-      new TrickControlPanelFrame(mmf, t);
+      TrickControlPanelController tcpc = new TrickControlPanelController(t);
+      tcpc.createFrame();
+      tcpc.centerFrame();
+      tcpc.handleOnClose();
+      tcpc.createVisualization();
+      tcpc.addNativeHook();
       mmf.dispose();
     }
   }
 
   public void openKeyBindingsConfiguration() {
-    new KeyBindingsFrame();
+    KeyBindingsController kbc = new KeyBindingsController();
+    kbc.createFrame();
+    kbc.centerFrame();
     mmf.dispose();
   }
 
   public void openVisualizationSettings() {
-    new VisualizationSettingsFrame();
+    VisualizationSettingsController vsc = new VisualizationSettingsController();
+    vsc.createFrame();
+    vsc.centerFrame();
     mmf.dispose();
   }
 
@@ -75,10 +89,22 @@ public class MainMenuController {
   }
 
   public void openAbout() {
-    new AboutFrame();
+    AboutController ac = new AboutController();
+    ac.createFrame();
+    ac.centerFrame();
   }
 
   public void doClose() {
     System.exit(0);
+  }
+
+  @Override
+  public JFrame getFrame() {
+    return mmf;
+  }
+
+  @Override
+  public void centerFrame() {
+    ComponentFunctions.center(mmf);
   }
 }

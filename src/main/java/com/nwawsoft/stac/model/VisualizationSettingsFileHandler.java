@@ -44,7 +44,7 @@ public class VisualizationSettingsFileHandler {
       e.printStackTrace();
     }
   }
-  
+
   @SuppressWarnings("StringConcatenationInLoop")
   public static VisualizationSettings load(final String fileName) {
     int spacing = 0;
@@ -80,7 +80,7 @@ public class VisualizationSettingsFileHandler {
     }
     return new VisualizationSettings(visualizationTupels, spacing, font);
   }
-  
+
   public static ArrayList<VisualizationTupel> parseTupels(final String tupelsString) {
     String[] tupelStrings = tupelsString.split("\n");
     ArrayList<VisualizationTupel> visualizationTupels = new ArrayList<>();
@@ -89,7 +89,7 @@ public class VisualizationSettingsFileHandler {
     }
     return visualizationTupels;
   }
-  
+
   public static VisualizationTupel parseTupel(final String tupelString) {
     int index;
     String name;
@@ -105,14 +105,14 @@ public class VisualizationSettingsFileHandler {
     active = Boolean.parseBoolean(remainder);
     return new VisualizationTupel(index, name, metric, active);
   }
-  
+
   public static String toTupelString(final VisualizationTupel visualizationTupel) {
     return visualizationTupel.getIndex() + ";" +
         visualizationTupel.getName() + ";" +
         visualizationTupel.getMetric() + ";" +
         visualizationTupel.isActive();
   }
-  
+
   public static void guaranteeSettings() throws IOException {
     File d = new File(USER_HOME + "/" + DIRECTORY_NAME + "/");
     if (!d.exists()) {

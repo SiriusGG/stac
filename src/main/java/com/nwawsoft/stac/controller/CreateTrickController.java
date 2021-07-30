@@ -1,27 +1,31 @@
 package com.nwawsoft.stac.controller;
 
 import com.nwawsoft.stac.model.*;
-import com.nwawsoft.stac.ui.*;
+import com.nwawsoft.stac.ui.CreateTrickFrame;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 
-import static com.nwawsoft.stac.BuildData.*;
+import static com.nwawsoft.stac.BuildData.VERSION;
 
-public class CreateTrickController {
-  private final CreateTrickFrame ctf;
+public class CreateTrickController implements STACFrameController {
+  private CreateTrickFrame ctf;
   private boolean defaultName;
 
-  public CreateTrickController(final CreateTrickFrame ctf) {
-    this.ctf = ctf;
+  public CreateTrickController() {
     defaultName = true;
   }
 
-  public void center() {
+  @Override
+  public void centerFrame() {
     ComponentFunctions.center(ctf);
+  }
+
+  @Override
+  public void createFrame() {
+    ctf = new CreateTrickFrame(this);
   }
 
   public void addTrick(final JTextField textFieldName, final JTextField textFieldFileName) {
@@ -30,11 +34,17 @@ public class CreateTrickController {
 
   private void addTrick(final String name, final String file) {
     if (!file.equals("")) {
-      Trick t = new Trick(VERSION, name, file, 0, 0, 0, 0);
-      TrickFileHandler.save(t);
-      new TrickControlPanelFrame(ctf, t);
+      Trick trick = new Trick(VERSION, name, file, 0, 0, 0, 0);
+      TrickFileHandler.save(trick);
+      TrickControlPanelController tcpc = new TrickControlPanelController(trick);
+      tcpc.createFrame();
+      tcpc.centerFrame();
+      tcpc.handleOnClose();
+      tcpc.createVisualization();
+      tcpc.addNativeHook();
+      ctf.dispose();
     } else {
-      new FileNameDialog(ctf);
+      new FileNameController(ctf);
     }
   }
 
@@ -96,7 +106,14 @@ public class CreateTrickController {
   }
 
   public void doCancel() {
-    new MainMenuFrame();
+    MainMenuController mmc = new MainMenuController();
+    mmc.createFrame();
+    mmc.centerFrame();
     ctf.dispose();
+  }
+
+  @Override
+  public JFrame getFrame() {
+    return ctf;
   }
 }

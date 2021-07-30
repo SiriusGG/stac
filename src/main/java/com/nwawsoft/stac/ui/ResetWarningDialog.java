@@ -1,39 +1,38 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.util.html.HTMLTagger;
-import com.nwawsoft.util.ui.ComponentFunctions;
+import com.nwawsoft.stac.controller.ResetWarningController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class ResetWarningDialog extends JDialog {
-  private final TrickControlPanelFrame calledBy;
+  private final ResetWarningController rwc;
 
-  public ResetWarningDialog(final TrickControlPanelFrame calledBy) {
-    super(calledBy, true);
-    this.calledBy = calledBy;
+  public ResetWarningDialog(final ResetWarningController rwc) {
+    super(rwc.getSuperController().getFrame(), true);
+    this.rwc = rwc;
     init();
   }
 
   private void init() {
+    pack();
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     int frameWidth = 320;
-    int frameHeight = 120;
+    int frameHeight = 130;
     setSize(frameWidth, frameHeight);
-    ComponentFunctions.center(this);
+    setLocationRelativeTo(null);
     setTitle("Reset warning");
     Container cp = getContentPane();
     cp.setLayout(null);
 
     int largeButtonWidth = 130;
     int buttonHeight = 30;
-    int verticalOffset = 40;
-    JLabel labelResetQuestion1 = new JLabel(HTMLTagger.toHTML("Your unsaved attempts will be lost."),
-        SwingConstants.CENTER);
+    int verticalOffset = 50;
+    JLabel labelResetQuestion1 = new JLabel(rwc.getResetQuestion1Text(), SwingConstants.CENTER);
     labelResetQuestion1.setBounds(0, 0, frameWidth, 20);
     cp.add(labelResetQuestion1);
-    JLabel labelResetQuestion2 = new JLabel(HTMLTagger.toHTML("Really reload from file?"), SwingConstants.CENTER);
+    JLabel labelResetQuestion2 = new JLabel(rwc.getResetQuestion2Text(), SwingConstants.CENTER);
     labelResetQuestion2.setBounds(0, 20, frameWidth, 20);
     cp.add(labelResetQuestion2);
 
@@ -51,7 +50,7 @@ public class ResetWarningDialog extends JDialog {
   }
 
   public void buttonYes_ActionPerformed(final ActionEvent evt) {
-    calledBy.reloadTrick();
+    rwc.reloadTrick();
     dispose();
   }
 

@@ -19,7 +19,7 @@ public class KeyBindingsFileHandler {
       BufferedWriter bw = new BufferedWriter(fw);
       bw.write("FAILED_KEY=" + failedKey + "\n");
       bw.write("SUCCESSFUL_KEY=" + successfulKey + "\n");
-      bw.write("REMAPPING_ACTIVE=" + Boolean.toString(remappingActive) + "\n");
+      bw.write("REMAPPING_ACTIVE=" + remappingActive + "\n");
       bw.write("SIMULATED_KEY=" + simulatedKey + "\n");
       bw.flush();
       bw.close();

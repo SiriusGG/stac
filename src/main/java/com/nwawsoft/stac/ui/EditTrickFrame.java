@@ -1,13 +1,13 @@
 package com.nwawsoft.stac.ui;
 
 import com.nwawsoft.stac.controller.EditTrickController;
-import com.nwawsoft.stac.model.Trick;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 
 public class EditTrickFrame extends JFrame {
+  private final EditTrickController etc;
   private JTextField textFieldName;
   private JTextField textFieldFileName;
   private JTextField textFieldAttempts;
@@ -15,20 +15,17 @@ public class EditTrickFrame extends JFrame {
   private JTextField textFieldSuccessesBackToBack;
   private JTextField textFieldSuccessesHighscore;
 
-  private final EditTrickController etc;
-  
-  public EditTrickFrame(final JFrame calledBy, final Trick t) {
+  public EditTrickFrame(final EditTrickController etc) {
     super("Edit trick");
-    etc = new EditTrickController(this, calledBy, t);
+    this.etc = etc;
     init();
   }
-  
+
   public void init() {
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // ToDo add window listener and action
     int frameWidth = 400;
     int frameHeight = 280;
     setSize(frameWidth, frameHeight);
-    etc.center();
     Container cp = getContentPane();
     cp.setLayout(null);
 
@@ -48,14 +45,14 @@ public class EditTrickFrame extends JFrame {
     textFieldSuccessesBackToBack = new JTextField(etc.getFieldSuccessesBackToBackText());
     JLabel labelSuccessesHighscore = new JLabel(etc.getLabelSuccessesHighscoreText());
     textFieldSuccessesHighscore = new JTextField(etc.getFieldSuccessesHighscoreText());
-  
+
     JButton buttonEditTrick = new JButton("Edit Trick");
     JButton buttonCancel = new JButton("Cancel");
-  
+
     int leftColumnWidth = 150;
     int leftColumnSpacer = 180;
     int rightColumnWidth = 200;
-  
+
     labelName.setBounds(10, 10, leftColumnWidth, 20);
     textFieldName.setBounds(leftColumnSpacer, 10, rightColumnWidth, 20);
     labelFileName.setBounds(10, 40, leftColumnWidth, 20);
@@ -70,15 +67,15 @@ public class EditTrickFrame extends JFrame {
     textFieldSuccessesHighscore.setBounds(leftColumnSpacer, 160, rightColumnWidth, 20);
     buttonEditTrick.setBounds(20, 190, 150, 30);
     buttonCancel.setBounds(180, 190, 180, 30);
-  
+
     labelName.setToolTipText(trickNameRules);
     textFieldName.setToolTipText(trickNameRules);
     labelFileName.setToolTipText(trickFileNameRules);
     textFieldFileName.setToolTipText(trickFileNameRules);
-  
+
     buttonEditTrick.addActionListener(this::buttonEditTrickActionPerformed);
     buttonCancel.addActionListener(this::buttonCancelActionPerformed);
-  
+
     cp.add(labelName);
     cp.add(textFieldName);
     cp.add(labelFileName);
@@ -93,39 +90,39 @@ public class EditTrickFrame extends JFrame {
     cp.add(textFieldSuccessesHighscore);
     cp.add(buttonEditTrick);
     cp.add(buttonCancel);
-  
+
     setResizable(false);
     setVisible(true);
   }
-  
+
   private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
     etc.doCancel();
   }
-  
+
   private void buttonEditTrickActionPerformed(final ActionEvent actionEvent) {
     etc.editTrick();
   }
-  
+
   public String getNameFieldContent() {
     return textFieldName.getText();
   }
-  
+
   public String getFileNameFieldContent() {
     return textFieldFileName.getText();
   }
-  
+
   public String getAttemptsFieldContent() {
     return textFieldAttempts.getText();
   }
-  
+
   public String getSuccessesFieldContent() {
     return textFieldSuccesses.getText();
   }
-  
+
   public String getSuccessesBackToBackFieldContent() {
     return textFieldSuccessesBackToBack.getText();
   }
-  
+
   public String getSuccessesHighscoreFieldContent() {
     return textFieldSuccessesHighscore.getText();
   }

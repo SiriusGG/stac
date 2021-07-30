@@ -4,26 +4,24 @@ import com.nwawsoft.stac.controller.CreateTrickController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 
 public class CreateTrickFrame extends JFrame {
+  private final CreateTrickController ctc;
   private JTextField textFieldName;
   private JTextField textFieldFileName;
 
-  private CreateTrickController ctc;
-
-  public CreateTrickFrame() {
+  public CreateTrickFrame(final CreateTrickController ctc) {
     super("Add new trick");
+    this.ctc = ctc;
     init();
   }
 
   private void init() {
-    ctc = new CreateTrickController(this);
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     int frameWidth = 280;
     int frameHeight = 150;
     setSize(frameWidth, frameHeight);
-    ctc.center();
     Container cp = getContentPane();
     cp.setLayout(null);
 
@@ -75,7 +73,7 @@ public class CreateTrickFrame extends JFrame {
   private void buttonAddTrickActionPerformed(final ActionEvent actionEvent) {
     ctc.addTrick(textFieldName, textFieldFileName);
   }
-  
+
   private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
     ctc.doCancel();
   }
