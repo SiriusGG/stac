@@ -101,6 +101,22 @@ public class SaveWarningController implements STACDialogController {
           calledBy.getFrame().dispose();
         }
         break;
+      case "controlpanel, switch trick":
+        if (calledBy instanceof TrickControlPanelController) {
+          TrickFileHandler.save(((TrickControlPanelController) calledBy).getTrick());
+          Trick t = TrickChooserController.createTrickFromJFileChooser();
+          if (t != null) {
+            TrickControlPanelController tcpc = new TrickControlPanelController(t);
+            tcpc.createFrame();
+            tcpc.centerFrame();
+            tcpc.handleOnClose();
+            tcpc.createVisualization();
+            tcpc.addNativeHook();
+          }
+          ((TrickControlPanelController) calledBy).getVisualizationController().getFrame().dispose();
+          calledBy.getFrame().dispose();
+        }
+        break;
       case "visualization, close":
         if (calledBy instanceof TrickVisualizationController) {
           TrickFileHandler.save(((TrickVisualizationController) calledBy).getControlPanelController().getTrick());
@@ -169,6 +185,22 @@ public class SaveWarningController implements STACDialogController {
               ((TrickControlPanelController) calledBy).getTrick(), "trick control panel");
           etc.createFrame();
           etc.centerFrame();
+          calledBy.getFrame().dispose();
+        }
+        break;
+      case "controlpanel, switch trick":
+        if (calledBy instanceof TrickControlPanelController) {
+          ((TrickControlPanelController) calledBy).reloadTrick();
+          Trick t = TrickChooserController.createTrickFromJFileChooser();
+          if (t != null) {
+            TrickControlPanelController tcpc = new TrickControlPanelController(t);
+            tcpc.createFrame();
+            tcpc.centerFrame();
+            tcpc.handleOnClose();
+            tcpc.createVisualization();
+            tcpc.addNativeHook();
+          }
+          ((TrickControlPanelController) calledBy).getVisualizationController().getFrame().dispose();
           calledBy.getFrame().dispose();
         }
         break;

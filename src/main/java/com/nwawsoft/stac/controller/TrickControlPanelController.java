@@ -178,7 +178,22 @@ public class TrickControlPanelController implements STACFrameController {
     }
   }
 
-  public void switchTrick() {
-    // ToDo
+  public void switchTrick() { // ToDo
+    if (!trick.equals(TrickFileHandler.load(trick.getFileName()))) {
+      SaveWarningController swc = new SaveWarningController(this, "controlpanel", "switch trick");
+      swc.createDialog();
+    } else {
+      Trick t = TrickChooserController.createTrickFromJFileChooser();
+      if (t != null) {
+        TrickControlPanelController tcpc = new TrickControlPanelController(t);
+        tcpc.createFrame();
+        tcpc.centerFrame();
+        tcpc.handleOnClose();
+        tcpc.createVisualization();
+        tcpc.addNativeHook();
+      }
+      tvc.getFrame().dispose();
+      tcpf.dispose();
+    }
   }
 }
