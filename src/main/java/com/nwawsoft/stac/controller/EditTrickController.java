@@ -88,7 +88,7 @@ public class EditTrickController implements STACFrameController {
       tcpc.addNativeHook();
       etf.dispose();
     } else {
-      FileNameController fnc = new FileNameController(etf);
+      FileNameController fnc = new FileNameController(this);
       fnc.createDialog();
     }
   }

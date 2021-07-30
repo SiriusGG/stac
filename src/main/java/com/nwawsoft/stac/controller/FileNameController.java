@@ -5,11 +5,11 @@ import com.nwawsoft.stac.ui.FileNameDialog;
 import javax.swing.*;
 
 public class FileNameController implements STACDialogController {
-  private final JFrame calledBy;
+  private final STACFrameController sfc;
   private FileNameDialog fnd;
 
-  public FileNameController(final JFrame calledBy) {
-    this.calledBy = calledBy;
+  public FileNameController(final STACFrameController sfc) {
+    this.sfc = sfc;
   }
 
   @Override
@@ -19,6 +19,6 @@ public class FileNameController implements STACDialogController {
 
   @Override
   public void createDialog() {
-    fnd = new FileNameDialog(calledBy);
+    fnd = new FileNameDialog(sfc.getFrame());
   }
 }

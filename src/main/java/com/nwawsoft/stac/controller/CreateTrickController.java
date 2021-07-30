@@ -44,7 +44,8 @@ public class CreateTrickController implements STACFrameController {
       tcpc.addNativeHook();
       ctf.dispose();
     } else {
-      new FileNameController(ctf);
+      FileNameController fnc = new FileNameController(this);
+      fnc.createDialog();
     }
   }
 
