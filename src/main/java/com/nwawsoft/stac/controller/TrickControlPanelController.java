@@ -11,7 +11,7 @@ import java.awt.event.*;
 
 public class TrickControlPanelController implements STACFrameController {
   public final static int FRAME_WIDTH = 280;
-  public final static int FRAME_HEIGHT = 270;
+  public final static int FRAME_HEIGHT = 310;
   private Trick trick;
   private TrickControlPanelFrame tcpf;
   private TrickVisualizationController tvc;
@@ -163,5 +163,13 @@ public class TrickControlPanelController implements STACFrameController {
 
   public void setDefaultLAF() {
     lc.setDefault();
+  }
+
+  public void editTrick() {
+    // ToDo
+  }
+
+  public void switchTrick() {
+    // ToDo
   }
 }

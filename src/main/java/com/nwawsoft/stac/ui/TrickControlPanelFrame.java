@@ -46,7 +46,7 @@ public class TrickControlPanelFrame extends JFrame {
     buttonManualFail.setBounds(10, 110, 100, buttonHeight);
     buttonManualFail.addActionListener(this::buttonManualFailActionPerformed);
     JButton buttonManualSuccess = new JButton("Manual Success");
-    buttonManualSuccess.setBounds(120, 110, 140, buttonHeight);
+    buttonManualSuccess.setBounds(120, 110, 130, buttonHeight);
     buttonManualSuccess.addActionListener(this::buttonManualSuccessActionPerformed);
     JButton buttonReset = new JButton("Reset from file");
     buttonReset.setBounds(10, 150, 140, buttonHeight);
@@ -54,6 +54,12 @@ public class TrickControlPanelFrame extends JFrame {
     JButton buttonVisualizationSettings = new JButton("Visualization Settings");
     buttonVisualizationSettings.setBounds(10, 190, 170, buttonHeight);
     buttonVisualizationSettings.addActionListener(this::buttonVisualizationSettingsActionPerformed);
+    JButton buttonEdit = new JButton("Edit Trick");
+    buttonEdit.setBounds(10, 230, 90, buttonHeight);
+    buttonEdit.addActionListener(this::buttonEditTrickActionPerformed);
+    JButton buttonSwitch = new JButton("Switch Trick");
+    buttonSwitch.setBounds(110, 230, 110, buttonHeight);
+    buttonSwitch.addActionListener(this::buttonSwitchTrickActionPerformed);
     cp.add(labelFailedKey);
     cp.add(labelFailedKeyValue);
     cp.add(labelSuccessfulKey);
@@ -64,6 +70,8 @@ public class TrickControlPanelFrame extends JFrame {
     cp.add(buttonManualSuccess);
     cp.add(buttonReset);
     cp.add(buttonVisualizationSettings);
+    cp.add(buttonEdit);
+    cp.add(buttonSwitch);
 
     setResizable(false);
     setVisible(true);
@@ -91,5 +99,13 @@ public class TrickControlPanelFrame extends JFrame {
 
   private void buttonVisualizationSettingsActionPerformed(final ActionEvent actionEvent) {
     tcpc.openVisualizationSettings();
+  }
+
+  private void buttonEditTrickActionPerformed(final ActionEvent actionEvent) {
+    tcpc.editTrick();
+  }
+
+  private void buttonSwitchTrickActionPerformed(final ActionEvent actionEvent) {
+    tcpc.switchTrick();
   }
 }
