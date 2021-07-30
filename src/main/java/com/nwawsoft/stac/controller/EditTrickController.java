@@ -5,6 +5,9 @@ import com.nwawsoft.stac.ui.EditTrickFrame;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import static com.nwawsoft.stac.BuildData.*;
@@ -119,5 +122,25 @@ public class EditTrickController implements STACFrameController {
   @Override
   public void createFrame() {
     etf = new EditTrickFrame(this);
+  }
+
+  public WindowListener handleClosing() {
+    return new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+        if (mode.equals("main menu")) {
+          MainMenuController mmc = new MainMenuController();
+          mmc.createFrame();
+          mmc.centerFrame();
+        } else if (mode.equals("trick control panel")) {
+          TrickControlPanelController tcpc = new TrickControlPanelController(trick);
+          tcpc.createFrame();
+          tcpc.centerFrame();
+          tcpc.handleOnClose();
+          tcpc.createVisualization();
+          tcpc.addNativeHook();
+        }
+        etf.dispose();
+      }
+    };
   }
 }

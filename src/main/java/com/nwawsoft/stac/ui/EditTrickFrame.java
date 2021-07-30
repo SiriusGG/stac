@@ -28,6 +28,7 @@ public class EditTrickFrame extends JFrame {
     setSize(frameWidth, frameHeight);
     Container cp = getContentPane();
     cp.setLayout(null);
+    this.addWindowListener(etc.handleClosing());
 
     String trickNameRules = "Trick name may be almost anything except empty";
     String trickFileNameRules = "Trick file name may only contain lower and upper case characters from a to z, " +
