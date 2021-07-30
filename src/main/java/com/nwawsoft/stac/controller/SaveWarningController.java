@@ -90,6 +90,17 @@ public class SaveWarningController implements STACDialogController {
           calledBy.getFrame().dispose();
         }
         break;
+      case "controlpanel, edit trick":
+        if (calledBy instanceof TrickControlPanelController) {
+          TrickFileHandler.save(((TrickControlPanelController) calledBy).getTrick());
+          ((TrickControlPanelController) calledBy).getVisualizationController().getFrame().dispose();
+          EditTrickController etc = new EditTrickController(
+              ((TrickControlPanelController) calledBy).getTrick(), "trick control panel");
+          etc.createFrame();
+          etc.centerFrame();
+          calledBy.getFrame().dispose();
+        }
+        break;
       case "visualization, close":
         if (calledBy instanceof TrickVisualizationController) {
           TrickFileHandler.save(((TrickVisualizationController) calledBy).getControlPanelController().getTrick());
@@ -147,6 +158,17 @@ public class SaveWarningController implements STACDialogController {
               (TrickControlPanelController) calledBy);
           vsc.createFrame();
           vsc.centerFrame();
+          calledBy.getFrame().dispose();
+        }
+        break;
+      case "controlpanel, edit trick":
+        if (calledBy instanceof TrickControlPanelController) {
+          ((TrickControlPanelController) calledBy).getVisualizationController().getFrame().dispose();
+          ((TrickControlPanelController) calledBy).reloadTrick();
+          EditTrickController etc = new EditTrickController(
+              ((TrickControlPanelController) calledBy).getTrick(), "trick control panel");
+          etc.createFrame();
+          etc.centerFrame();
           calledBy.getFrame().dispose();
         }
         break;

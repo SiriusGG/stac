@@ -166,7 +166,16 @@ public class TrickControlPanelController implements STACFrameController {
   }
 
   public void editTrick() {
-    // ToDo
+    if (!trick.equals(TrickFileHandler.load(trick.getFileName()))) {
+      SaveWarningController swc = new SaveWarningController(this, "controlpanel", "edit trick");
+      swc.createDialog();
+    } else {
+      tvc.getFrame().dispose();
+      EditTrickController etc = new EditTrickController(trick, "trick control panel");
+      etc.createFrame();
+      etc.centerFrame();
+      tcpf.dispose();
+    }
   }
 
   public void switchTrick() {
