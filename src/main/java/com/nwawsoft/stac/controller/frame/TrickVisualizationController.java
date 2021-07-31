@@ -17,12 +17,12 @@ import static com.nwawsoft.stac.model.VisualizationSettingsFileHandler.*;
 import static com.nwawsoft.stac.model.VisualizationTupelListFunctions.getActiveMetricsAmount;
 
 public class TrickVisualizationController implements STACFrameController {
-  public final static int FRAME_WIDTH = 340;
   public final static int TITLE_BAR_SIZE = 30;
   private final int initialOffset = 10;
   private final DecimalFormat df = new DecimalFormat("#.##");
   private final TrickControlPanelController tcpc;
   private int frameHeight;
+  private int frameWidth;
   private ArrayList<VisualizationTupel> vts;
   private int activeModules;
   private TrickVisualizationFrame tvf;
@@ -46,7 +46,8 @@ public class TrickVisualizationController implements STACFrameController {
     vts = VisualizationTupelListFunctions.sortByIndex(
         VisualizationTupelListFunctions.filterActive(vs.getVisualizationTupels()));
     activeModules = getActiveMetricsAmount(vts);
-    frameHeight = calcHeight(vs);
+    frameHeight = calcHeight();
+    frameWidth = calcWidth();
   }
 
   public int getRowSpacing() {
@@ -107,10 +108,15 @@ public class TrickVisualizationController implements STACFrameController {
     }
   }
 
-  private int calcHeight(final VisualizationSettings vs) {
+  private int calcHeight() {
     int spacing = vs.getSpacing();
     int fontSize = vs.getFont().getSize();
     return TITLE_BAR_SIZE + (activeModules * fontSize) + (spacing * activeModules) + (2 * initialOffset);
+  }
+
+  public int calcWidth() {
+    int fontSize = vs.getFont().getSize();
+    return 20 * fontSize; // ToDo
   }
 
   public void openSaveDialog() {
@@ -131,12 +137,12 @@ public class TrickVisualizationController implements STACFrameController {
   }
 
   public void setFrameSize() {
-    tvf.setSize(FRAME_WIDTH, frameHeight);
+    tvf.setSize(frameWidth, frameHeight);
   }
 
   public void setFramePos() {
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-    int width = FRAME_WIDTH + TrickControlPanelController.FRAME_WIDTH;
+    int width = frameWidth + TrickControlPanelController.FRAME_WIDTH;
     int x = (d.width - width) / 2;
     int y = (d.height - frameHeight) / 2;
     tvf.setLocation(x + TrickControlPanelController.FRAME_WIDTH, y);
@@ -164,5 +170,9 @@ public class TrickVisualizationController implements STACFrameController {
 
   public int getInitialOffset() {
     return initialOffset;
+  }
+
+  public int getFrameWidth() {
+    return frameWidth;
   }
 }

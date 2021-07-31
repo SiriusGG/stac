@@ -132,9 +132,9 @@ public class TrickControlPanelController implements STACFrameController {
   @Override
   public void fullCreate() {
     createFrame();
-    centerFrame();
     handleOnClose();
     createVisualization();
+    centerFrame();
     addNativeHook();
   }
 
@@ -148,7 +148,7 @@ public class TrickControlPanelController implements STACFrameController {
 
   public void setFramePos() {
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-    int width = FRAME_WIDTH + TrickVisualizationController.FRAME_WIDTH;
+    int width = FRAME_WIDTH + tvc.getFrameWidth();
     int x = ((d.width - width) / 2);
     int y = (d.height - FRAME_HEIGHT) / 2;
     tcpf.setLocation(x, y);
@@ -186,7 +186,7 @@ public class TrickControlPanelController implements STACFrameController {
     }
   }
 
-  public void switchTrick() { // ToDo
+  public void switchTrick() {
     if (!trick.equals(TrickFileHandler.load(trick.getFileName()))) {
       SaveWarningController swc = new SaveWarningController(this, "controlpanel", "switch trick");
       swc.createDialog();
@@ -195,9 +195,9 @@ public class TrickControlPanelController implements STACFrameController {
       if (t != null) {
         TrickControlPanelController tcpc = new TrickControlPanelController(t);
         tcpc.fullCreate();
+        tvc.getFrame().dispose();
+        tcpf.dispose();
       }
-      tvc.getFrame().dispose();
-      tcpf.dispose();
     }
   }
 }
