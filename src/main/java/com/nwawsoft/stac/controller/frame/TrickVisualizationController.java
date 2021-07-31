@@ -33,7 +33,7 @@ public class TrickVisualizationController implements STACFrameController {
     this.tcpc = tcpc;
   }
 
-  public void frameSetup() {
+  public void frameSetup() { // ToDo: Split this into multiple functions and rename
     String fileName = tcpc.getTrick().getFileName();
     String path = USER_HOME + "/" + DIRECTORY_NAME + "/" + fileName + "." +
         TRICK_VISUALIZATION_FILE_FORMAT;
