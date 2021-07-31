@@ -1,9 +1,9 @@
-package com.nwawsoft.stac.controller;
+package com.nwawsoft.stac.controller.frame;
 
 import com.nwawsoft.stac.BuildData;
 import com.nwawsoft.stac.model.*;
 import com.nwawsoft.stac.ui.MainMenuFrame;
-import com.nwawsoft.stac.util.TrickChooser;
+import com.nwawsoft.stac.controller.TrickChooser;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;

@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.EditTrickController;
+import com.nwawsoft.stac.controller.frame.EditTrickController;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,8 +1,9 @@
-package com.nwawsoft.stac.controller;
+package com.nwawsoft.stac.controller.dialog;
 
+import com.nwawsoft.stac.controller.frame.*;
 import com.nwawsoft.stac.model.*;
 import com.nwawsoft.stac.ui.SaveWarningDialog;
-import com.nwawsoft.stac.util.TrickChooser;
+import com.nwawsoft.stac.controller.TrickChooser;
 import com.nwawsoft.util.html.HTMLTagger;
 
 import javax.swing.*;
@@ -76,8 +77,7 @@ public class SaveWarningController implements STACDialogController {
           TrickFileHandler.save(((TrickControlPanelController) calledBy).getTrick());
           ((TrickControlPanelController) calledBy).getVisualizationController().getFrame().dispose();
           MainMenuController mmc = new MainMenuController();
-          mmc.createFrame();
-          mmc.centerFrame();
+          mmc.fullCreate();
         }
         break;
       case "controlpanel, visualization settings":
@@ -86,8 +86,7 @@ public class SaveWarningController implements STACDialogController {
           ((TrickControlPanelController) calledBy).getVisualizationController().getFrame().dispose();
           VisualizationSettingsController vsc = new VisualizationSettingsController(
               (TrickControlPanelController) calledBy);
-          vsc.createFrame();
-          vsc.centerFrame();
+          vsc.fullCreate();
           calledBy.getFrame().dispose();
         }
         break;
@@ -97,8 +96,7 @@ public class SaveWarningController implements STACDialogController {
           ((TrickControlPanelController) calledBy).getVisualizationController().getFrame().dispose();
           EditTrickController etc = new EditTrickController(
               ((TrickControlPanelController) calledBy).getTrick(), "trick control panel");
-          etc.createFrame();
-          etc.centerFrame();
+          etc.fullCreate();
           calledBy.getFrame().dispose();
         }
         break;
@@ -108,11 +106,7 @@ public class SaveWarningController implements STACDialogController {
           Trick t = TrickChooser.createTrickFromJFileChooser();
           if (t != null) {
             TrickControlPanelController tcpc = new TrickControlPanelController(t);
-            tcpc.createFrame();
-            tcpc.centerFrame();
-            tcpc.handleOnClose();
-            tcpc.createVisualization();
-            tcpc.addNativeHook();
+            tcpc.fullCreate();
           }
           ((TrickControlPanelController) calledBy).getVisualizationController().getFrame().dispose();
           calledBy.getFrame().dispose();
@@ -130,8 +124,7 @@ public class SaveWarningController implements STACDialogController {
               ((VisualizationSettingsController) calledBy).getVisualizationSettings(),
               VISUALIZATION_FILE_FULL_NAME);
           MainMenuController mmc = new MainMenuController();
-          mmc.createFrame();
-          mmc.centerFrame();
+          mmc.fullCreate();
           calledBy.getFrame().dispose();
         }
         break;
@@ -143,11 +136,7 @@ public class SaveWarningController implements STACDialogController {
               fileName + "." + TRICK_VISUALIZATION_FILE_FORMAT);
           TrickControlPanelController tcpc = new TrickControlPanelController(
               ((VisualizationSettingsController) calledBy).getTrick());
-          tcpc.createFrame();
-          tcpc.centerFrame();
-          tcpc.handleOnClose();
-          tcpc.createVisualization();
-          tcpc.addNativeHook();
+          tcpc.fullCreate();
         }
         break;
     }
@@ -164,8 +153,7 @@ public class SaveWarningController implements STACDialogController {
           ((TrickControlPanelController) calledBy).getVisualizationController().getFrame().dispose();
           calledBy.getFrame().dispose();
           MainMenuController mmc = new MainMenuController();
-          mmc.createFrame();
-          mmc.centerFrame();
+          mmc.fullCreate();
         }
         break;
       case "controlpanel, visualization settings":
@@ -173,8 +161,7 @@ public class SaveWarningController implements STACDialogController {
           ((TrickControlPanelController) calledBy).getVisualizationController().getFrame().dispose();
           VisualizationSettingsController vsc = new VisualizationSettingsController(
               (TrickControlPanelController) calledBy);
-          vsc.createFrame();
-          vsc.centerFrame();
+          vsc.fullCreate();
           calledBy.getFrame().dispose();
         }
         break;
@@ -184,8 +171,7 @@ public class SaveWarningController implements STACDialogController {
           ((TrickControlPanelController) calledBy).reloadTrick();
           EditTrickController etc = new EditTrickController(
               ((TrickControlPanelController) calledBy).getTrick(), "trick control panel");
-          etc.createFrame();
-          etc.centerFrame();
+          etc.fullCreate();
           calledBy.getFrame().dispose();
         }
         break;
@@ -195,11 +181,7 @@ public class SaveWarningController implements STACDialogController {
           Trick t = TrickChooser.createTrickFromJFileChooser();
           if (t != null) {
             TrickControlPanelController tcpc = new TrickControlPanelController(t);
-            tcpc.createFrame();
-            tcpc.centerFrame();
-            tcpc.handleOnClose();
-            tcpc.createVisualization();
-            tcpc.addNativeHook();
+            tcpc.fullCreate();
           }
           ((TrickControlPanelController) calledBy).getVisualizationController().getFrame().dispose();
           calledBy.getFrame().dispose();
@@ -207,18 +189,13 @@ public class SaveWarningController implements STACDialogController {
         break;
       case "visualization settings, close":
         MainMenuController mmc = new MainMenuController();
-        mmc.createFrame();
-        mmc.centerFrame();
+        mmc.fullCreate();
         calledBy.getFrame().dispose();
         break;
       case "trick visualization settings, close":
         TrickControlPanelController tcpc = new TrickControlPanelController(
             ((TrickControlPanelController) calledBy).getTrick());
-        tcpc.createFrame();
-        tcpc.centerFrame();
-        tcpc.handleOnClose();
-        tcpc.createVisualization();
-        tcpc.addNativeHook();
+        tcpc.fullCreate();
         calledBy.getFrame().dispose();
         break;
     }

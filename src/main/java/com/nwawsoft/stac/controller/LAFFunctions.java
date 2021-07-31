@@ -1,4 +1,4 @@
-package com.nwawsoft.stac.util;
+package com.nwawsoft.stac.controller;
 
 import javax.swing.*;
 

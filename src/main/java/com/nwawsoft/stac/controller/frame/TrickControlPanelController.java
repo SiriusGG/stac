@@ -1,9 +1,11 @@
-package com.nwawsoft.stac.controller;
+package com.nwawsoft.stac.controller.frame;
 
-import com.nwawsoft.stac.util.LAFFunctions;
+import com.nwawsoft.stac.controller.dialog.ResetWarningController;
+import com.nwawsoft.stac.controller.dialog.SaveWarningController;
+import com.nwawsoft.stac.controller.LAFFunctions;
 import com.nwawsoft.stac.model.*;
 import com.nwawsoft.stac.ui.TrickControlPanelFrame;
-import com.nwawsoft.stac.util.TrickChooser;
+import com.nwawsoft.stac.controller.TrickChooser;
 import org.jnativehook.GlobalScreen;
 
 import javax.swing.*;

@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.KeyBindingsController;
+import com.nwawsoft.stac.controller.frame.KeyBindingsController;
 
 import javax.swing.*;
 import java.awt.*;

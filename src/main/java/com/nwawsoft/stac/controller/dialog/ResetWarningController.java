@@ -1,5 +1,6 @@
-package com.nwawsoft.stac.controller;
+package com.nwawsoft.stac.controller.dialog;
 
+import com.nwawsoft.stac.controller.frame.TrickControlPanelController;
 import com.nwawsoft.stac.ui.ResetWarningDialog;
 import com.nwawsoft.util.html.HTMLTagger;
 

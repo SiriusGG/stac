@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.TrickVisualizationController;
+import com.nwawsoft.stac.controller.frame.TrickVisualizationController;
 
 import javax.swing.*;
 import java.awt.*;

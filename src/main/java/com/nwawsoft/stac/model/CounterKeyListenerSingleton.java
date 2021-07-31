@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.model;
 
-import com.nwawsoft.stac.controller.TrickVisualizationController;
+import com.nwawsoft.stac.controller.frame.TrickVisualizationController;
 import org.jnativehook.keyboard.*;
 
 public class CounterKeyListenerSingleton implements NativeKeyListener {

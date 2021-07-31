@@ -1,4 +1,4 @@
-package com.nwawsoft.stac.util;
+package com.nwawsoft.stac.controller;
 
 import com.nwawsoft.stac.model.Trick;
 import com.nwawsoft.stac.model.TrickFileHandler;

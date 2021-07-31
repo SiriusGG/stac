@@ -1,6 +1,6 @@
 package com.nwawsoft.stac;
 
-import com.nwawsoft.stac.controller.MainMenuController;
+import com.nwawsoft.stac.controller.frame.MainMenuController;
 import com.nwawsoft.stac.model.BackwardsCompatibility;
 import org.jnativehook.*;
 

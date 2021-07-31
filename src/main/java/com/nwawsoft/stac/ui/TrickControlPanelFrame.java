@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.TrickControlPanelController;
+import com.nwawsoft.stac.controller.frame.TrickControlPanelController;
 
 import javax.swing.*;
 import java.awt.*;

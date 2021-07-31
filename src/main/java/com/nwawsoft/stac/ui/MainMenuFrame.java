@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.MainMenuController;
+import com.nwawsoft.stac.controller.frame.MainMenuController;
 
 import javax.swing.*;
 import java.awt.*;

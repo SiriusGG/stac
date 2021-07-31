@@ -1,5 +1,6 @@
-package com.nwawsoft.stac.controller;
+package com.nwawsoft.stac.controller.dialog;
 
+import com.nwawsoft.stac.controller.frame.STACFrameController;
 import com.nwawsoft.stac.ui.FileNameDialog;
 
 import javax.swing.*;

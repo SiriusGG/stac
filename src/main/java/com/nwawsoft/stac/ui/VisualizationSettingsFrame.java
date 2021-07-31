@@ -1,6 +1,7 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.*;
+import com.nwawsoft.stac.controller.frame.STACFrameController;
+import com.nwawsoft.stac.controller.frame.VisualizationSettingsController;
 
 import javax.swing.*;
 import java.awt.*;

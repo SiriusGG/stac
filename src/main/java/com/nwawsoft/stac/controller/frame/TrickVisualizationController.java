@@ -1,5 +1,6 @@
-package com.nwawsoft.stac.controller;
+package com.nwawsoft.stac.controller.frame;
 
+import com.nwawsoft.stac.controller.dialog.SaveWarningController;
 import com.nwawsoft.stac.model.*;
 import com.nwawsoft.stac.ui.TrickVisualizationFrame;
 

@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.ui;
 
-import com.nwawsoft.stac.controller.SaveWarningController;
+import com.nwawsoft.stac.controller.dialog.SaveWarningController;
 
 import javax.swing.*;
 import java.awt.*;
