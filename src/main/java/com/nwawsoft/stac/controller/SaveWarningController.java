@@ -104,7 +104,7 @@ public class SaveWarningController implements STACDialogController {
       case "controlpanel, switch trick":
         if (calledBy instanceof TrickControlPanelController) {
           TrickFileHandler.save(((TrickControlPanelController) calledBy).getTrick());
-          Trick t = TrickChooserController.createTrickFromJFileChooser();
+          Trick t = TrickChooser.createTrickFromJFileChooser();
           if (t != null) {
             TrickControlPanelController tcpc = new TrickControlPanelController(t);
             tcpc.createFrame();
@@ -191,7 +191,7 @@ public class SaveWarningController implements STACDialogController {
       case "controlpanel, switch trick":
         if (calledBy instanceof TrickControlPanelController) {
           ((TrickControlPanelController) calledBy).reloadTrick();
-          Trick t = TrickChooserController.createTrickFromJFileChooser();
+          Trick t = TrickChooser.createTrickFromJFileChooser();
           if (t != null) {
             TrickControlPanelController tcpc = new TrickControlPanelController(t);
             tcpc.createFrame();

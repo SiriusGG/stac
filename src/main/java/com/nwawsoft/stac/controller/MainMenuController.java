@@ -47,7 +47,7 @@ public class MainMenuController implements STACFrameController {
   }
 
   public void editTrick() {
-    Trick t = TrickChooserController.createTrickFromJFileChooser();
+    Trick t = TrickChooser.createTrickFromJFileChooser();
     if (t != null) {
       EditTrickController etc = new EditTrickController(t, "main menu");
       etc.fullCreate();
@@ -56,7 +56,7 @@ public class MainMenuController implements STACFrameController {
   }
 
   public void loadTrick() {
-    Trick t = TrickChooserController.createTrickFromJFileChooser();
+    Trick t = TrickChooser.createTrickFromJFileChooser();
     if (t != null) {
       TrickControlPanelController tcpc = new TrickControlPanelController(t);
       tcpc.fullCreate();

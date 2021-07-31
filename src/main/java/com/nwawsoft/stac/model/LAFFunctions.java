@@ -1,12 +1,12 @@
-package com.nwawsoft.stac.controller.laf;
+package com.nwawsoft.stac.model;
 
 import javax.swing.*;
 
-public class LAFController {
+public class LAFFunctions {
   private LookAndFeel defaultLAF;
   private String mode;
 
-  public LAFController() {
+  public LAFFunctions() {
     defaultLAF = UIManager.getLookAndFeel();
     mode = "default";
   }

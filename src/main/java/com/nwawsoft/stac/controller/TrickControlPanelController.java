@@ -1,6 +1,6 @@
 package com.nwawsoft.stac.controller;
 
-import com.nwawsoft.stac.controller.laf.LAFController;
+import com.nwawsoft.stac.model.LAFFunctions;
 import com.nwawsoft.stac.model.*;
 import com.nwawsoft.stac.ui.TrickControlPanelFrame;
 import org.jnativehook.GlobalScreen;
@@ -15,7 +15,7 @@ public class TrickControlPanelController implements STACFrameController {
   private Trick trick;
   private TrickControlPanelFrame tcpf;
   private TrickVisualizationController tvc;
-  private LAFController lc;
+  private LAFFunctions lc;
 
   public TrickControlPanelController(final Trick trick) {
     this.trick = trick;
@@ -160,7 +160,7 @@ public class TrickControlPanelController implements STACFrameController {
   }
 
   public void createLAFHandler() {
-    lc = new LAFController();
+    lc = new LAFFunctions();
   }
 
   public void setMotifLAF() {
@@ -188,7 +188,7 @@ public class TrickControlPanelController implements STACFrameController {
       SaveWarningController swc = new SaveWarningController(this, "controlpanel", "switch trick");
       swc.createDialog();
     } else {
-      Trick t = TrickChooserController.createTrickFromJFileChooser();
+      Trick t = TrickChooser.createTrickFromJFileChooser();
       if (t != null) {
         TrickControlPanelController tcpc = new TrickControlPanelController(t);
         tcpc.fullCreate();

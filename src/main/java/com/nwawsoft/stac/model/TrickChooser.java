@@ -1,6 +1,4 @@
-package com.nwawsoft.stac.controller;
-
-import com.nwawsoft.stac.model.*;
+package com.nwawsoft.stac.model;
 
 import javax.swing.*;
 import javax.swing.filechooser.*;
@@ -8,7 +6,7 @@ import java.io.File;
 
 import static com.nwawsoft.stac.BuildData.*;
 
-public class TrickChooserController {
+public class TrickChooser {
 
   public static Trick createTrickFromJFileChooser() {
     JFileChooser jfc = new JFileChooser();
