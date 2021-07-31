@@ -28,7 +28,7 @@ public class BackwardsCompatibility {
    * format.
    * <p>
    * THIS IS A PART OF THE FUNCTION "convertTrickFiles_1_3_0()"!
-   * IT MUST NOT NEED TO BE INCLUDED IN THE BACKWARDS-COMPATIBILITY ROUTINE IN CLASS "Starter"!
+   * IT MAY NOT BE INCLUDED IN THE BACKWARDS-COMPATIBILITY ROUTINE IN CLASS "Starter"!
    *
    * @param f      any file within the .stac directory.
    * @param format any file format (so far only .staf makes sense).
