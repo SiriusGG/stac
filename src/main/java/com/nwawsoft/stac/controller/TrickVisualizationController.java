@@ -21,7 +21,7 @@ public class TrickVisualizationController implements STACFrameController {
   private final int initialOffset = 10;
   private final DecimalFormat df = new DecimalFormat("#.##");
   private final TrickControlPanelController tcpc;
-  int frameHeight;
+  private int frameHeight;
   private ArrayList<VisualizationTupel> vts;
   private int activeModules;
   private TrickVisualizationFrame tvf;
@@ -70,6 +70,12 @@ public class TrickVisualizationController implements STACFrameController {
   @Override
   public void createFrame() {
     tvf = new TrickVisualizationFrame(this);
+  }
+
+  @Override
+  public void fullCreate() {
+    createFrame();
+    centerFrame();
   }
 
   public void updateStats() {

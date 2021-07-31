@@ -14,12 +14,17 @@ import static com.nwawsoft.stac.BuildData.DIRECTORY_NAME;
 public class MainMenuController implements STACFrameController {
   private MainMenuFrame mmf;
 
-  public MainMenuController() {
-  }
+  public MainMenuController() {}
 
   @Override
   public void createFrame() {
     mmf = new MainMenuFrame(this);
+  }
+
+  @Override
+  public void fullCreate() {
+    createFrame();
+    centerFrame();
   }
 
   public void prepareSettings() {
@@ -37,8 +42,7 @@ public class MainMenuController implements STACFrameController {
 
   public void newTrick() {
     CreateTrickController ctc = new CreateTrickController();
-    ctc.createFrame();
-    ctc.centerFrame();
+    ctc.fullCreate();
     mmf.dispose();
   }
 
@@ -46,8 +50,7 @@ public class MainMenuController implements STACFrameController {
     Trick t = TrickChooserController.createTrickFromJFileChooser();
     if (t != null) {
       EditTrickController etc = new EditTrickController(t, "main menu");
-      etc.createFrame();
-      etc.centerFrame();
+      etc.fullCreate();
       mmf.dispose();
     }
   }
@@ -56,26 +59,20 @@ public class MainMenuController implements STACFrameController {
     Trick t = TrickChooserController.createTrickFromJFileChooser();
     if (t != null) {
       TrickControlPanelController tcpc = new TrickControlPanelController(t);
-      tcpc.createFrame();
-      tcpc.centerFrame();
-      tcpc.handleOnClose();
-      tcpc.createVisualization();
-      tcpc.addNativeHook();
+      tcpc.fullCreate();
       mmf.dispose();
     }
   }
 
   public void openKeyBindingsConfiguration() {
     KeyBindingsController kbc = new KeyBindingsController();
-    kbc.createFrame();
-    kbc.centerFrame();
+    kbc.fullCreate();
     mmf.dispose();
   }
 
   public void openVisualizationSettings() {
     VisualizationSettingsController vsc = new VisualizationSettingsController();
-    vsc.createFrame();
-    vsc.centerFrame();
+    vsc.fullCreate();
     mmf.dispose();
   }
 
@@ -90,8 +87,7 @@ public class MainMenuController implements STACFrameController {
 
   public void openAbout() {
     AboutController ac = new AboutController();
-    ac.createFrame();
-    ac.centerFrame();
+    ac.fullCreate();
   }
 
   public void doClose() {

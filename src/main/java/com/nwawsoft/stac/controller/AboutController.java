@@ -14,8 +14,7 @@ import java.net.*;
 public class AboutController implements STACFrameController {
   private AboutFrame af;
 
-  public AboutController() {
-  }
+  public AboutController() {}
 
   @Override
   public JFrame getFrame() {
@@ -30,6 +29,12 @@ public class AboutController implements STACFrameController {
   @Override
   public void createFrame() {
     af = new AboutFrame(this);
+  }
+
+  @Override
+  public void fullCreate() {
+    createFrame();
+    centerFrame();
   }
 
   public MouseListener createWebsiteLinkMouseAdapter() {

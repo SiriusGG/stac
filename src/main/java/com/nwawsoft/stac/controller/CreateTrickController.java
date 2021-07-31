@@ -28,6 +28,12 @@ public class CreateTrickController implements STACFrameController {
     ctf = new CreateTrickFrame(this);
   }
 
+  @Override
+  public void fullCreate() {
+    createFrame();
+    centerFrame();
+  }
+
   public void addTrick(final JTextField textFieldName, final JTextField textFieldFileName) {
     addTrick(textFieldName.getText().trim(), TrickFileHandler.trimmedFileString(textFieldFileName.getText()));
   }
@@ -37,11 +43,7 @@ public class CreateTrickController implements STACFrameController {
       Trick trick = new Trick(VERSION, name, file, 0, 0, 0, 0);
       TrickFileHandler.save(trick);
       TrickControlPanelController tcpc = new TrickControlPanelController(trick);
-      tcpc.createFrame();
-      tcpc.centerFrame();
-      tcpc.handleOnClose();
-      tcpc.createVisualization();
-      tcpc.addNativeHook();
+      tcpc.fullCreate();
       ctf.dispose();
     } else {
       FileNameController fnc = new FileNameController(this);
@@ -108,8 +110,7 @@ public class CreateTrickController implements STACFrameController {
 
   public void doCancel() {
     MainMenuController mmc = new MainMenuController();
-    mmc.createFrame();
-    mmc.centerFrame();
+    mmc.fullCreate();
     ctf.dispose();
   }
 

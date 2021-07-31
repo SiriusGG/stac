@@ -65,15 +65,13 @@ public class KeyBindingsController implements STACFrameController {
         (String) comboBoxSimulated.getSelectedItem());
     CounterKeyListenerSingleton.getCounterKeyListener().reset();
     MainMenuController mmc = new MainMenuController();
-    mmc.createFrame();
-    mmc.centerFrame();
+    mmc.fullCreate();
     kbf.dispose();
   }
 
   public void doCancel() {
     MainMenuController mmc = new MainMenuController();
-    mmc.createFrame();
-    mmc.centerFrame();
+    mmc.fullCreate();
     kbf.dispose();
   }
 
@@ -90,5 +88,11 @@ public class KeyBindingsController implements STACFrameController {
   @Override
   public void createFrame() {
     kbf = new KeyBindingsFrame(this);
+  }
+
+  @Override
+  public void fullCreate() {
+    createFrame();
+    centerFrame();
   }
 }

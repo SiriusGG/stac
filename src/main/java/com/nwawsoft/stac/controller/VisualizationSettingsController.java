@@ -76,6 +76,12 @@ public class VisualizationSettingsController implements STACFrameController {
     updateNames();
   }
 
+  @Override
+  public void fullCreate() {
+    createFrame();
+    centerFrame();
+  }
+
   public void updateAllHideShowGraphics() {
     for (VisualizationTupel tupel : visualizationTupels) {
       updateHideShowGraphic(tupel.getIndex(), tupel.isActive());
@@ -131,15 +137,10 @@ public class VisualizationSettingsController implements STACFrameController {
     } else {
       if (mode.equals("default")) {
         MainMenuController mmc = new MainMenuController();
-        mmc.createFrame();
-        mmc.centerFrame();
+        mmc.fullCreate();
       } else if (mode.equals("trick")) {
         TrickControlPanelController tcpc = new TrickControlPanelController(trick);
-        tcpc.createFrame();
-        tcpc.centerFrame();
-        tcpc.handleOnClose();
-        tcpc.createVisualization();
-        tcpc.addNativeHook();
+        tcpc.fullCreate();
       }
       vsf.dispose();
     }
@@ -160,15 +161,10 @@ public class VisualizationSettingsController implements STACFrameController {
   public void doCancel() {
     if (mode.equals("default")) {
       MainMenuController mmc = new MainMenuController();
-      mmc.createFrame();
-      mmc.centerFrame();
+      mmc.fullCreate();
     } else if (mode.equals("trick")) {
       TrickControlPanelController tcpc = new TrickControlPanelController(trick);
-      tcpc.createFrame();
-      tcpc.centerFrame();
-      tcpc.handleOnClose();
-      tcpc.createVisualization();
-      tcpc.addNativeHook();
+      tcpc.fullCreate();
     }
     vsf.dispose();
   }
@@ -180,16 +176,11 @@ public class VisualizationSettingsController implements STACFrameController {
     if (mode.equals("default")) {
       VisualizationSettingsFileHandler.save(vs, VISUALIZATION_FILE_FULL_NAME);
       MainMenuController mmc = new MainMenuController();
-      mmc.createFrame();
-      mmc.centerFrame();
+      mmc.fullCreate();
     } else if (mode.equals("trick")) {
       VisualizationSettingsFileHandler.save(vs, trick.getFileName() + "." + TRICK_VISUALIZATION_FILE_FORMAT);
       TrickControlPanelController tcpc = new TrickControlPanelController(trick);
-      tcpc.createFrame();
-      tcpc.centerFrame();
-      tcpc.handleOnClose();
-      tcpc.createVisualization();
-      tcpc.addNativeHook();
+      tcpc.fullCreate();
     }
     vsf.dispose();
   }

@@ -13,8 +13,7 @@ public class Starter {
     setToolTipDuration();
     ensureBackwardsCompatibility();
     MainMenuController mmc = new MainMenuController();
-    mmc.createFrame();
-    mmc.centerFrame();
+    mmc.fullCreate();
   }
 
   private static void registerNativeHookAndSuppressLogging() {

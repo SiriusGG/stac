@@ -8,4 +8,6 @@ public interface STACFrameController {
   void centerFrame();
 
   void createFrame();
+
+  void fullCreate();
 }

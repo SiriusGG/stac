@@ -25,8 +25,7 @@ public class TrickControlPanelController implements STACFrameController {
     tvc = new TrickVisualizationController(this);
     createLAFHandler();
     setMotifLAF();
-    tvc.createFrame();
-    tvc.centerFrame();
+    tvc.fullCreate();
     tvc.updateStats();
     setDefaultLAF();
   }
@@ -68,8 +67,7 @@ public class TrickControlPanelController implements STACFrameController {
     } else {
       tvc.getFrame().dispose();
       MainMenuController mmc = new MainMenuController();
-      mmc.createFrame();
-      mmc.centerFrame();
+      mmc.fullCreate();
       tcpf.dispose();
     }
   }
@@ -98,8 +96,7 @@ public class TrickControlPanelController implements STACFrameController {
     } else {
       tvc.getFrame().dispose();
       VisualizationSettingsController vsc = new VisualizationSettingsController(this);
-      vsc.createFrame();
-      vsc.centerFrame();
+      vsc.fullCreate();
       tcpf.dispose();
     }
   }
@@ -127,6 +124,15 @@ public class TrickControlPanelController implements STACFrameController {
   @Override
   public void createFrame() {
     tcpf = new TrickControlPanelFrame(this);
+  }
+
+  @Override
+  public void fullCreate() {
+    createFrame();
+    centerFrame();
+    handleOnClose();
+    createVisualization();
+    addNativeHook();
   }
 
   public TrickVisualizationController getVisualizationController() {
@@ -172,8 +178,7 @@ public class TrickControlPanelController implements STACFrameController {
     } else {
       tvc.getFrame().dispose();
       EditTrickController etc = new EditTrickController(trick, "trick control panel");
-      etc.createFrame();
-      etc.centerFrame();
+      etc.fullCreate();
       tcpf.dispose();
     }
   }
@@ -186,11 +191,7 @@ public class TrickControlPanelController implements STACFrameController {
       Trick t = TrickChooserController.createTrickFromJFileChooser();
       if (t != null) {
         TrickControlPanelController tcpc = new TrickControlPanelController(t);
-        tcpc.createFrame();
-        tcpc.centerFrame();
-        tcpc.handleOnClose();
-        tcpc.createVisualization();
-        tcpc.addNativeHook();
+        tcpc.fullCreate();
       }
       tvc.getFrame().dispose();
       tcpf.dispose();

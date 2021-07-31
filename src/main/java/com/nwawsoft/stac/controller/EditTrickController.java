@@ -5,9 +5,7 @@ import com.nwawsoft.stac.ui.EditTrickFrame;
 import com.nwawsoft.util.ui.ComponentFunctions;
 
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 import static com.nwawsoft.stac.BuildData.*;
@@ -81,11 +79,7 @@ public class EditTrickController implements STACFrameController {
       trick.setSuccessesHighscore(Integer.parseInt(etf.getSuccessesHighscoreFieldContent()));
       TrickFileHandler.save(trick);
       TrickControlPanelController tcpc = new TrickControlPanelController(trick);
-      tcpc.createFrame();
-      tcpc.centerFrame();
-      tcpc.handleOnClose();
-      tcpc.createVisualization();
-      tcpc.addNativeHook();
+      tcpc.fullCreate();
       etf.dispose();
     } else {
       FileNameController fnc = new FileNameController(this);
@@ -96,15 +90,10 @@ public class EditTrickController implements STACFrameController {
   public void doCancel() {
     if (mode.equals("main menu")) {
       MainMenuController mmc = new MainMenuController();
-      mmc.createFrame();
-      mmc.centerFrame();
+      mmc.fullCreate();
     } else if (mode.equals("trick control panel")) {
       TrickControlPanelController tcpc = new TrickControlPanelController(trick);
-      tcpc.createFrame();
-      tcpc.centerFrame();
-      tcpc.handleOnClose();
-      tcpc.createVisualization();
-      tcpc.addNativeHook();
+      tcpc.fullCreate();
     }
     etf.dispose();
   }
@@ -122,6 +111,12 @@ public class EditTrickController implements STACFrameController {
   @Override
   public void createFrame() {
     etf = new EditTrickFrame(this);
+  }
+
+  @Override
+  public void fullCreate() {
+    createFrame();
+    centerFrame();
   }
 
   public WindowListener handleClosing() {
