@@ -2,6 +2,7 @@ package com.nwawsoft.stac.controller;
 
 import com.nwawsoft.stac.model.*;
 import com.nwawsoft.stac.ui.SaveWarningDialog;
+import com.nwawsoft.stac.util.TrickChooser;
 import com.nwawsoft.util.html.HTMLTagger;
 
 import javax.swing.*;

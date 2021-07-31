@@ -1,4 +1,7 @@
-package com.nwawsoft.stac.model;
+package com.nwawsoft.stac.util;
+
+import com.nwawsoft.stac.model.Trick;
+import com.nwawsoft.stac.model.TrickFileHandler;
 
 import javax.swing.*;
 import javax.swing.filechooser.*;

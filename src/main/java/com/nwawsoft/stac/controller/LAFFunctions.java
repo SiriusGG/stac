@@ -1,4 +1,4 @@
-package com.nwawsoft.stac.model;
+package com.nwawsoft.stac.util;
 
 import javax.swing.*;
 
