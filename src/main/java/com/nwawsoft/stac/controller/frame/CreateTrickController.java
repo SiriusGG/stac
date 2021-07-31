@@ -14,6 +14,7 @@ import static com.nwawsoft.stac.BuildData.VERSION;
 public class CreateTrickController implements STACFrameController {
   private CreateTrickFrame ctf;
   private boolean defaultName;
+  private boolean firstSelection = true;
 
   public CreateTrickController() {
     defaultName = true;
@@ -35,8 +36,9 @@ public class CreateTrickController implements STACFrameController {
     centerFrame();
   }
 
-  public void addTrick(final JTextField textFieldName, final JTextField textFieldFileName) {
-    addTrick(textFieldName.getText().trim(), TrickFileHandler.trimmedFileString(textFieldFileName.getText()));
+  public void addTrick() {
+    addTrick(ctf.getTextFieldName().getText().trim(),
+        TrickFileHandler.trimmedFileString(ctf.getTextFieldFileName().getText()));
   }
 
   private void addTrick(final String name, final String file) {
@@ -58,6 +60,9 @@ public class CreateTrickController implements STACFrameController {
       }
 
       public void keyPressed(final KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+          addTrick();
+        }
       }
 
       public void keyReleased(final KeyEvent e) {
@@ -76,6 +81,9 @@ public class CreateTrickController implements STACFrameController {
 
       public void keyPressed(KeyEvent e) {
         defaultName = false;
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+          addTrick();
+        }
       }
 
       public void keyReleased(KeyEvent e) {
@@ -84,29 +92,22 @@ public class CreateTrickController implements STACFrameController {
     };
   }
 
-  public MouseAdapter getFileNameMouseListener(final JTextField textFieldFileName) {
-    return new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        if (defaultName) {
-          textFieldFileName.selectAll();
-          textFieldFileName.setForeground(Color.BLACK);
-        }
-      }
-    };
-  }
-
-  public FocusAdapter getFileNameFocusAdapter(final JTextField textFieldFileName) {
+  public FocusAdapter getFileNameFocusAdapter() {
     return new FocusAdapter() {
       @Override
       public void focusGained(FocusEvent e) {
         super.focusGained(e);
-        if (defaultName) {
-          textFieldFileName.selectAll();
-          textFieldFileName.setForeground(Color.BLACK);
-        }
+        fileNameFieldOnSelect();
       }
     };
+  }
+
+  private void fileNameFieldOnSelect() {
+    if (defaultName && firstSelection) {
+      ctf.getTextFieldFileName().selectAll();
+      ctf.getTextFieldFileName().setForeground(Color.BLACK);
+      firstSelection = false;
+    }
   }
 
   public void doCancel() {

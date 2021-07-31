@@ -56,8 +56,7 @@ public class CreateTrickFrame extends JFrame {
     textFieldName.addKeyListener(ctc.getNameKeyListener(textFieldName, textFieldFileName));
 
     textFieldFileName.addKeyListener(ctc.getFileNameKeyListener());
-    textFieldFileName.addMouseListener(ctc.getFileNameMouseListener(textFieldFileName));
-    textFieldFileName.addFocusListener(ctc.getFileNameFocusAdapter(textFieldFileName));
+    textFieldFileName.addFocusListener(ctc.getFileNameFocusAdapter());
 
     cp.add(labelName);
     cp.add(textFieldName);
@@ -71,10 +70,18 @@ public class CreateTrickFrame extends JFrame {
   }
 
   private void buttonAddTrickActionPerformed(final ActionEvent actionEvent) {
-    ctc.addTrick(textFieldName, textFieldFileName);
+    ctc.addTrick();
   }
 
   private void buttonCancelActionPerformed(final ActionEvent actionEvent) {
     ctc.doCancel();
+  }
+
+  public JTextField getTextFieldName() {
+    return textFieldName;
+  }
+
+  public JTextField getTextFieldFileName() {
+    return textFieldFileName;
   }
 }
