@@ -13,7 +13,7 @@ For this section we will use OBS Studio, though for most broadcasting or streami
 - set "Window Match Priority" to "Window title must match" (optional, but recommended)
 - hit "OK"
 
-3) Set the Scale Filtering of the STAC source to **anything except "Disable"**. **This is important!** In OBS Studio:
+3) Set the Scale Filtering of the STAC source to anything **except "Disable"**. In OBS Studio:
 - right-click the STAC source
 - select "Scale Filtering" -> and e.g. "Bilinear"
 
@@ -30,4 +30,4 @@ For this section we will use OBS Studio, though for most broadcasting or streami
 - select "Filters"
 - click "+"
 - select "Color Correction"
-- turn "Contrast" down
+- turn "Brightness" up
