@@ -1,5 +1,5 @@
 # STAC (Siri's Trick Attempt Counter)
-A lightweight utility for counting attempts and success rates.
+A lightweight utility for counting attempts and measuring success rates.
 
 This software is written in Java and runs on all Windows, Linux and macOS machines.
 
