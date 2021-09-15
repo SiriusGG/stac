@@ -3,6 +3,8 @@ A lightweight utility for counting attempts and success rates.
 
 This software is written in Java and runs on all Windows, Linux and macOS machines.
 
+Features easy integration into streaming softwares like OBS or XSplit.
+
 ## Screenshots
 (open in new tab to enlarge)
 
