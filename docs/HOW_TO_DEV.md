@@ -6,7 +6,7 @@ To compile STAC from its source code or make changes to it, you should follow th
 
 0) Install [git](https://git-scm.com/downloads).
 
-1) Clone the repository, e.g. with ```git clone https://github.com/JGC-Sirius/siris-trick-attempt-counter.git```.
+1) Clone the repository, e.g. with ```git clone https://github.com/SiriusGG/stac.git```.
 
 2) Open the project directory in any IDE. I recommend using the free [IntelliJ IDEA Community Edition](https://www.jetbrains.com/de-de/idea/download/).
 
